@@ -40,7 +40,7 @@ export function render(p, { origin }) {
   const waText = `Здравствуйте! Интересует объект «${p.title}»`;
   const tgText = waText;
   const waHref = c.whatsapp ? `https://wa.me/${esc(c.whatsapp)}?text=${encodeURIComponent(waText)}` : '';
-  const tgHref = c.telegram ? `https://t.me/${esc(c.telegram)}?text=${encodeURIComponent(tgText)}` : '';
+  const tgHref = c.telegram ? (String(c.telegram).startsWith('+') ? `https://t.me/${esc(c.telegram)}` : `https://t.me/${esc(c.telegram)}?text=${encodeURIComponent(tgText)}`) : '';
   const telHref = c.phone ? `tel:${esc(c.phone)}` : '';
   const absImg = (s) => origin + '/' + s;
 

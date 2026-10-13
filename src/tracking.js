@@ -117,6 +117,7 @@
   function decorateLinks() {
     var code = ' (код ' + visitId.slice(-6) + ')';
     document.querySelectorAll('a[data-channel]').forEach(function (a) {
+      if (a.href.indexOf('t.me/+') !== -1) return; // phone-ссылки Telegram не поддерживают text
       try {
         var u = new URL(a.href);
         var t = u.searchParams.get('text') || '';
