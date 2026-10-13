@@ -1,0 +1,10 @@
+{
+  "name": "saleslanding",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs && npx --yes serve dist -l 3000"
+  },
+  "engines": { "node": ">=20" }
+}
