@@ -111,7 +111,7 @@ export function render(p, { origin }) {
 <div class="stick" id="stick" aria-hidden="true"><div class="wrap">
   <b class="stick-name">${esc(p.brand || p.title)}</b>
   <span class="stick-price">${money(p.price, p.currency)}</span>
-  <a class="btn btn-primary" href="#lead" tabindex="-1" ${trk('cta_sticky')}>Презентация</a>
+  <a class="btn btn-primary" href="#lead" tabindex="-1" ${trk('cta_sticky')}>Записаться</a>
 </div></div>
 <header class="top"><div class="wrap">
   <a class="logo" href="#top">${esc(p.brand || p.title)}</a>
@@ -130,7 +130,7 @@ export function render(p, { origin }) {
       <div class="hero-meta">${(p.heroFacts || []).map((f) => `<span class="chip">${esc(f)}</span>`).join('')}</div>
       <div class="hero-price"><span class="sr">${money(p.price, p.currency)}</span><b aria-hidden="true" data-count="${p.price}" data-suffix="${p.currency === 'EUR' ? ' €' : p.currency === 'RUB' ? ' ₽' : ' ' + esc(p.currency)}">${money(p.price, p.currency)}</b>${p.rubRate && p.currency !== 'RUB' ? `<span>≈ ${money(Math.round(p.price * p.rubRate / 10000) * 10000)} по текущему курсу, уточняйте у менеджера</span>` : ''}</div>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="#lead" ${trk('cta_hero_presentation')}>Получить презентацию</a>
+        <a class="btn btn-primary" href="#lead" ${trk('cta_hero_viewing')}>Записаться на показ</a>
         ${btnWa('btn-ghost-wa', 'click_whatsapp', 'WhatsApp')}
       </div>
     </div>
@@ -278,7 +278,7 @@ ${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap" style="max-wi
         </div></div>
       <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="consent"><input type="checkbox" name="consent" required><span>Согласен на обработку персональных данных согласно <a href="privacy.html" target="_blank" rel="noopener">политике конфиденциальности</a></span></label>
-      <button class="btn btn-primary" type="submit">Получить презентацию</button>
+      <button class="btn btn-primary" type="submit">Записаться на показ</button>
       <div class="err" id="fErr" role="alert"></div>
     </form>
     <div class="form thanks" id="thanks">
