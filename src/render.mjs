@@ -12,6 +12,11 @@ const ICONS = {
   car: '<path d="M5 17h14M3 13l2-6h14l2 6v4H3zM7 17v2M17 17v2"/><circle cx="7.5" cy="13.5" r=".5"/><circle cx="16.5" cy="13.5" r=".5"/>',
   shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
   spa: '<path d="M12 21c-4 0-7-3-7-7 4 0 7 3 7 7zM12 21c4 0 7-3 7-7-4 0-7 3-7 7zM12 14c-3-2-3-7 0-11 3 4 3 9 0 11z"/>',
+  bed: '<path d="M3 19V6M3 14h18v5M21 19v-3a3 3 0 00-3-3h-7v4"/><circle cx="7" cy="10.5" r="1.6"/>',
+  area: '<path d="M4 4h16v16H4zM4 9h4M4 14h3M9 4v4M14 4v3"/>',
+  sofa: '<path d="M5 11V8a3 3 0 013-3h8a3 3 0 013 3v3M3 13a2 2 0 014 0v2h10v-2a2 2 0 014 0v5H3zM6 18v2M18 18v2"/>',
+  floor: '<path d="M5 21V5l9-2v18M14 8h5v13M8 9h2M8 13h2M8 17h2M3 21h18"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
   home: '<path d="M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/>',
 };
 const icon = (n) => `<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ICONS.home}</svg></span>`;
@@ -151,11 +156,12 @@ export function render(p, { origin }) {
   <div class="ls-head"><span class="eyebrow">Фото и цена</span><h2>${esc(p.title)}</h2></div>
   <div class="ls-grid">
     <div class="ls-media">
-      <div class="ls-tabs" role="group" aria-label="Категория фото">
-        <button type="button" class="on" data-g="all" aria-pressed="true">Все <i>${p.photos.length}</i></button>
-        ${(p.photoGroups || []).map((g) => `<button type="button" data-g="${esc(g.id)}" aria-pressed="false">${esc(g.label)} <i>${p.photos.filter((x) => x.group === g.id).length}</i></button>`).join('')}
-      </div>
+      ${p.listingChips?.length ? `<ul class="ls-chips">${p.listingChips.map((c) => `<li class="spot">${icon(c.icon)}<div><b>${esc(c.value)}</b><span>${esc(c.label)}</span></div></li>`).join('')}</ul>` : ''}
       <div class="ls-main">
+        <div class="ls-tabs" role="group" aria-label="Категория фото">
+          <button type="button" class="on" data-g="all" aria-pressed="true">Все фото</button>
+          ${(p.photoGroups || []).map((g) => `<button type="button" data-g="${esc(g.id)}" aria-pressed="false">${esc(g.label)}</button>`).join('')}
+        </div>
         <button class="ls-open" type="button" id="lsOpen" aria-label="Открыть фото на весь экран"><img id="lsImg" src="${esc(p.photos[0].src)}" alt="${esc(p.photos[0].alt)}" width="${p.photos[0].w}" height="${p.photos[0].h}" fetchpriority="low"></button>
         <button class="ls-nav ls-prev" type="button" id="lsPrev" aria-label="Предыдущее фото">‹</button>
         <button class="ls-nav ls-next" type="button" id="lsNext" aria-label="Следующее фото">›</button>
@@ -222,8 +228,21 @@ ${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div
     const rooms = [...Array(g.rooms.bedrooms).fill('спальня'), ...Array(g.rooms.living).fill('гостиная')].map((t, i, arr) => `<div class="rm${t === 'гостиная' ? ' big' : ''}" style="--i:${i}"><i></i><span>${t}</span></div>`).join('');
     const km = (g.sea.meters / 1000).toLocaleString('ru-RU');
     return `<div class="ig">
-    <div class="ig-t ig-area rv"><span class="ig-k">${esc(g.area.label)}</span><div class="ig-big"><b class="ig-num">${g.area.value}</b><em>${esc(g.area.unit)}</em></div>
-      <svg viewBox="0 0 120 70" class="ig-plan" aria-hidden="true"><rect x="2" y="2" width="116" height="66" rx="4"/><path d="M46 2v40M2 42h60M62 42v26M84 2v28M84 30h34"/></svg></div>
+    <div class="ig-t ig-area rv"><div class="ig-area-l"><span class="ig-k">${esc(g.area.label)}</span><div class="ig-big"><b class="ig-num">${g.area.value}</b><em>${esc(g.area.unit)}</em></div><p class="ig-cap">Условная схема планировки</p></div>
+      ${(() => { let i = 0; const P = (d, c) => `<path class="pl ${c}" pathLength="1" style="--i:${i++}" d="${d}"/>`; const Rr = (x, y, w, h) => `M${x} ${y}h${w}v${h}h${-w}z`; const C = (cx, cy, r, c) => `<circle class="pl ${c}" pathLength="1" style="--i:${i++}" cx="${cx}" cy="${cy}" r="${r}"/>`; const T = (x, y, s, sz) => `<text class="plb" x="${x}" y="${y}" text-anchor="middle" style="font-size:${sz || 7}px">${s}</text>`;
+        return `<svg viewBox="0 0 252 152" class="ig-plan" role="img" aria-label="Схема планировки: две спальни, гостиная-кухня, санузел, прихожая">
+        ${P('M6 6H234V144H6Z', 'w')}${P('M82 6V72M158 6V72', 'w')}${P('M6 72H26M48 72H102M124 72H168', 'w')}${P('M158 46H176M196 46H234', 'w')}
+        ${P('M20 6H68M96 6H144M180 6H212', 'win')}${P('M26 144H212', 'win')}${P('M6 90V126', 'win')}
+        ${P('M26 72V50M26 50A22 22 0 0 1 48 72', 't')}${P('M102 72V50M102 50A22 22 0 0 1 124 72', 't')}${P('M176 46V26M176 26A20 20 0 0 1 196 46', 't')}
+        ${P(Rr(20, 24, 40, 36), 'f')}${P(Rr(24, 27, 14, 9) + Rr(42, 27, 14, 9), 'f')}
+        ${P(Rr(96, 24, 40, 36), 'f')}${P(Rr(100, 27, 14, 9) + Rr(118, 27, 14, 9), 'f')}
+        ${P(Rr(164, 12, 44, 20), 'f')}${P(Rr(216, 12, 12, 9), 'f')}${C(222, 33, 5, 'f')}
+        ${P(Rr(18, 86, 58, 20) + Rr(18, 106, 20, 26), 'f')}
+        ${C(120, 112, 13, 'f')}${C(98, 112, 4, 'f')}${C(142, 112, 4, 'f')}${C(120, 90, 4, 'f')}${C(120, 134, 4, 'f')}
+        ${P(Rr(212, 78, 22, 62), 'f')}${C(223, 94, 3, 'f')}${C(223, 104, 3, 'f')}${P(Rr(168, 78, 32, 12), 'f')}
+        ${P('M240 59H224M229 54L224 59L229 64', 'door')}
+        ${T(40, 19, 'Спальня')}${T(116, 19, 'Спальня')}${T(166, 41, 'С/у', 6.5)}${T(196, 63, 'Прихожая', 6.5)}${T(124, 82, 'Гостиная · кухня', 7.5)}${T(246, 49, 'вход', 6)}
+      </svg>`; })()}</div>
     <div class="ig-t ig-floor rv"><span class="ig-k">${esc(g.floor.label)}</span><div class="ig-big"><b class="ig-num">${g.floor.n}</b><em>из ${g.floor.total}</em></div>
       <svg viewBox="0 0 116 ${H}" class="ig-bld" aria-hidden="true">${floors}<rect x="10" y="${H - 6}" width="96" height="3" rx="1.5" class="gr"/></svg></div>
     <div class="ig-t ig-compass rv"><span class="ig-k">Стороны света</span>

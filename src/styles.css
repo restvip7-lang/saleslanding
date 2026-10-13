@@ -460,3 +460,51 @@ input[aria-invalid="true"]{border-color:#b3261e!important}
 .ig-floor .ig-big em{font-size:20px}
 .ig-plan{width:min(42%,240px)}
 @media (max-width:899px){.ig-floor{min-height:210px}.ig-bld{width:84px;height:auto;max-height:none}.ig-compass .ig-k{white-space:normal}}
+
+/* планировка в плитке площади */
+.ig-area{flex-direction:column;gap:18px}
+.ig-area-l{display:flex;flex-direction:column;gap:10px}
+.ig-cap{color:rgba(255,255,255,.55);font-size:12px;letter-spacing:.04em}
+.ig-plan{position:static;right:auto;bottom:auto;width:100%;max-width:460px;height:auto;align-self:center;overflow:visible;stroke-dasharray:none;stroke-dashoffset:0;transition:none;fill:none}
+.ig-plan .pl{fill:none;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.3s var(--ease),fill .8s ease;transition-delay:calc(var(--i)*.05s + .15s),calc(var(--i)*.05s + 1.2s)}
+.ig-t.in .ig-plan .pl{stroke-dashoffset:0}
+.ig-plan .w{stroke:#fff;stroke-width:3;stroke-linecap:square;stroke-linejoin:miter}
+.ig-plan .win{stroke:var(--aqua);stroke-width:4;stroke-linecap:butt}
+.ig-plan .t{stroke:rgba(255,255,255,.6);stroke-width:1.1}
+.ig-plan .f{stroke:rgba(255,255,255,.7);stroke-width:1.1}
+.ig-t.in .ig-plan .f{fill:rgba(255,255,255,.08)}
+.ig-plan .door{stroke:var(--terra-l);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ig-plan .plb{fill:rgba(255,255,255,.85);font-family:var(--sans);font-weight:600;letter-spacing:.02em;opacity:0;transition:opacity .8s ease 1.4s}
+.ig-t.in .ig-plan .plb{opacity:1}
+@media (min-width:900px){.ig-area{flex-direction:row;align-items:center;gap:24px}.ig-area-l{flex:0 0 34%}.ig-plan{flex:1;min-width:0;max-width:none}.ig-area .ig-big b{font-size:clamp(64px,7.4vw,104px)}}
+@media (prefers-reduced-motion:reduce){.ig-plan .pl{stroke-dashoffset:0;transition:none}.ig-plan .f{fill:rgba(255,255,255,.08)}.ig-plan .plb{opacity:1;transition:none}}
+@media (min-width:900px){
+  .ig-area{grid-column:span 7;min-height:300px}
+  .ig-floor{grid-column:span 2;min-height:300px}
+  .ig-compass{grid-column:span 3;min-height:300px}
+  .ig-area-l{flex:0 0 28%}
+  .ig-area .ig-big b{font-size:clamp(56px,6vw,86px)}
+  .ig-area .ig-big em{font-size:20px}
+  .ig-floor .ig-big b{font-size:clamp(52px,5vw,72px)}
+  .ig-bld{right:10px;max-height:none;height:auto;width:62px;bottom:16px}
+  .ig-cmp{width:min(130px,70%)}
+  .ig-plan .plb{font-size:8px!important}
+}
+
+@media (min-width:900px){
+  .ig-floor .ig-bld{position:static;width:auto;height:150px;max-height:none;margin:auto auto 0}
+}
+
+/* характеристики квартиры над слайдером; переключатель фото поверх снимка */
+.ls-chips{list-style:none;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:0 0 14px}
+.ls-chips li{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--white);border:1px solid var(--line);border-radius:16px;transition:transform .35s var(--ease),box-shadow .35s}
+.ls-chips li:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.ls-chips .ico{width:42px;height:42px}
+.ls-chips .ico svg{width:21px;height:21px}
+.ls-chips b{display:block;font-size:15px;font-weight:700;line-height:1.2;color:var(--ink)}
+.ls-chips span{display:block;font-size:12px;color:var(--muted);line-height:1.25}
+.ls-main .ls-tabs{position:absolute;z-index:3;left:12px;top:12px;margin:0;padding:4px;gap:2px;border-radius:999px;background:rgba(10,34,49,.62);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);overflow:visible;max-width:calc(100% - 24px)}
+.ls-main .ls-tabs button{min-height:34px;padding:0 14px;border:0;font-size:13px;color:#fff;background:transparent}
+.ls-main .ls-tabs button.on{background:#fff;color:var(--ink)}
+.ls-main .ls-tabs button:hover:not(.on){background:rgba(255,255,255,.18)}
+@media (min-width:640px){.ls-chips{grid-template-columns:repeat(3,1fr)}}
