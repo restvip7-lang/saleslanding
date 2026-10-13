@@ -369,3 +369,5 @@ footer a{color:var(--terra-l)}
 .form .lbl{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--ink)}
 input[aria-invalid="true"]{border-color:#b3261e!important}
 .tour .eyebrow,.hero .eyebrow{color:var(--terra-l)}
+.form label.consent{display:flex;gap:12px;align-items:flex-start;font-size:13px;font-weight:400;color:var(--muted);margin:8px 0 18px}
+.form label.consent a{color:var(--ink);font-weight:600}
