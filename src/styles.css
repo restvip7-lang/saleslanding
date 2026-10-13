@@ -573,3 +573,8 @@ input[aria-invalid="true"]{border-color:#b3261e!important}
 .ig-planfig{margin:0;background:#fff;border-radius:18px;padding:10px;align-self:center;max-width:460px;width:100%}
 .ig-planfig img{width:100%;height:auto;max-height:340px;object-fit:contain;border-radius:10px}
 @media (min-width:900px){.ig-planfig{flex:1;max-width:none}}
+
+img.ls-ava{width:56px;height:56px;border-radius:50%;object-fit:cover;background:var(--paper-2);border:2px solid var(--paper-2)}
+.ls-man{align-items:center}
+.ls-man>div:not(.ls-man-ic){min-width:0}
+.ls-man span:not(.ls-ava){line-height:1.35}
