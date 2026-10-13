@@ -104,8 +104,8 @@
     var g = S.geo;
     if (!mapBox || !g || $('iframe', mapBox)) return;
     var f = document.createElement('iframe');
-    f.src = 'https://yandex.ru/map-widget/v1/?ll=' + g.lng + '%2C' + g.lat + '&z=15&pt=' + g.lng + '%2C' + g.lat + '%2Cpm2rdm';
-    f.loading = 'lazy'; f.title = 'Карта: расположение комплекса';
+    f.src = 'https://yandex.ru/map-widget/v1/?ll=' + g.lng + '%2C' + g.lat + (g.exact ? '&z=15&pt=' + g.lng + '%2C' + g.lat + '%2Cpm2rdm' : '&z=14');
+    f.loading = 'lazy'; f.title = g.exact ? 'Карта: расположение комплекса' : 'Карта: район';
     mapBox.appendChild(f); if (mb) mb.hidden = true;
     T.track('map_view', {}, true);
   }

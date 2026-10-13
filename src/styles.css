@@ -565,3 +565,6 @@ input[aria-invalid="true"]{border-color:#b3261e!important}
 
 .map button[hidden]{display:none}
 .map iframe{z-index:1;background:var(--ink-2)}
+.map-note{margin-top:14px;color:rgba(255,255,255,.65);font-size:14px}
+.dist b{overflow-wrap:normal;word-break:normal;hyphens:manual}
+@media (max-width:559px){.dist{grid-template-columns:1fr}.dist b{font-size:24px}}

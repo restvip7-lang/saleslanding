@@ -277,7 +277,8 @@ ${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div
     <div class="dist">${(p.location?.distances || []).map((x) => `<div class="spot rv">${icon(x.icon || 'pin')}<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div></div>`).join('')}</div>
   </div>
   <div class="map" id="map">${p.geo ? `<button class="btn btn-primary" type="button" id="mapBtn" ${trk('map_open')}>Показать на карте</button>` : ''}</div>
-  ${p.geo ? `<div class="map-actions"><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://yandex.ru/maps/?rtext=~${p.geo.lat},${p.geo.lng}&rtt=auto" ${trk('route_click')}>Построить маршрут</a></div>` : ''}
+  ${p.geo && !p.geo.exact ? '<p class="map-note">Показан район. Точный адрес сообщим при записи на показ.</p>' : ''}
+  ${p.geo?.exact ? `<div class="map-actions"><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://yandex.ru/maps/?rtext=~${p.geo.lat},${p.geo.lng}&rtt=auto" ${trk('route_click')}>Построить маршрут</a></div>` : ''}
 </div></section>
 
 ${p.mortgage ? `<section id="mortgage"><div class="wrap">
