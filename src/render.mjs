@@ -152,13 +152,11 @@ export function render(p, { origin }) {
     <aside class="ls-card">
       <div class="ls-price">${money(p.price, p.currency)}</div>
       ${p.rubRate && p.currency !== 'RUB' ? `<div class="ls-rub">≈ ${money(Math.round(p.price * p.rubRate / 10000) * 10000)}</div>` : ''}
-      <p class="ls-note">Стоимость и наличие подтверждаем перед показом.</p>
+      ${p.priceChecked ? `<div class="ls-check"><span class="ls-ok" aria-hidden="true">✓</span><div><b>Цена и наличие подтверждены</b><small>Последняя проверка: ${esc(p.priceChecked)}</small><p>${esc(p.priceNote || '')}</p></div></div>` : '<p class="ls-note">Стоимость и наличие подтверждаем перед показом.</p>'}
       <a class="btn btn-primary" href="#lead" ${trk('cta_card_price')}>Получить актуальную цену</a>
       <div class="ls-msg">${btnWa('', 'click_whatsapp_card', 'WhatsApp')}${btnTg('', 'click_telegram_card', 'Telegram')}</div>
-      <dl class="ls-params">
-        ${(p.facts || []).slice(0, 5).map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`).join('')}
-      </dl>
-      ${p.manager ? `<div class="ls-man"><span class="ls-ava" aria-hidden="true">${esc((p.brand || p.manager.name || '').replace(/[^A-Za-zА-Яа-я ]/g, '').split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase())}</span><div><b>${esc(p.manager.name)}</b><span>${esc(p.manager.role)}</span></div></div>` : ''}
+      <a class="ls-cheaper" href="#lead" ${trk('cta_cheaper')}><b>Нашли дешевле?</b><span>Сравним предложение и подберём условия</span></a>
+      ${p.manager ? `<div class="ls-man"><span class="ls-ava" aria-hidden="true">${esc((p.brand || p.manager.name || '').replace(/[^A-Za-zА-Яа-я ]/g, '').split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase())}</span><div><b>${esc(p.manager.name)}</b><span>${esc(p.manager.role)}</span></div><div class="ls-man-ic">${waHref ? `<a class="wa" href="${waHref}" target="_blank" rel="noopener" data-channel="wa" aria-label="WhatsApp" ${trk('click_whatsapp_manager')}>${SVG.wa}</a>` : ''}${tgHref ? `<a class="tg" href="${tgHref}" target="_blank" rel="noopener" data-channel="tg" aria-label="Telegram" ${trk('click_telegram_manager')}>${SVG.tg}</a>` : ''}</div></div>` : ''}
     </aside>
   </div>
 </div></section>

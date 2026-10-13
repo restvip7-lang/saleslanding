@@ -290,3 +290,15 @@ h2{text-wrap:balance}
   .ls-t{width:128px;height:86px}
 }
 @media (max-width:759px){.ls-nav{width:40px;height:52px}.ls-card{padding:22px}}
+
+.ls-check{display:flex;gap:12px;padding:14px;border:1px solid rgba(46,125,90,.28);background:rgba(46,125,90,.07);border-radius:14px}
+.ls-ok{flex:none;width:32px;height:32px;border-radius:50%;border:2px solid #2e7d5a;color:#2e7d5a;display:grid;place-items:center;font-weight:800;font-size:16px}
+.ls-check b{display:block;font-size:15px;color:var(--ink)}
+.ls-check small{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}
+.ls-check p{font-size:13px;color:var(--muted);line-height:1.45}
+.ls-cheaper{display:block;padding:14px 16px;border:2px solid var(--ink);border-radius:14px;text-decoration:none;color:var(--ink);transition:background .2s,color .2s}
+.ls-cheaper b{display:block;font-size:15px}.ls-cheaper span{font-size:13px;opacity:.75}
+.ls-cheaper:hover{background:var(--ink);color:var(--white)}
+.ls-man-ic{margin-left:auto;display:flex;gap:8px}
+.ls-man-ic a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff}
+.ls-man-ic .wa{background:#25d366}.ls-man-ic .tg{background:#2aabee}.ls-man-ic svg{width:20px;height:20px}
