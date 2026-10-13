@@ -106,6 +106,7 @@ export function render(p, { origin }) {
 </head>
 <body>
 <script>document.documentElement.classList.add('js')</script>
+<a class="skip" href="#top">Перейти к содержимому</a>
 <div class="progress" id="prog" aria-hidden="true"></div>
 <div class="stick" id="stick" aria-hidden="true"><div class="wrap">
   <b class="stick-name">${esc(p.brand || p.title)}</b>
@@ -127,7 +128,7 @@ export function render(p, { origin }) {
       <h1 aria-label="${esc(p.title)}">${p.title.split(' ').map((w, i) => `<span class="w" aria-hidden="true"><span style="--i:${i}">${esc(w)}</span></span>`).join(' ')}</h1>
       <p class="sub">${esc(p.tagline)}</p>
       <div class="hero-meta">${(p.heroFacts || []).map((f) => `<span class="chip">${esc(f)}</span>`).join('')}</div>
-      <div class="hero-price"><b data-count="${p.price}" data-suffix="${p.currency === 'EUR' ? ' €' : p.currency === 'RUB' ? ' ₽' : ' ' + esc(p.currency)}">${money(p.price, p.currency)}</b>${p.rubRate && p.currency !== 'RUB' ? `<span>≈ ${money(Math.round(p.price * p.rubRate / 10000) * 10000)} по текущему курсу, уточняйте у менеджера</span>` : ''}</div>
+      <div class="hero-price"><span class="sr">${money(p.price, p.currency)}</span><b aria-hidden="true" data-count="${p.price}" data-suffix="${p.currency === 'EUR' ? ' €' : p.currency === 'RUB' ? ' ₽' : ' ' + esc(p.currency)}">${money(p.price, p.currency)}</b>${p.rubRate && p.currency !== 'RUB' ? `<span>≈ ${money(Math.round(p.price * p.rubRate / 10000) * 10000)} по текущему курсу, уточняйте у менеджера</span>` : ''}</div>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#lead" ${trk('cta_hero_presentation')}>Получить презентацию</a>
         ${btnWa('btn-ghost-wa', 'click_whatsapp', 'WhatsApp')}
@@ -150,9 +151,9 @@ export function render(p, { origin }) {
   <div class="ls-head"><span class="eyebrow">Фото и цена</span><h2>${esc(p.title)}</h2></div>
   <div class="ls-grid">
     <div class="ls-media">
-      <div class="ls-tabs" role="tablist">
-        <button type="button" class="on" data-g="all">Все <i>${p.photos.length}</i></button>
-        ${(p.photoGroups || []).map((g) => `<button type="button" data-g="${esc(g.id)}">${esc(g.label)} <i>${p.photos.filter((x) => x.group === g.id).length}</i></button>`).join('')}
+      <div class="ls-tabs" role="group" aria-label="Категория фото">
+        <button type="button" class="on" data-g="all" aria-pressed="true">Все <i>${p.photos.length}</i></button>
+        ${(p.photoGroups || []).map((g) => `<button type="button" data-g="${esc(g.id)}" aria-pressed="false">${esc(g.label)} <i>${p.photos.filter((x) => x.group === g.id).length}</i></button>`).join('')}
       </div>
       <div class="ls-main">
         <button class="ls-open" type="button" id="lsOpen" aria-label="Открыть фото на весь экран"><img id="lsImg" src="${esc(p.photos[0].src)}" alt="${esc(p.photos[0].alt)}" width="${p.photos[0].w}" height="${p.photos[0].h}" fetchpriority="low"></button>
@@ -161,7 +162,7 @@ export function render(p, { origin }) {
         <span class="ls-count" id="lsCount">1 / ${p.photos.length}</span>
       </div>
       <div class="ls-thumbs" id="lsThumbs">
-        ${p.photos.map((ph, i) => `<button type="button" class="ls-t${i ? '' : ' on'}" data-i="${i}" data-g="${esc(ph.group || '')}" aria-label="Фото ${i + 1}"><img src="${esc(ph.thumb || ph.src)}" alt="" width="120" height="80" loading="lazy"></button>`).join('')}
+        ${p.photos.map((ph, i) => `<button type="button" class="ls-t${i ? '' : ' on'}" data-i="${i}" aria-current="${i ? 'false' : 'true'}" data-g="${esc(ph.group || '')}" aria-label="Фото ${i + 1}"><img src="${esc(ph.thumb || ph.src)}" alt="" width="120" height="80" loading="lazy"></button>`).join('')}
       </div>
     </div>
     <aside class="ls-card">
@@ -184,7 +185,7 @@ ${p.video?.file || p.video?.embed ? `<section class="tour" id="video"><div class
     <a class="btn btn-primary" href="#lead" ${trk('cta_video')}>Записаться на показ</a>
   </div>
   <div class="tour-wrap rv">${p.video.file ? `<div class="tour-player">
-    <video id="tourVid" preload="none" playsinline poster="${esc(p.video.poster || '')}" width="${p.video.w || 478}" height="${p.video.h || 850}"><source src="${esc(p.video.file)}" type="video/mp4"></video>
+    <video id="tourVid" aria-label="Видеообзор квартиры" preload="none" playsinline poster="${esc(p.video.poster || '')}" width="${p.video.w || 478}" height="${p.video.h || 850}"><source src="${esc(p.video.file)}" type="video/mp4"></video>
     <button class="tour-play" id="tourPlay" type="button" aria-label="Смотреть видеообзор"><span>▶</span></button>
   </div>` : `<div class="video-box"><iframe src="${esc(p.video.embed)}" loading="lazy" allowfullscreen title="Видеообзор"></iframe></div>`}</div>
 </div></section>` : ''}
@@ -208,8 +209,8 @@ ${p.video?.file || p.video?.embed ? `<section class="tour" id="video"><div class
 
 
 
-${p.amenities?.length ? `<section class="marq-sec" aria-label="Инфраструктура комплекса"><div class="wrap marq-head"><span class="eyebrow lt">Инфраструктура комплекса</span><h2>Всё для жизни и отдыха</h2></div>
-  ${[0, 1].map((row) => { const items = p.amenities.filter((_, i) => i % 2 === row); const html = items.map((t) => `<span>${esc(t)}</span>`).join(''); return `<div class="marq ${row ? 'rev' : ''}" aria-hidden="${row ? 'true' : 'false'}"><div class="marq-track">${html}${html}${html}${html}</div></div>`; }).join('')}
+${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div class="wrap marq-head"><span class="eyebrow lt">Инфраструктура комплекса</span><h2 id="amen-h">Всё для жизни и отдыха</h2><ul class="sr">${p.amenities.map((t) => `<li>${esc(t)}</li>`).join('')}</ul></div>
+  ${[0, 1].map((row) => { const items = p.amenities.filter((_, i) => i % 2 === row); const html = items.map((t) => `<span>${esc(t)}</span>`).join(''); return `<div class="marq ${row ? 'rev' : ''}" aria-hidden="true"><div class="marq-track">${html}${html}${html}${html}</div></div>`; }).join('')}
 </section>` : ''}
 <section id="specs"><div class="wrap spec-grid">
   <div class="rv"><span class="eyebrow">Характеристики</span><h2>Всё об объекте</h2>
@@ -267,9 +268,9 @@ ${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap" style="max-wi
   </div>
   <div>
     <form class="form" id="leadForm" novalidate>
-      <div class="row"><label for="fName">Ваше имя</label><input id="fName" name="name" type="text" autocomplete="name" required></div>
-      <div class="row"><label for="fPhone">Телефон</label><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required></div>
-      <div class="row"><label>Где удобно ответить?</label>
+      <div class="row"><label for="fName">Ваше имя</label><input id="fName" name="name" type="text" autocomplete="name" required aria-describedby="fErr"></div>
+      <div class="row"><label for="fPhone">Телефон</label><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="fErr"></div>
+      <div class="row" role="group" aria-labelledby="msgLbl"><span class="lbl" id="msgLbl">Где удобно ответить?</span>
         <div class="seg">
           <input type="radio" id="m1" name="messenger" value="whatsapp" checked><label for="m1">WhatsApp</label>
           <input type="radio" id="m2" name="messenger" value="telegram"><label for="m2">Telegram</label>
@@ -303,12 +304,12 @@ ${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap" style="max-wi
   <a class="go" href="#lead" ${trk('cta_bar_lead')}>${SVG.go}Заявка</a>
 </nav>
 
-<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Галерея">
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Просмотр фото" tabindex="-1">
   <button class="x" type="button" aria-label="Закрыть">×</button><button class="p" type="button" aria-label="Назад">‹</button><button class="n" type="button" aria-label="Вперёд">›</button>
   <img alt=""><div class="c"></div>
 </div>
 
-<div class="cookie" id="cookie"><span>Сайт использует cookie и сервисы аналитики для улучшения работы.</span><button type="button" id="cookieOk">Ок</button></div>
+<div class="cookie" id="cookie" role="region" aria-label="Уведомление об использовании cookie"><span>Сайт использует cookie и сервисы аналитики для улучшения работы.</span><button type="button" id="cookieOk">Ок</button></div>
 
 <script>window.__SITE=${JSON.stringify(clientCfg).replace(/</g, '\\u003c')};window.__PHOTOS=${JSON.stringify(p.photos.map((x) => ({ src: x.src, alt: x.alt, group: x.group || '' }))).replace(/</g, '\\u003c')};</script>
 <script src="assets/tracking.js"></script>

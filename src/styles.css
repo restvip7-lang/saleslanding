@@ -4,7 +4,7 @@
 :root{
   --ink:#0a2231;--ink-2:#123449;--ink-3:#1c4660;
   --paper:#f2ede3;--paper-2:#e8dfcf;--white:#fff;
-  --terra:#c94a1e;--terra-l:#ee8156;--aqua:#38c4bd;
+  --terra:#c94a1e;--terra-t:#ad3d14;--terra-l:#ee8156;--aqua:#38c4bd;
   --text:#14212b;--muted:#5a6872;--line:rgba(10,34,49,.14);--line-l:rgba(255,255,255,.16);
   --r:18px;--shadow:0 30px 70px -34px rgba(10,34,49,.5);
   --serif:"Prata","Playfair Display",Georgia,"Times New Roman",serif;
@@ -28,7 +28,7 @@ body::before{content:"";position:fixed;inset:0;z-index:200;pointer-events:none;o
 
 /* eyebrow: нумерация секций */
 main{counter-reset:sec}
-.eyebrow{counter-increment:sec;display:inline-flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:16px}
+.eyebrow{counter-increment:sec;display:inline-flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--terra-t);font-weight:700;margin-bottom:16px}
 .eyebrow::before{content:counter(sec,decimal-leading-zero);font-family:var(--serif);font-size:22px;letter-spacing:0}
 .eyebrow::after{content:"";width:44px;height:1px;background:currentColor;opacity:.5}
 .eyebrow.lt{color:var(--terra-l)}
@@ -267,7 +267,7 @@ main{counter-reset:sec}
 .calc{display:grid;gap:28px;background:var(--white);padding:26px;border-radius:24px;box-shadow:var(--shadow)}
 .field{margin-bottom:18px}
 .field label{display:flex;justify-content:space-between;font-weight:600;font-size:14px;margin-bottom:8px}
-.field output{color:var(--terra)}
+.field output{color:var(--terra-t)}
 input[type=range]{width:100%;accent-color:var(--terra)}
 .calc-res{background:var(--ink);color:#fff;border-radius:var(--r);padding:26px;display:flex;flex-direction:column;justify-content:center;gap:6px}
 .calc-res small{opacity:.7;text-transform:uppercase;letter-spacing:.14em;font-size:12px}
@@ -355,3 +355,17 @@ footer a{color:var(--terra-l)}
   .scroll-cue{opacity:1}.ls-price{color:var(--ink);background:none}
   .marq-track{flex-wrap:wrap;width:auto}
 }
+
+/* доступность */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;left:auto}
+.skip{position:fixed;left:12px;top:-60px;z-index:500;background:#fff;color:var(--ink);padding:12px 18px;border-radius:12px;font-weight:700;text-decoration:none;box-shadow:var(--shadow);transition:top .2s}
+.skip:focus{top:12px}
+:focus{outline:none}
+:focus-visible{outline:3px solid var(--aqua);outline-offset:3px;border-radius:6px}
+.btn:focus-visible,.ls-tabs button:focus-visible,.ls-t:focus-visible{outline-color:var(--terra-l)}
+.hero :focus-visible,.tour :focus-visible,.loc :focus-visible,.lead-sec :focus-visible,.marq-sec :focus-visible,.lb :focus-visible,.stick :focus-visible{outline-color:#fff}
+.form input:focus-visible{outline:none}
+.seg input:focus-visible+label{outline:3px solid var(--terra);outline-offset:2px}
+.form .lbl{display:block;font-size:13px;font-weight:700;margin-bottom:6px;color:var(--ink)}
+input[aria-invalid="true"]{border-color:#b3261e!important}
+.tour .eyebrow,.hero .eyebrow{color:var(--terra-l)}

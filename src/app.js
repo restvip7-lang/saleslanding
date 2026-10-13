@@ -20,8 +20,9 @@
     var im = $('img', lb); im.src = photos[idx].src; im.alt = photos[idx].alt;
     $('.c', lb).textContent = (idx + 1) + ' / ' + photos.length;
   }
-  function open(i) { show(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; T.track('gallery_open', {}, true); }
-  function close() { lb.classList.remove('open'); document.body.style.overflow = ''; syncSlider(idx); }
+  var lastFocus = null;
+  function open(i) { lastFocus = document.activeElement; show(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; $('.x', lb).focus(); T.track('gallery_open', {}, true); }
+  function close() { lb.classList.remove('open'); document.body.style.overflow = ''; syncSlider(idx); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
   $('.x', lb).onclick = close;
   $('.p', lb).onclick = function () { show(idx - 1); };
   $('.n', lb).onclick = function () { show(idx + 1); };
@@ -34,6 +35,7 @@
   document.addEventListener('keydown', function (e) {
     if (!lb.classList.contains('open')) return;
     if (e.key === 'Escape') close();
+    if (e.key === 'Tab') { var f = $$('button', lb), first = f[0], last = f[f.length - 1]; if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } }
     if (e.key === 'ArrowLeft') show(idx - 1);
     if (e.key === 'ArrowRight') show(idx + 1);
   });
@@ -48,7 +50,7 @@
     lsCount.textContent = (cur + 1) + ' / ' + photos.length;
     thumbs.forEach(function (t) {
       var on = !t.hidden && all[+t.dataset.i] === p;
-      t.classList.toggle('on', on);
+      t.classList.toggle('on', on); t.setAttribute('aria-current', on ? 'true' : 'false');
       if (on) {
         var box = $('#lsThumbs');
         box.scrollTo({ left: t.offsetLeft - (box.clientWidth - t.offsetWidth) / 2, behavior: 'smooth' });
@@ -68,7 +70,7 @@
   $$('.ls-tabs button').forEach(function (b) {
     b.addEventListener('click', function () {
       group = b.dataset.g;
-      $$('.ls-tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      $$('.ls-tabs button').forEach(function (x) { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
       photos = group === 'all' ? all : all.filter(function (p) { return p.group === group; });
       thumbs.forEach(function (t) { t.hidden = !(group === 'all' || t.dataset.g === group); });
       $('#lsThumbs').scrollLeft = 0;
@@ -151,16 +153,18 @@
     var fd = new FormData(form);
     var name = (fd.get('name') || '').toString().trim();
     var digits = (fd.get('phone') || '').toString().replace(/\D/g, '');
-    if (name.length < 2) return (err.textContent = 'Укажите имя');
-    if (digits.length < 11) return (err.textContent = 'Укажите телефон полностью');
-    if (!fd.get('consent')) return (err.textContent = 'Нужно согласие на обработку данных');
+    var fName = $('#fName'), fCons = $('input[name=consent]', form);
+    fName.removeAttribute('aria-invalid'); ph.removeAttribute('aria-invalid');
+    if (name.length < 2) { fName.setAttribute('aria-invalid', 'true'); fName.focus(); return (err.textContent = 'Укажите имя'); }
+    if (digits.length < 11) { ph.setAttribute('aria-invalid', 'true'); ph.focus(); return (err.textContent = 'Укажите телефон полностью'); }
+    if (!fd.get('consent')) { fCons.focus(); return (err.textContent = 'Нужно согласие на обработку данных'); }
     var btn = $('button[type=submit]', form); btn.disabled = true; btn.textContent = 'Отправляем…';
     var body = Object.assign(T.context(), {
       name: name, phone: '+' + digits, messenger: fd.get('messenger'), website: fd.get('website') || '', title: S.title,
     });
     function done(ok) {
       T.track(ok ? 'form_submit' : 'form_submit_failed', { messenger: body.messenger });
-      form.style.display = 'none'; $('#thanks').classList.add('show');
+      form.style.display = 'none'; $('#thanks').classList.add('show'); $('#thanks').setAttribute('tabindex', '-1'); $('#thanks').focus();
       $('#thanks').scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
