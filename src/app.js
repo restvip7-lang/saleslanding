@@ -13,6 +13,13 @@
     $$('.rv').forEach(function (el) { io.observe(el); });
   } else $$('.rv').forEach(function (el) { el.classList.add('in'); });
 
+  // галерея: показать все
+  var mr = $('#moreBtn');
+  if (mr) mr.addEventListener('click', function () {
+    $$('.g-item.more').forEach(function (el) { el.classList.remove('more'); el.classList.add('in'); });
+    mr.parentNode.remove();
+  });
+
   // lightbox
   var photos = window.__PHOTOS || [], lb = $('#lb'), idx = 0, sx = 0;
   function show(i) {

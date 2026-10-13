@@ -4,7 +4,7 @@ const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 const money = (n, cur = 'RUB') =>
-  new Intl.NumberFormat('ru-RU').format(n) + (cur === 'RUB' ? ' ₽' : ' ' + cur);
+  new Intl.NumberFormat('ru-RU').format(n) + ({ RUB: ' ₽', EUR: ' €', USD: ' $' }[cur] || ' ' + cur);
 
 const ICONS = {
   sea: '<path d="M2 16c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2M2 20c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2M12 3v7M8 7l4-4 4 4"/>',
@@ -106,7 +106,7 @@ export function render(p, { origin }) {
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <a class="logo" href="#top">${esc(p.title)}</a>
+  <a class="logo" href="#top">${esc(p.brand || p.title)}</a>
   ${c.phone ? `<a class="top-phone" href="${telHref}" ${trk('click_phone')}>${esc(c.phoneDisplay || c.phone)}</a>` : ''}
 </div></header>
 
@@ -118,7 +118,7 @@ export function render(p, { origin }) {
     <h1>${esc(p.title)}</h1>
     <p class="sub">${esc(p.tagline)}</p>
     <div class="hero-meta">${(p.heroFacts || []).map((f) => `<span class="chip">${esc(f)}</span>`).join('')}</div>
-    <div class="hero-price"><b>${money(p.price, p.currency)}</b></div>
+    <div class="hero-price"><b>${money(p.price, p.currency)}</b>${p.rubRate && p.currency !== 'RUB' ? `<span>≈ ${money(Math.round(p.price * p.rubRate / 10000) * 10000)} по текущему курсу, уточняйте у менеджера</span>` : ''}</div>
     <div class="hero-cta">
       <a class="btn btn-primary" href="#lead" ${trk('cta_hero_presentation')}>Получить презентацию</a>
       ${btnWa('btn-ghost-wa', 'click_whatsapp', 'WhatsApp')}
@@ -145,13 +145,15 @@ export function render(p, { origin }) {
 <section class="gallery" id="gallery"><div class="wrap">
   <span class="eyebrow">Галерея</span><h2>Смотрите детали</h2>
   <div class="g-grid">
-    ${p.photos.map((ph, i) => `<button class="g-item rv" type="button" data-i="${i}" aria-label="Открыть фото ${i + 1}"><img src="${esc(ph.src)}" alt="${esc(ph.alt)}" width="${ph.w}" height="${ph.h}" ${i ? 'loading="lazy"' : ''}></button>`).join('')}
+    ${p.photos.map((ph, i) => `<button class="g-item rv${i >= 9 ? ' more' : ''}" type="button" data-i="${i}" aria-label="Открыть фото ${i + 1}"><img src="${esc(ph.src)}" alt="${esc(ph.alt)}" width="${ph.w}" height="${ph.h}" ${i ? 'loading="lazy"' : ''}></button>`).join('')}
   </div>
+  ${p.photos.length > 9 ? `<div style="text-align:center;margin-top:24px"><button class="btn btn-dark" type="button" id="moreBtn" ${trk('gallery_more')}>Показать все фото (${p.photos.length})</button></div>` : ''}
   ${p.video?.embed ? `<div class="video-box"><iframe src="${esc(p.video.embed)}" loading="lazy" allowfullscreen title="Видео объекта"></iframe></div>` : ''}
 </div></section>
 
+${p.amenities?.length ? `<section class="amen"><div class="wrap"><span class="eyebrow">Инфраструктура комплекса</span><h2>Всё для жизни и отдыха</h2><div class="amen-list">${p.amenities.map((a) => `<span class="rv">${esc(a)}</span>`).join('')}</div></div></section>` : ''}
 <section id="specs"><div class="wrap spec-grid">
-  <div class="rv"><span class="eyebrow">Характеристики</span><h2>Всё о квартире</h2>
+  <div class="rv"><span class="eyebrow">Характеристики</span><h2>Всё об объекте</h2>
     <dl class="specs">${(p.specs || []).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>
   ${p.plan ? `<div class="rv"><span class="eyebrow">Планировка</span><h2>Продуманное пространство</h2>
     <div class="plan"><img src="${esc(p.plan.src)}" alt="${esc(p.plan.alt)}" width="${p.plan.w}" height="${p.plan.h}" loading="lazy"></div></div>` : ''}
@@ -159,14 +161,14 @@ export function render(p, { origin }) {
 
 <section class="loc" id="location"><div class="wrap">
   <span class="eyebrow" style="color:#f1d9a1">Локация</span>
-  <h2>${esc(p.city)}, ${esc(p.address)}</h2>
+  <h2>${esc(p.city)}</h2>
   <p class="lead">${esc(p.location?.intro || '')}</p>
   <div class="dist">${(p.location?.distances || []).map((x) => `<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div>`).join('')}</div>
   <div class="map" id="map">${p.geo ? `<button class="btn btn-primary" type="button" id="mapBtn" ${trk('map_open')}>Показать на карте</button>` : ''}</div>
   ${p.geo ? `<div class="map-actions"><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://yandex.ru/maps/?rtext=~${p.geo.lat},${p.geo.lng}&rtt=auto" ${trk('route_click')}>Построить маршрут</a></div>` : ''}
 </div></section>
 
-<section id="mortgage"><div class="wrap">
+${p.mortgage ? `<section id="mortgage"><div class="wrap">
   <span class="eyebrow">Ипотека</span><h2>Рассчитайте платёж</h2>
   <p class="lead" style="margin-bottom:28px">Ориентировочный расчёт. Точные условия подберём под ваш банк.</p>
   <div class="calc rv">
@@ -177,7 +179,12 @@ export function render(p, { origin }) {
     </div>
     <div class="calc-res"><small>Платёж в месяц</small><b id="cRes">—</b><p id="cNote"></p><a class="btn btn-primary" href="#lead" ${trk('cta_calc')}>Получить расчёт у менеджера</a></div>
   </div>
-</div></section>
+</div></section>` : ''}
+${p.terms?.length ? `<section id="terms"><div class="wrap">
+  <span class="eyebrow">Условия покупки</span><h2>Просто и безопасно</h2>
+  <div class="terms">${p.terms.map((x) => `<div class="term rv"><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></div>`).join('')}</div>
+  <div style="margin-top:28px"><a class="btn btn-dark" href="#lead" ${trk('cta_terms')}>Узнать условия</a></div>
+</div></section>` : ''}
 
 <section class="trust" id="trust"><div class="wrap">
   <span class="eyebrow">Безопасная сделка</span><h2>Как мы работаем</h2>
