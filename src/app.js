@@ -224,7 +224,7 @@
       countTo(e.target, parseInt(m[1].replace(/\s/g, ''), 10), m[2], 1600);
     });
   }, { threshold: 0.6 });
-  if (numIO) $$('.fact b, .dist b').forEach(function (b) {
+  if (numIO) $$('.fact b, .dist b, .ig-num').forEach(function (b) {
     var t = b.textContent.trim();
     if (!/^\d/.test(t) || /[+]|из/.test(t) || /^(19|20)\d\d$/.test(t)) return;
     b.dataset.raw = t; numIO.observe(b);

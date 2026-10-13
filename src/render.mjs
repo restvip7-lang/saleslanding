@@ -212,12 +212,38 @@ ${p.video?.file || p.video?.embed ? `<section class="tour" id="video"><div class
 ${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div class="wrap marq-head"><span class="eyebrow lt">Инфраструктура комплекса</span><h2 id="amen-h">Всё для жизни и отдыха</h2><ul class="sr">${p.amenities.map((t) => `<li>${esc(t)}</li>`).join('')}</ul></div>
   ${[0, 1].map((row) => { const items = p.amenities.filter((_, i) => i % 2 === row); const html = items.map((t) => `<span>${esc(t)}</span>`).join(''); return `<div class="marq ${row ? 'rev' : ''}" aria-hidden="true"><div class="marq-track">${html}${html}${html}${html}</div></div>`; }).join('')}
 </section>` : ''}
-<section id="specs"><div class="wrap spec-grid">
+<section id="specs">${p.infographic ? `<div class="wrap">
+  <span class="eyebrow">Характеристики</span><h2>Квартира в цифрах</h2>
+  ${(() => { const g = p.infographic;
+    const floors = Array.from({ length: g.floor.total }, (_, i) => { const n = g.floor.total - i; const y = 8 + i * 16; const on = n === g.floor.n; return `<g class="fl${on ? ' on' : ''}" style="--i:${g.floor.total - n}"><rect x="20" y="${y}" width="76" height="13" rx="3"/>${[0, 1, 2, 3].map((w) => `<rect class="win" x="${28 + w * 17}" y="${y + 3.5}" width="8" height="6" rx="1.5"/>`).join('')}</g>`; }).join('');
+    const H = g.floor.total * 16 + 14;
+    const pt = { 'С': [60, 8], 'В': [112, 60], 'Ю': [60, 112], 'З': [8, 60] };
+    const comp = Object.entries(pt).map(([k, [x, y]]) => { const on = g.compass.dirs.includes(k); const rot = { 'С': 0, 'В': 90, 'Ю': 180, 'З': 270 }[k]; return `<g class="cp${on ? ' on' : ''}"><path d="M60 60 L52 40 L60 14 L68 40 Z" transform="rotate(${rot} 60 60)"/><text x="${x}" y="${y + 4}" text-anchor="middle">${k}</text></g>`; }).join('');
+    const rooms = [...Array(g.rooms.bedrooms).fill('спальня'), ...Array(g.rooms.living).fill('гостиная')].map((t, i, arr) => `<div class="rm${t === 'гостиная' ? ' big' : ''}" style="--i:${i}"><i></i><span>${t}</span></div>`).join('');
+    const km = (g.sea.meters / 1000).toLocaleString('ru-RU');
+    return `<div class="ig">
+    <div class="ig-t ig-area rv"><span class="ig-k">${esc(g.area.label)}</span><div class="ig-big"><b class="ig-num">${g.area.value}</b><em>${esc(g.area.unit)}</em></div>
+      <svg viewBox="0 0 120 70" class="ig-plan" aria-hidden="true"><rect x="2" y="2" width="116" height="66" rx="4"/><path d="M46 2v40M2 42h60M62 42v26M84 2v28M84 30h34"/></svg></div>
+    <div class="ig-t ig-floor rv"><span class="ig-k">${esc(g.floor.label)}</span><div class="ig-big"><b class="ig-num">${g.floor.n}</b><em>из ${g.floor.total}</em></div>
+      <svg viewBox="0 0 116 ${H}" class="ig-bld" aria-hidden="true">${floors}<rect x="10" y="${H - 6}" width="96" height="3" rx="1.5" class="gr"/></svg></div>
+    <div class="ig-t ig-compass rv"><span class="ig-k">Стороны света</span>
+      <svg viewBox="0 0 120 120" class="ig-cmp" aria-hidden="true"><circle cx="60" cy="60" r="54"/>${comp}<circle cx="60" cy="60" r="5" class="hub"/></svg>
+      <p>${esc(g.compass.label)}</p></div>
+    <div class="ig-t ig-sea rv"><span class="ig-k">${esc(g.sea.label)}</span><div class="ig-big"><b class="ig-num">${km}</b><em>км</em></div>
+      <svg viewBox="0 0 520 90" class="ig-route" aria-hidden="true"><path class="rt" d="M40 60 H400"/><g class="home"><path d="M24 62V40l16-14 16 14v22z"/></g><g class="wv"><path d="M420 54q10-12 20 0t20 0 20 0 20 0"/><path d="M420 70q10-12 20 0t20 0 20 0 20 0"/></g><text x="215" y="46" text-anchor="middle">${g.sea.meters.toLocaleString('ru-RU')} м</text></svg></div>
+    <div class="ig-t ig-rooms rv"><span class="ig-k">Планировка</span><div class="ig-big"><b>${esc(g.rooms.label)}</b></div><div class="rms">${rooms}</div><p>${esc(g.rooms.note)}</p></div>
+    <div class="ig-t ig-sm ig-view rv"><span class="ig-k">Вид из окон</span><ul>${g.view.map((v) => `<li>${esc(v)}</li>`).join('')}</ul></div>
+    <div class="ig-t ig-sm rv"><span class="ig-k">${esc(g.year.label)}</span><b class="ig-s">${g.year.value}</b></div>
+    <div class="ig-t ig-sm rv"><span class="ig-k">${esc(g.furnished.label)}</span><b class="ig-s">${esc(g.furnished.value)}</b></div>
+    <div class="ig-t ig-sm rv"><span class="ig-k">${esc(g.bath.label)}</span><b class="ig-s">${esc(g.bath.value)}</b></div>
+  </div>
+  <p class="ig-tags">${(g.tags || []).map((t) => `<span>${esc(t)}</span>`).join('')}</p>`; })()}
+</div>` : `<div class="wrap spec-grid">
   <div class="rv"><span class="eyebrow">Характеристики</span><h2>Всё об объекте</h2>
     <dl class="specs">${(p.specs || []).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>
   ${p.plan ? `<div class="rv"><span class="eyebrow">Планировка</span><h2>Продуманное пространство</h2>
     <div class="plan"><img src="${esc(p.plan.src)}" alt="${esc(p.plan.alt)}" width="${p.plan.w}" height="${p.plan.h}" loading="lazy"></div></div>` : ''}
-</div></section>
+</div>`}</section>
 
 <section class="loc" id="location"><div class="wrap">
   <span class="eyebrow lt">Локация</span>
@@ -252,9 +278,15 @@ ${p.terms?.length ? `<section id="terms"><div class="wrap">
   ${p.agent ? `<div class="agent"><img src="${esc(p.agent.photo)}" alt="${esc(p.agent.name)}" width="84" height="84" loading="lazy"><div><b>${esc(p.agent.name)}</b><span>${esc(p.agent.role)}</span><span>${esc(p.agent.experience)}</span></div></div>` : ''}
 </div></section>
 
-${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap" style="max-width:820px">
-  <span class="eyebrow">FAQ</span><h2>Частые вопросы</h2>
-  ${p.faq.map((f) => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join('')}
+${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap faq-grid">
+  <div class="faq-side">
+    <span class="eyebrow">Вопросы</span><h2>Частые вопросы</h2>
+    <p class="lead">Не нашли ответ? Спросите менеджера, ответим в течение 15 минут.</p>
+    <div class="faq-cta">${btnWa('', 'click_whatsapp_faq', 'WhatsApp')}${btnTg('', 'click_telegram_faq', 'Telegram')}</div>
+  </div>
+  <div class="faq-list">
+  ${p.faq.map((f) => `<details><summary><span>${esc(f.q)}</span></summary><p>${esc(f.a)}</p></details>`).join('')}
+  </div>
 </div></section>` : ''}
 
 <section class="lead-sec" id="lead"><div class="wrap lead-box">
