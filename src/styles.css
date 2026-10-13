@@ -568,3 +568,8 @@ input[aria-invalid="true"]{border-color:#b3261e!important}
 .map-note{margin-top:14px;color:rgba(255,255,255,.65);font-size:14px}
 .dist b{overflow-wrap:normal;word-break:normal;hyphens:manual}
 @media (max-width:559px){.dist{grid-template-columns:1fr}.dist b{font-size:24px}}
+
+/* настоящий план квартиры (если загружен) */
+.ig-planfig{margin:0;background:#fff;border-radius:18px;padding:10px;align-self:center;max-width:460px;width:100%}
+.ig-planfig img{width:100%;height:auto;max-height:340px;object-fit:contain;border-radius:10px}
+@media (min-width:900px){.ig-planfig{flex:1;max-width:none}}
