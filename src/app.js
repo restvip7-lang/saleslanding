@@ -13,23 +13,15 @@
     $$('.rv').forEach(function (el) { io.observe(el); });
   } else $$('.rv').forEach(function (el) { el.classList.add('in'); });
 
-  // галерея: показать все
-  var mr = $('#moreBtn');
-  if (mr) mr.addEventListener('click', function () {
-    $$('.g-item.more').forEach(function (el) { el.classList.remove('more'); el.classList.add('in'); });
-    mr.parentNode.remove();
-  });
-
-  // lightbox
-  var photos = window.__PHOTOS || [], lb = $('#lb'), idx = 0, sx = 0;
+  // lightbox (работает по текущему списку слайдера)
+  var all = window.__PHOTOS || [], photos = all, lb = $('#lb'), idx = 0, sx = 0;
   function show(i) {
     idx = (i + photos.length) % photos.length;
     var im = $('img', lb); im.src = photos[idx].src; im.alt = photos[idx].alt;
     $('.c', lb).textContent = (idx + 1) + ' / ' + photos.length;
   }
   function open(i) { show(i); lb.classList.add('open'); document.body.style.overflow = 'hidden'; T.track('gallery_open', {}, true); }
-  function close() { lb.classList.remove('open'); document.body.style.overflow = ''; }
-  $$('.g-item').forEach(function (b) { b.addEventListener('click', function () { open(+b.dataset.i); }); });
+  function close() { lb.classList.remove('open'); document.body.style.overflow = ''; syncSlider(idx); }
   $('.x', lb).onclick = close;
   $('.p', lb).onclick = function () { show(idx - 1); };
   $('.n', lb).onclick = function () { show(idx + 1); };
@@ -45,6 +37,50 @@
     if (e.key === 'ArrowLeft') show(idx - 1);
     if (e.key === 'ArrowRight') show(idx + 1);
   });
+
+  // слайдер карточки объекта: вкладки, миниатюры, стрелки, свайп
+  var lsImg = $('#lsImg'), lsCount = $('#lsCount'), thumbs = $$('.ls-t'), cur = 0, group = 'all';
+  function syncSlider(i) {
+    cur = (i + photos.length) % photos.length;
+    var p = photos[cur];
+    lsImg.src = p.src; lsImg.alt = p.alt;
+    lsCount.textContent = (cur + 1) + ' / ' + photos.length;
+    thumbs.forEach(function (t) {
+      var on = !t.hidden && all[+t.dataset.i] === p;
+      t.classList.toggle('on', on);
+      if (on) {
+        var box = $('#lsThumbs');
+        box.scrollTo({ left: t.offsetLeft - (box.clientWidth - t.offsetWidth) / 2, behavior: 'smooth' });
+      }
+    });
+    var nx = photos[(cur + 1) % photos.length]; if (nx) { var pre = new Image(); pre.src = nx.src; }
+  }
+  function step(d, user) { syncSlider(cur + d); if (user) T.track('gallery_slide', {}, true); }
+  $('#lsPrev').onclick = function () { step(-1, true); };
+  $('#lsNext').onclick = function () { step(1, true); };
+  $('#lsOpen').onclick = function () { open(cur); };
+  thumbs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      syncSlider(photos.indexOf(all[+t.dataset.i])); T.track('gallery_thumb', {}, true);
+    });
+  });
+  $$('.ls-tabs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      group = b.dataset.g;
+      $$('.ls-tabs button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      photos = group === 'all' ? all : all.filter(function (p) { return p.group === group; });
+      thumbs.forEach(function (t) { t.hidden = !(group === 'all' || t.dataset.g === group); });
+      $('#lsThumbs').scrollLeft = 0;
+      syncSlider(0); T.track('gallery_tab_' + group, {}, true);
+    });
+  });
+  var lsx = 0, main = $('.ls-main');
+  main.addEventListener('touchstart', function (e) { lsx = e.touches[0].clientX; }, { passive: true });
+  main.addEventListener('touchend', function (e) {
+    var d = e.changedTouches[0].clientX - lsx;
+    if (Math.abs(d) > 40) step(d < 0 ? 1 : -1, true);
+  });
+  syncSlider(0);
 
   // карта по клику (не грузим тяжёлый iframe заранее)
   var mb = $('#mapBtn');

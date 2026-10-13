@@ -130,6 +130,39 @@ export function render(p, { origin }) {
   ${(p.facts || []).map((f) => `<div class="fact"><b>${esc(f.value)}</b><span>${esc(f.label)}</span></div>`).join('')}
 </div></div></section>
 
+<section class="listing" id="gallery"><div class="wrap">
+  <div class="ls-head"><span class="eyebrow">Фото и цена</span><h2>${esc(p.title)}</h2></div>
+  <div class="ls-grid">
+    <div class="ls-media">
+      <div class="ls-tabs" role="tablist">
+        <button type="button" class="on" data-g="all">Все <i>${p.photos.length}</i></button>
+        ${(p.photoGroups || []).map((g) => `<button type="button" data-g="${esc(g.id)}">${esc(g.label)} <i>${p.photos.filter((x) => x.group === g.id).length}</i></button>`).join('')}
+      </div>
+      <div class="ls-main">
+        <button class="ls-open" type="button" id="lsOpen" aria-label="Открыть фото на весь экран"><img id="lsImg" src="${esc(p.photos[0].src)}" alt="${esc(p.photos[0].alt)}" width="${p.photos[0].w}" height="${p.photos[0].h}" fetchpriority="low"></button>
+        <button class="ls-nav ls-prev" type="button" id="lsPrev" aria-label="Предыдущее фото">‹</button>
+        <button class="ls-nav ls-next" type="button" id="lsNext" aria-label="Следующее фото">›</button>
+        <span class="ls-count" id="lsCount">1 / ${p.photos.length}</span>
+      </div>
+      <div class="ls-thumbs" id="lsThumbs">
+        ${p.photos.map((ph, i) => `<button type="button" class="ls-t${i ? '' : ' on'}" data-i="${i}" data-g="${esc(ph.group || '')}" aria-label="Фото ${i + 1}"><img src="${esc(ph.thumb || ph.src)}" alt="" width="120" height="80" loading="lazy"></button>`).join('')}
+      </div>
+      ${p.video?.embed ? `<div class="video-box"><iframe src="${esc(p.video.embed)}" loading="lazy" allowfullscreen title="Видео объекта"></iframe></div>` : ''}
+    </div>
+    <aside class="ls-card">
+      <div class="ls-price">${money(p.price, p.currency)}</div>
+      ${p.rubRate && p.currency !== 'RUB' ? `<div class="ls-rub">≈ ${money(Math.round(p.price * p.rubRate / 10000) * 10000)}</div>` : ''}
+      <p class="ls-note">Стоимость и наличие подтверждаем перед показом.</p>
+      <a class="btn btn-primary" href="#lead" ${trk('cta_card_price')}>Получить актуальную цену</a>
+      <div class="ls-msg">${btnWa('', 'click_whatsapp_card', 'WhatsApp')}${btnTg('', 'click_telegram_card', 'Telegram')}</div>
+      <dl class="ls-params">
+        ${(p.facts || []).slice(0, 5).map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}</dd></div>`).join('')}
+      </dl>
+      ${p.manager ? `<div class="ls-man"><span class="ls-ava" aria-hidden="true">${esc((p.brand || p.manager.name || '').replace(/[^A-Za-zА-Яа-я ]/g, '').split(' ').filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase())}</span><div><b>${esc(p.manager.name)}</b><span>${esc(p.manager.role)}</span></div></div>` : ''}
+    </aside>
+  </div>
+</div></section>
+
 <section id="about"><div class="wrap about-grid">
   <div class="about-text rv">
     <span class="eyebrow">Об объекте</span>
@@ -142,14 +175,7 @@ export function render(p, { origin }) {
   </div>
 </div></section>
 
-<section class="gallery" id="gallery"><div class="wrap">
-  <span class="eyebrow">Галерея</span><h2>Смотрите детали</h2>
-  <div class="g-grid">
-    ${p.photos.map((ph, i) => `<button class="g-item rv${i >= 9 ? ' more' : ''}" type="button" data-i="${i}" aria-label="Открыть фото ${i + 1}"><img src="${esc(ph.src)}" alt="${esc(ph.alt)}" width="${ph.w}" height="${ph.h}" ${i ? 'loading="lazy"' : ''}></button>`).join('')}
-  </div>
-  ${p.photos.length > 9 ? `<div style="text-align:center;margin-top:24px"><button class="btn btn-dark" type="button" id="moreBtn" ${trk('gallery_more')}>Показать все фото (${p.photos.length})</button></div>` : ''}
-  ${p.video?.embed ? `<div class="video-box"><iframe src="${esc(p.video.embed)}" loading="lazy" allowfullscreen title="Видео объекта"></iframe></div>` : ''}
-</div></section>
+
 
 ${p.amenities?.length ? `<section class="amen"><div class="wrap"><span class="eyebrow">Инфраструктура комплекса</span><h2>Всё для жизни и отдыха</h2><div class="amen-list">${p.amenities.map((a) => `<span class="rv">${esc(a)}</span>`).join('')}</div></div></section>` : ''}
 <section id="specs"><div class="wrap spec-grid">
@@ -251,7 +277,7 @@ ${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap" style="max-wi
 
 <div class="cookie" id="cookie"><span>Сайт использует cookie и сервисы аналитики для улучшения работы.</span><button type="button" id="cookieOk">Ок</button></div>
 
-<script>window.__SITE=${JSON.stringify(clientCfg).replace(/</g, '\\u003c')};window.__PHOTOS=${JSON.stringify(p.photos.map((x) => ({ src: x.src, alt: x.alt }))).replace(/</g, '\\u003c')};</script>
+<script>window.__SITE=${JSON.stringify(clientCfg).replace(/</g, '\\u003c')};window.__PHOTOS=${JSON.stringify(p.photos.map((x) => ({ src: x.src, alt: x.alt, group: x.group || '' }))).replace(/</g, '\\u003c')};</script>
 <script src="assets/tracking.js"></script>
 <script src="assets/app.js" defer></script>
 </body>

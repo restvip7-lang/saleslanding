@@ -144,123 +144,163 @@
   "photos": [
     {
       "src": "photos/hero-complex.webp",
+      "thumb": "photos/t/hero-complex.webp",
       "alt": "Жилой комплекс Another World с бассейном и садом, Аланья",
       "w": 1600,
-      "h": 900
-    },
-    {
-      "src": "photos/complex-night.webp",
-      "alt": "Комплекс Another World F24 с бассейном вечером",
-      "w": 1024,
-      "h": 683
+      "h": 900,
+      "group": "complex"
     },
     {
       "src": "photos/view.webp",
+      "thumb": "photos/t/view.webp",
       "alt": "Панорамный вид на море и город из квартиры в Аланье",
       "w": 1600,
-      "h": 1200
+      "h": 1200,
+      "group": "apartment"
     },
     {
       "src": "photos/living.webp",
+      "thumb": "photos/t/living.webp",
       "alt": "Просторная гостиная-студия с видом на море",
       "w": 1600,
-      "h": 1200
-    },
-    {
-      "src": "photos/gate.webp",
-      "alt": "Въездная арка комплекса Another World",
-      "w": 1536,
-      "h": 1024
+      "h": 1200,
+      "group": "apartment"
     },
     {
       "src": "photos/kitchen.webp",
+      "thumb": "photos/t/kitchen.webp",
       "alt": "Современная открытая кухня",
       "w": 1600,
-      "h": 1200
+      "h": 1200,
+      "group": "apartment"
     },
     {
       "src": "photos/living-2.webp",
+      "thumb": "photos/t/living-2.webp",
       "alt": "Гостиная с мебелью и дизайнерским потолком",
       "w": 1600,
-      "h": 1200
+      "h": 1200,
+      "group": "apartment"
     },
     {
       "src": "photos/bedroom.webp",
+      "thumb": "photos/t/bedroom.webp",
       "alt": "Спальня с панорамным окном",
       "w": 1600,
-      "h": 1200
+      "h": 1200,
+      "group": "apartment"
     },
     {
       "src": "photos/terrace.webp",
+      "thumb": "photos/t/terrace.webp",
       "alt": "Остеклённая терраса с видом на море",
       "w": 1600,
-      "h": 1200
+      "h": 1200,
+      "group": "apartment"
     },
     {
       "src": "photos/bedroom-2.webp",
+      "thumb": "photos/t/bedroom-2.webp",
       "alt": "Вторая спальня с рабочей зоной",
       "w": 1600,
-      "h": 1200
+      "h": 1200,
+      "group": "apartment"
     },
     {
       "src": "photos/kids.webp",
+      "thumb": "photos/t/kids.webp",
       "alt": "Детская комната",
       "w": 1600,
-      "h": 1200
+      "h": 1200,
+      "group": "apartment"
     },
     {
       "src": "photos/bath.webp",
+      "thumb": "photos/t/bath.webp",
       "alt": "Ванная комната",
       "w": 1600,
-      "h": 1200
+      "h": 1200,
+      "group": "apartment"
+    },
+    {
+      "src": "photos/complex-night.webp",
+      "thumb": "photos/t/complex-night.webp",
+      "alt": "Комплекс Another World F24 с бассейном вечером",
+      "w": 1024,
+      "h": 683,
+      "group": "complex"
+    },
+    {
+      "src": "photos/gate.webp",
+      "thumb": "photos/t/gate.webp",
+      "alt": "Въездная арка комплекса Another World",
+      "w": 1536,
+      "h": 1024,
+      "group": "complex"
     },
     {
       "src": "photos/complex-pool.webp",
+      "thumb": "photos/t/complex-pool.webp",
       "alt": "Бассейн на территории комплекса",
       "w": 1024,
-      "h": 683
+      "h": 683,
+      "group": "complex"
     },
     {
       "src": "photos/pool.webp",
+      "thumb": "photos/t/pool.webp",
       "alt": "Открытый бассейн и зона отдыха",
       "w": 1024,
-      "h": 682
+      "h": 682,
+      "group": "complex"
     },
     {
       "src": "photos/aqua.webp",
+      "thumb": "photos/t/aqua.webp",
       "alt": "Детский бассейн с горками",
       "w": 1024,
-      "h": 683
+      "h": 683,
+      "group": "complex"
     },
     {
       "src": "photos/playground.webp",
+      "thumb": "photos/t/playground.webp",
       "alt": "Детская площадка",
       "w": 1024,
-      "h": 641
+      "h": 641,
+      "group": "complex"
     },
     {
       "src": "photos/tennis.webp",
+      "thumb": "photos/t/tennis.webp",
       "alt": "Теннисный корт и баскетбольная площадка",
       "w": 1024,
-      "h": 683
+      "h": 683,
+      "group": "complex"
     },
     {
       "src": "photos/spa.webp",
+      "thumb": "photos/t/spa.webp",
       "alt": "SPA-зона с лежаками",
       "w": 900,
-      "h": 600
+      "h": 600,
+      "group": "complex"
     },
     {
       "src": "photos/lobby.webp",
+      "thumb": "photos/t/lobby.webp",
       "alt": "Лобби комплекса",
       "w": 900,
-      "h": 600
+      "h": 600,
+      "group": "complex"
     },
     {
       "src": "photos/aerial.webp",
+      "thumb": "photos/t/aerial.webp",
       "alt": "Вид на комплекс сверху",
       "w": 1024,
-      "h": 767
+      "h": 767,
+      "group": "complex"
     }
   ],
   "plan": null,
@@ -384,5 +424,19 @@
     "vkPixel": ""
   },
   "leadFormTitle": "Получите презентацию объекта и запишитесь на показ",
-  "leadFormSubtitle": "Пришлём фото, документы и условия. Ответим в течение 15 минут в рабочее время."
+  "leadFormSubtitle": "Пришлём фото, документы и условия. Ответим в течение 15 минут в рабочее время.",
+  "photoGroups": [
+    {
+      "id": "apartment",
+      "label": "Квартира"
+    },
+    {
+      "id": "complex",
+      "label": "Комплекс"
+    }
+  ],
+  "manager": {
+    "name": "Менеджер STAY PROPERTY",
+    "role": "Консультант по объекту (заглушка)"
+  }
 }

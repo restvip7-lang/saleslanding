@@ -22,12 +22,15 @@ SELECT = [
     (K, '(17).jpg', 'spa'), (K, '(10).jpg', 'lobby'), (K, '(7).jpg', 'aerial'),
 ]
 out = os.path.join(base, 'photos')
+import shutil
+shutil.rmtree(out, ignore_errors=True)
 os.makedirs(out, exist_ok=True)
-for f in glob.glob(os.path.join(out, '*')):
-    os.remove(f)
 for folder, name, dst in SELECT:
     p = glob.glob(os.path.join(folder, name))[0]
     im = ImageOps.exif_transpose(Image.open(p)).convert('RGB')
     im.thumbnail((1600, 1600), Image.LANCZOS)
     im.save(os.path.join(out, dst + '.webp'), 'WEBP', quality=80, method=6)
+    th = im.copy(); th.thumbnail((360, 360), Image.LANCZOS)
+    os.makedirs(os.path.join(out, 't'), exist_ok=True)
+    th.save(os.path.join(out, 't', dst + '.webp'), 'WEBP', quality=70, method=6)
     print(dst, im.size)
