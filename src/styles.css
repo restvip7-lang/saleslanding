@@ -562,3 +562,6 @@ input[aria-invalid="true"]{border-color:#b3261e!important}
 .ig-plan .door path{fill:none;stroke:var(--terra-l);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .ig-plan .pr.door{transform:none}
 @media (prefers-reduced-motion:reduce){.ig-plan .pr{opacity:1;transform:none;transition:none}}
+
+.map button[hidden]{display:none}
+.map iframe{z-index:1;background:var(--ink-2)}

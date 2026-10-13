@@ -98,17 +98,23 @@
     tv.addEventListener('ended', function () { T.track('video_100', {}, true); });
   }
 
-  // карта по клику (не грузим тяжёлый iframe заранее)
-  var mb = $('#mapBtn');
-  if (mb && S.geo) {
-    mb.addEventListener('click', function () {
-      var g = S.geo;
-      if (!g) return;
-      var f = document.createElement('iframe');
-      f.src = 'https://yandex.ru/map-widget/v1/?ll=' + g.lng + '%2C' + g.lat + '&z=15&pt=' + g.lng + '%2C' + g.lat + '%2Cpm2rdm';
-      f.loading = 'lazy'; f.title = 'Карта';
-      $('#map').appendChild(f); mb.remove();
-    });
+  // карта: подгружается сама, когда блок приближается к экрану
+  var mapBox = $('#map'), mb = $('#mapBtn');
+  function loadMap() {
+    var g = S.geo;
+    if (!mapBox || !g || $('iframe', mapBox)) return;
+    var f = document.createElement('iframe');
+    f.src = 'https://yandex.ru/map-widget/v1/?ll=' + g.lng + '%2C' + g.lat + '&z=15&pt=' + g.lng + '%2C' + g.lat + '%2Cpm2rdm';
+    f.loading = 'lazy'; f.title = 'Карта: расположение комплекса';
+    mapBox.appendChild(f); if (mb) mb.hidden = true;
+    T.track('map_view', {}, true);
+  }
+  if (mapBox && S.geo) {
+    if (mb) mb.addEventListener('click', loadMap);
+    if ('IntersectionObserver' in window) {
+      var mio = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { loadMap(); mio.disconnect(); } }, { rootMargin: '300px 0px' });
+      mio.observe(mapBox);
+    } else loadMap();
   }
 
   // калькулятор
