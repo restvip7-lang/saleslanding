@@ -105,6 +105,13 @@ export function render(p, { origin }) {
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 </head>
 <body>
+<script>document.documentElement.classList.add('js')</script>
+<div class="progress" id="prog" aria-hidden="true"></div>
+<div class="stick" id="stick" aria-hidden="true"><div class="wrap">
+  <b class="stick-name">${esc(p.brand || p.title)}</b>
+  <span class="stick-price">${money(p.price, p.currency)}</span>
+  <a class="btn btn-primary" href="#lead" tabindex="-1" ${trk('cta_sticky')}>Презентация</a>
+</div></div>
 <header class="top"><div class="wrap">
   <a class="logo" href="#top">${esc(p.brand || p.title)}</a>
   ${c.phone ? `<a class="top-phone" href="${telHref}" ${trk('click_phone')}>${esc(c.phoneDisplay || c.phone)}</a>` : ''}
@@ -112,18 +119,20 @@ export function render(p, { origin }) {
 
 <main id="top">
 <section class="hero">
-  <div class="hero-bg"><img src="${esc(hero.src)}" alt="${esc(hero.alt)}" width="${hero.w}" height="${hero.h}" fetchpriority="high"></div>
+  <div class="hero-bg"><div class="hero-par" id="heroPar"><img src="${esc(hero.src)}" alt="${esc(hero.alt)}" width="${hero.w}" height="${hero.h}" fetchpriority="high"></div></div>
+  <div class="hero-orb o1" aria-hidden="true"></div><div class="hero-orb o2" aria-hidden="true"></div>
   <div class="wrap">
     <span class="badge">${esc(p.type)} · ${esc(p.city)} · ${esc(p.status)}</span>
-    <h1>${esc(p.title)}</h1>
+    <h1 aria-label="${esc(p.title)}">${p.title.split(' ').map((w, i) => `<span class="w" aria-hidden="true"><span style="--i:${i}">${esc(w)}</span></span>`).join(' ')}</h1>
     <p class="sub">${esc(p.tagline)}</p>
     <div class="hero-meta">${(p.heroFacts || []).map((f) => `<span class="chip">${esc(f)}</span>`).join('')}</div>
-    <div class="hero-price"><b>${money(p.price, p.currency)}</b>${p.rubRate && p.currency !== 'RUB' ? `<span>≈ ${money(Math.round(p.price * p.rubRate / 10000) * 10000)} по текущему курсу, уточняйте у менеджера</span>` : ''}</div>
+    <div class="hero-price"><b data-count="${p.price}" data-suffix="${p.currency === 'EUR' ? ' €' : p.currency === 'RUB' ? ' ₽' : ' ' + esc(p.currency)}">${money(p.price, p.currency)}</b>${p.rubRate && p.currency !== 'RUB' ? `<span>≈ ${money(Math.round(p.price * p.rubRate / 10000) * 10000)} по текущему курсу, уточняйте у менеджера</span>` : ''}</div>
     <div class="hero-cta">
       <a class="btn btn-primary" href="#lead" ${trk('cta_hero_presentation')}>Получить презентацию</a>
       ${btnWa('btn-ghost-wa', 'click_whatsapp', 'WhatsApp')}
     </div>
   </div>
+  <a class="scroll-cue" href="#gallery" aria-label="Листать вниз"><i></i></a>
 </section>
 
 <section class="facts"><div class="wrap"><div class="facts-grid">
@@ -181,13 +190,15 @@ ${p.video?.file || p.video?.embed ? `<section class="tour" id="video"><div class
     <a class="btn btn-dark" href="#lead" ${trk('cta_about')}>Записаться на показ</a>
   </div>
   <div class="features rv">
-    ${(p.features || []).map((f) => `<div class="feature">${icon(f.icon)}<div><h3>${esc(f.title)}</h3><p>${esc(f.text)}</p></div></div>`).join('')}
+    ${(p.features || []).map((f) => `<div class="feature spot">${icon(f.icon)}<div><h3>${esc(f.title)}</h3><p>${esc(f.text)}</p></div></div>`).join('')}
   </div>
 </div></section>
 
 
 
-${p.amenities?.length ? `<section class="amen"><div class="wrap"><span class="eyebrow">Инфраструктура комплекса</span><h2>Всё для жизни и отдыха</h2><div class="amen-list">${p.amenities.map((a) => `<span class="rv">${esc(a)}</span>`).join('')}</div></div></section>` : ''}
+${p.amenities?.length ? `<section class="marq-sec" aria-label="Инфраструктура комплекса"><div class="wrap marq-head"><span class="eyebrow" style="color:#f1d9a1">Инфраструктура комплекса</span><h2>Всё для жизни и отдыха</h2></div>
+  ${[0, 1].map((row) => { const items = p.amenities.filter((_, i) => i % 2 === row); const html = items.map((t) => `<span>${esc(t)}</span>`).join(''); return `<div class="marq ${row ? 'rev' : ''}" aria-hidden="${row ? 'true' : 'false'}"><div class="marq-track">${html}${html}${html}${html}</div></div>`; }).join('')}
+</section>` : ''}
 <section id="specs"><div class="wrap spec-grid">
   <div class="rv"><span class="eyebrow">Характеристики</span><h2>Всё об объекте</h2>
     <dl class="specs">${(p.specs || []).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>
