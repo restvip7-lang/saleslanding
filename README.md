@@ -33,3 +33,18 @@
 
 ## Медиа
 Фото лежат в репозитории (`photos/`, желательно webp ≤ 300 КБ, 1600 px). Видео не коммитьте: вставляйте embed-ссылку в `video.embed`.
+
+## Деплой на Vercel (пошагово)
+1. vercel.com → **Add New → Project** → выберите репозиторий `restvip7-lang/saleslanding`. Ветка: `claude/epic-lamport-rnug2b` (позже можно переключить на `main`).
+2. **Framework Preset: Other.** Остальное уже задано в `vercel.json` (`node build.mjs`, папка `dist`), менять ничего не нужно.
+3. **Environment Variables** до первого запуска:
+   - `TELEGRAM_BOT_TOKEN`: токен бота от @BotFather;
+   - `TELEGRAM_CHAT_ID`: чат или группа для заявок (бота нужно добавить в чат);
+   - `TELEGRAM_LOG_CHAT_ID`: необязательно, отдельный чат для лога кликов;
+   - `SITE_ORIGIN`: адрес сайта без слеша в конце, например `https://sales1.example.ru` (для canonical, sitemap и og).
+4. Нажмите **Deploy**. Через минуту сайт будет доступен на адресе `*.vercel.app`.
+5. **Домен:** Project → Settings → Domains → добавьте `sales1.ваш-домен.ru`, у регистратора пропишите CNAME на значение, которое покажет Vercel.
+6. **Проверка после деплоя:** откройте сайт, отправьте тестовую заявку (должна прийти в Telegram с источником и кодом визита), нажмите кнопки WhatsApp/Telegram/звонок (клики должны попасть в лог).
+7. **Перед боевым запуском** в `properties/sales1/property.json`: `"noindex": false`, настоящий `domain`, ID счётчиков (`analytics`), реквизиты (`company`), курс евро (`rubRate`), точный адрес (`geo.lat/lng`, `geo.exact: true`).
+
+Если Telegram не настроен, форма отвечает ошибкой и показывает кнопки WhatsApp/Telegram, заявки не «пропадают молча».
