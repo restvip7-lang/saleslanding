@@ -7,10 +7,12 @@ export const clip = (s, n = 200) => String(s ?? '').replace(/[\u0000-\u001f\u007
 export async function sendTelegram(text, chatId) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   chatId = chatId || process.env.TELEGRAM_CHAT_ID;
-  if (process.env.DRY_RUN === '1' || !token || !chatId) {
+  if (process.env.DRY_RUN === '1') {
     console.log('[DRY_RUN telegram]', text);
     return { ok: true, dry: true };
   }
+  // без токена заявка не должна «успешно» пропасть: пусть API ответит ошибкой
+  if (!token || !chatId) throw new Error('telegram_not_configured');
   const r = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
