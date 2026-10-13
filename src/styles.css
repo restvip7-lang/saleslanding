@@ -508,3 +508,57 @@ input[aria-invalid="true"]{border-color:#b3261e!important}
 .ls-main .ls-tabs button.on{background:#fff;color:var(--ink)}
 .ls-main .ls-tabs button:hover:not(.on){background:rgba(255,255,255,.18)}
 @media (min-width:640px){.ls-chips{grid-template-columns:repeat(3,1fr)}}
+
+/* ===== ЛОКАЦИЯ: радар-схема и карточки ===== */
+.loc-grid{display:grid;gap:28px;margin-bottom:34px}
+.dist{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:0}
+.dist>div{display:flex;align-items:center;gap:12px;padding:14px 14px;border:1px solid var(--line-l);border-radius:18px;background:rgba(255,255,255,.04);transition:transform .4s,border-color .4s,background .4s;min-width:0}
+.dist>div:hover{transform:translateY(-4px);border-color:var(--aqua);background:rgba(56,196,189,.08)}
+.dist .ico{width:42px;height:42px;background:rgba(56,196,189,.16)}
+.dist .ico svg{stroke:var(--aqua);width:21px;height:21px}
+.dist>div>div{min-width:0}
+.dist b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(20px,5.2vw,26px);line-height:1.1;color:#fff;overflow-wrap:anywhere}
+.dist span{display:block;font-size:11px;opacity:.7;text-transform:uppercase;letter-spacing:.12em;margin-top:3px;color:#fff}
+.radar{max-width:520px;width:100%;margin:0 auto}
+.radar svg{width:100%;height:auto;overflow:visible}
+.rd-ax{stroke:rgba(255,255,255,.1);stroke-width:1;fill:none}
+.rd-c{fill:none;stroke:rgba(255,255,255,.28);stroke-width:1.2;stroke-dasharray:3 6;transform-origin:200px 200px}
+.rd-ring:last-of-type .rd-c{stroke:var(--aqua);stroke-dasharray:none;stroke-width:1.6;opacity:.7}
+.js .rd-ring .rd-c{transform:scale(.2);opacity:0;transition:transform 1.2s var(--ease),opacity 1s;transition-delay:calc(var(--k)*.25s + .2s)}
+.js .radar.in .rd-ring .rd-c{transform:none;opacity:1}
+.rd-ring text{font-family:var(--sans);font-size:13px;font-weight:600;fill:rgba(255,255,255,.88);letter-spacing:.02em}
+.rd-dot{fill:var(--terra-l)}
+.rd-sea path{fill:none;stroke:var(--aqua);stroke-width:2.6;stroke-linecap:round}
+.rd-pin circle:not(.rd-pulse){fill:var(--terra)}
+.rd-pin path{fill:#fff}
+.rd-pulse{fill:none;stroke:var(--terra-l);stroke-width:2;transform-origin:200px 200px;animation:rdp 2.6s ease-out infinite}
+@keyframes rdp{from{transform:scale(1);opacity:.9}to{transform:scale(2.6);opacity:0}}
+.rd-cap{text-align:center;font-size:12px;color:rgba(255,255,255,.5);margin-top:6px}
+.map{aspect-ratio:21/8}
+@media (max-width:759px){.map{aspect-ratio:4/3}}
+@media (min-width:900px){
+  .loc-grid{grid-template-columns:1fr 1fr;grid-template-areas:"text radar" "dist radar";align-items:start;gap:30px 64px}
+  .loc-text{grid-area:text}.radar{grid-area:radar}.dist{grid-area:dist;grid-template-columns:repeat(2,1fr);align-self:end}
+  .dist b{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){.rd-pulse{animation:none}.js .rd-ring .rd-c{transform:none;opacity:1;transition:none}}
+
+.dist div div{padding:0;border:0;background:none;border-radius:0;transform:none}
+.dist div div:hover{transform:none;background:none;border:0}
+.rd-ring text{font-size:12.5px}
+
+/* схематичная планировка (упрощённая) */
+.ig-plan .pr{opacity:0;transform:scale(.88);transform-box:fill-box;transform-origin:center;transition:opacity .7s ease,transform .8s var(--ease);transition-delay:calc(var(--i)*.12s + .15s)}
+.ig-t.in .ig-plan .pr{opacity:1;transform:none}
+.ig-plan .pr rect{stroke-width:1.4;fill:rgba(255,255,255,.08);stroke:rgba(255,255,255,.35)}
+.ig-plan .bd rect{fill:rgba(56,196,189,.2);stroke:rgba(56,196,189,.8)}
+.ig-plan .lv rect{fill:rgba(238,129,86,.3);stroke:rgba(238,129,86,.9)}
+.ig-plan .kt rect{fill:rgba(238,129,86,.16);stroke:rgba(238,129,86,.7)}
+.ig-plan .ba rect{fill:rgba(56,196,189,.1);stroke:rgba(56,196,189,.55)}
+.ig-plan .ha rect{fill:rgba(255,255,255,.06);stroke:rgba(255,255,255,.3)}
+.ig-plan .pi{fill:none;stroke:#fff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.95}
+.ig-plan .pr text{font-family:var(--sans);font-size:9.5px;font-weight:700;fill:#fff;letter-spacing:.02em;stroke:none}
+.ig-plan .ha text{font-size:8px}
+.ig-plan .door path{fill:none;stroke:var(--terra-l);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ig-plan .pr.door{transform:none}
+@media (prefers-reduced-motion:reduce){.ig-plan .pr{opacity:1;transform:none;transition:none}}

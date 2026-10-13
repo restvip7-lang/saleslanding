@@ -17,6 +17,8 @@ const ICONS = {
   sofa: '<path d="M5 11V8a3 3 0 013-3h8a3 3 0 013 3v3M3 13a2 2 0 014 0v2h10v-2a2 2 0 014 0v5H3zM6 18v2M18 18v2"/>',
   floor: '<path d="M5 21V5l9-2v18M14 8h5v13M8 9h2M8 13h2M8 17h2M3 21h18"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  pin: '<path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  bus: '<path d="M5 16V6a2 2 0 012-2h10a2 2 0 012 2v10M5 16h14M5 11h14M7 16v3M17 16v3"/><circle cx="8.5" cy="13.5" r=".6"/><circle cx="15.5" cy="13.5" r=".6"/>',
   home: '<path d="M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/>',
 };
 const icon = (n) => `<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ICONS.home}</svg></span>`;
@@ -229,19 +231,12 @@ ${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div
     const km = (g.sea.meters / 1000).toLocaleString('ru-RU');
     return `<div class="ig">
     <div class="ig-t ig-area rv"><div class="ig-area-l"><span class="ig-k">${esc(g.area.label)}</span><div class="ig-big"><b class="ig-num">${g.area.value}</b><em>${esc(g.area.unit)}</em></div><p class="ig-cap">Условная схема планировки</p></div>
-      ${(() => { let i = 0; const P = (d, c) => `<path class="pl ${c}" pathLength="1" style="--i:${i++}" d="${d}"/>`; const Rr = (x, y, w, h) => `M${x} ${y}h${w}v${h}h${-w}z`; const C = (cx, cy, r, c) => `<circle class="pl ${c}" pathLength="1" style="--i:${i++}" cx="${cx}" cy="${cy}" r="${r}"/>`; const T = (x, y, s, sz) => `<text class="plb" x="${x}" y="${y}" text-anchor="middle" style="font-size:${sz || 7}px">${s}</text>`;
-        return `<svg viewBox="0 0 252 152" class="ig-plan" role="img" aria-label="Схема планировки: две спальни, гостиная-кухня, санузел, прихожая">
-        ${P('M6 6H234V144H6Z', 'w')}${P('M82 6V72M158 6V72', 'w')}${P('M6 72H26M48 72H102M124 72H168', 'w')}${P('M158 46H176M196 46H234', 'w')}
-        ${P('M20 6H68M96 6H144M180 6H212', 'win')}${P('M26 144H212', 'win')}${P('M6 90V126', 'win')}
-        ${P('M26 72V50M26 50A22 22 0 0 1 48 72', 't')}${P('M102 72V50M102 50A22 22 0 0 1 124 72', 't')}${P('M176 46V26M176 26A20 20 0 0 1 196 46', 't')}
-        ${P(Rr(20, 24, 40, 36), 'f')}${P(Rr(24, 27, 14, 9) + Rr(42, 27, 14, 9), 'f')}
-        ${P(Rr(96, 24, 40, 36), 'f')}${P(Rr(100, 27, 14, 9) + Rr(118, 27, 14, 9), 'f')}
-        ${P(Rr(164, 12, 44, 20), 'f')}${P(Rr(216, 12, 12, 9), 'f')}${C(222, 33, 5, 'f')}
-        ${P(Rr(18, 86, 58, 20) + Rr(18, 106, 20, 26), 'f')}
-        ${C(120, 112, 13, 'f')}${C(98, 112, 4, 'f')}${C(142, 112, 4, 'f')}${C(120, 90, 4, 'f')}${C(120, 134, 4, 'f')}
-        ${P(Rr(212, 78, 22, 62), 'f')}${C(223, 94, 3, 'f')}${C(223, 104, 3, 'f')}${P(Rr(168, 78, 32, 12), 'f')}
-        ${P('M240 59H224M229 54L224 59L229 64', 'door')}
-        ${T(40, 19, 'Спальня')}${T(116, 19, 'Спальня')}${T(166, 41, 'С/у', 6.5)}${T(196, 63, 'Прихожая', 6.5)}${T(124, 82, 'Гостиная · кухня', 7.5)}${T(246, 49, 'вход', 6)}
+      ${(() => { let i = 0; const IC = { bed: ICONS.bed, sofa: ICONS.sofa, tub: '<path d="M4 12h16v3a4 4 0 01-4 4H8a4 4 0 01-4-4zM6 12V6a2 2 0 014 0M6 19l-1 2M18 19l1 2"/>', pot: '<path d="M4 11h16v7a2 2 0 01-2 2H6a2 2 0 01-2-2zM2 11h20M9 7c0-2 2-2 2-4M14 7c0-2 2-2 2-4"/>' };
+        const room = (x, y, w, h, cls, name, ic) => { const k = i++; const cx = x + w / 2, cy = y + h / 2; return `<g class="pr ${cls}" style="--i:${k}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9"/>${ic ? (h < 50 ? `<g class="pi" transform="translate(${cx - 8} ${cy - 18}) scale(.66)">${IC[ic]}</g>` : `<g class="pi" transform="translate(${cx - 10} ${cy - 22}) scale(.84)">${IC[ic]}</g>`) : ''}<text x="${cx}" y="${cy + (ic ? (h < 50 ? 14 : 16) : 3)}" text-anchor="middle">${name}</text></g>`; };
+        return `<svg viewBox="0 0 252 152" class="ig-plan" role="img" aria-label="Схема планировки: две спальни, гостиная, кухня, санузел, прихожая">
+        ${room(6, 6, 74, 64, 'bd', 'Спальня', 'bed')}${room(84, 6, 74, 64, 'bd', 'Спальня', 'bed')}${room(162, 6, 72, 38, 'ba', 'Санузел', 'tub')}${room(162, 48, 72, 22, 'ha', 'Прихожая')}
+        ${room(6, 74, 144, 72, 'lv', 'Гостиная', 'sofa')}${room(154, 74, 80, 72, 'kt', 'Кухня', 'pot')}
+        <g class="pr door" style="--i:${i++}"><path d="M246 59H236M240 54L235 59L240 64"/></g>
       </svg>`; })()}</div>
     <div class="ig-t ig-floor rv"><span class="ig-k">${esc(g.floor.label)}</span><div class="ig-big"><b class="ig-num">${g.floor.n}</b><em>из ${g.floor.total}</em></div>
       <svg viewBox="0 0 116 ${H}" class="ig-bld" aria-hidden="true">${floors}<rect x="10" y="${H - 6}" width="96" height="3" rx="1.5" class="gr"/></svg></div>
@@ -265,10 +260,21 @@ ${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div
 </div>`}</section>
 
 <section class="loc" id="location"><div class="wrap">
-  <span class="eyebrow lt">Локация</span>
-  <h2>${esc(p.city)}</h2>
-  <p class="lead">${esc(p.location?.intro || '')}</p>
-  <div class="dist">${(p.location?.distances || []).map((x) => `<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div>`).join('')}</div>
+  <div class="loc-grid">
+    <div class="loc-text">
+      <span class="eyebrow lt">Локация</span>
+      <h2>${esc(p.city)}</h2>
+      <p class="lead">${esc(p.location?.intro || '')}</p>
+    </div>
+    ${p.location?.radar?.length ? (() => { const rings = p.location.radar; const n = rings.length; const R = (k) => (n === 3 ? [64, 112, 168][k] : 60 + k * (110 / Math.max(1, n - 1)));
+      const waves = (cx, cy) => `<path d="M${cx - 16} ${cy}q4-6 8 0t8 0 8 0 8 0"/><path d="M${cx - 16} ${cy + 7}q4-6 8 0t8 0 8 0 8 0"/>`;
+      const items = rings.map((g, k) => { const r = R(k); const ang = [-152, -28, 62][k % 3] * Math.PI / 180; const x = 200 + r * Math.cos(ang), y = 200 + r * Math.sin(ang);
+        const mark = g.kind === 'sea' ? `<g class="rd-sea" transform="translate(0 0)">${waves(x, y)}</g>` : `<circle class="rd-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"/>`;
+        const tx = g.kind === 'sea' ? x : (x > 200 ? x + 12 : x - 12), an = g.kind === 'sea' ? 'middle' : (x > 200 ? 'start' : 'end');
+        return `<g class="rd-ring" style="--k:${k}"><circle class="rd-c" cx="200" cy="200" r="${r}"/>${mark}<text x="${tx.toFixed(1)}" y="${(y + (g.kind === 'sea' ? 24 : 4)).toFixed(1)}" text-anchor="${an}">${esc(g.label)}</text></g>`; }).join('');
+      return `<div class="radar rv"><svg viewBox="0 0 400 400" role="img" aria-label="Схема: рядом остановки, центр города, море в ${esc(p.location.distances?.[0]?.value || '2 км')}"><path class="rd-ax" d="M200 8V392M8 200H392"/>${items}<g class="rd-pin"><circle class="rd-pulse" cx="200" cy="200" r="24"/><circle cx="200" cy="200" r="22"/><path d="M190 202v-9l10-8 10 8v9z"/></g></svg><p class="rd-cap">Схема, масштаб условный</p></div>`; })() : ''}
+    <div class="dist">${(p.location?.distances || []).map((x) => `<div class="spot rv">${icon(x.icon || 'pin')}<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div></div>`).join('')}</div>
+  </div>
   <div class="map" id="map">${p.geo ? `<button class="btn btn-primary" type="button" id="mapBtn" ${trk('map_open')}>Показать на карте</button>` : ''}</div>
   ${p.geo ? `<div class="map-actions"><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://yandex.ru/maps/?rtext=~${p.geo.lat},${p.geo.lng}&rtt=auto" ${trk('route_click')}>Построить маршрут</a></div>` : ''}
 </div></section>
