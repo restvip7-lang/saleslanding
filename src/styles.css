@@ -302,3 +302,16 @@ h2{text-wrap:balance}
 .ls-man-ic{margin-left:auto;display:flex;gap:8px}
 .ls-man-ic a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff}
 .ls-man-ic .wa{background:#25d366}.ls-man-ic .tg{background:#2aabee}.ls-man-ic svg{width:20px;height:20px}
+
+/* ===== video tour ===== */
+.tour{background:var(--sand-2)}
+.tour-grid{display:grid;gap:32px;align-items:center}
+.tour-text p{font-size:17px;max-width:520px;margin-bottom:24px;color:var(--muted)}
+.tour-wrap{display:flex;justify-content:center}
+.tour-player{position:relative;width:min(100%,340px);aspect-ratio:478/850;border-radius:28px;overflow:hidden;background:#000;box-shadow:0 30px 70px -28px rgba(16,35,29,.6);border:6px solid var(--ink)}
+.tour-player video{width:100%;height:100%;object-fit:cover;display:block}
+.tour-play{position:absolute;inset:0;border:0;background:linear-gradient(180deg,rgba(16,35,29,.05),rgba(16,35,29,.45));cursor:pointer;display:grid;place-items:center}
+.tour-play[hidden]{display:none}
+.tour-play span{width:76px;height:76px;border-radius:50%;background:var(--brass);color:var(--ink);display:grid;place-items:center;font-size:26px;padding-left:5px;box-shadow:0 12px 36px -8px rgba(0,0,0,.5);transition:transform .25s}
+.tour-play:hover span{transform:scale(1.08)}
+@media (min-width:760px){.tour-grid{grid-template-columns:1.1fr .9fr;gap:64px}}

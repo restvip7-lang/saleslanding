@@ -82,6 +82,19 @@
   });
   syncSlider(0);
 
+  // видеообзор: плеер по клику, события 25/50/75/100
+  var tv = $('#tourVid'), tp = $('#tourPlay');
+  if (tv && tp) {
+    tp.addEventListener('click', function () { tv.controls = true; tp.hidden = true; tv.play(); });
+    tv.addEventListener('play', function () { T.track('video_play', {}, true); tp.hidden = true; });
+    tv.addEventListener('timeupdate', function () {
+      if (!tv.duration) return;
+      var p = tv.currentTime / tv.duration * 100;
+      [25, 50, 75].forEach(function (m) { if (p >= m) T.track('video_' + m, {}, true); });
+    });
+    tv.addEventListener('ended', function () { T.track('video_100', {}, true); });
+  }
+
   // карта по клику (не грузим тяжёлый iframe заранее)
   var mb = $('#mapBtn');
   if (mb && S.geo) {

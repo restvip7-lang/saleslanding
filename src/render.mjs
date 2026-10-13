@@ -147,7 +147,6 @@ export function render(p, { origin }) {
       <div class="ls-thumbs" id="lsThumbs">
         ${p.photos.map((ph, i) => `<button type="button" class="ls-t${i ? '' : ' on'}" data-i="${i}" data-g="${esc(ph.group || '')}" aria-label="Фото ${i + 1}"><img src="${esc(ph.thumb || ph.src)}" alt="" width="120" height="80" loading="lazy"></button>`).join('')}
       </div>
-      ${p.video?.embed ? `<div class="video-box"><iframe src="${esc(p.video.embed)}" loading="lazy" allowfullscreen title="Видео объекта"></iframe></div>` : ''}
     </div>
     <aside class="ls-card">
       <div class="ls-price">${money(p.price, p.currency)}</div>
@@ -160,6 +159,19 @@ export function render(p, { origin }) {
     </aside>
   </div>
 </div></section>
+
+${p.video?.file || p.video?.embed ? `<section class="tour" id="video"><div class="wrap tour-grid">
+  <div class="tour-text rv">
+    <span class="eyebrow">Видеообзор</span>
+    <h2>${esc(p.video.title || 'Видеообзор')}</h2>
+    <p>${esc(p.video.text || '')}</p>
+    <a class="btn btn-primary" href="#lead" ${trk('cta_video')}>Записаться на показ</a>
+  </div>
+  <div class="tour-wrap rv">${p.video.file ? `<div class="tour-player">
+    <video id="tourVid" preload="none" playsinline poster="${esc(p.video.poster || '')}" width="${p.video.w || 478}" height="${p.video.h || 850}"><source src="${esc(p.video.file)}" type="video/mp4"></video>
+    <button class="tour-play" id="tourPlay" type="button" aria-label="Смотреть видеообзор"><span>▶</span></button>
+  </div>` : `<div class="video-box"><iframe src="${esc(p.video.embed)}" loading="lazy" allowfullscreen title="Видеообзор"></iframe></div>`}</div>
+</div></section>` : ''}
 
 <section id="about"><div class="wrap about-grid">
   <div class="about-text rv">
