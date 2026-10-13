@@ -12,8 +12,8 @@ D = os.path.join(src, '02 - DA*', 'KÜÇÜK RESİM')
 
 # (папка, файл, имя выходного файла)
 SELECT = [
-    (D, '8.jpeg', 'view'), (D, '2.jpeg', 'living'), (D, '1.jpeg', 'kitchen'),
-    (K, '(3).jpg', 'complex-night'), (D, '3.jpeg', 'living-2'), (D, '9.jpeg', 'bedroom'),
+    (K, '(3).jpg', 'complex-night'), (D, '8.jpeg', 'view'), (D, '2.jpeg', 'living'),
+    (D, '1.jpeg', 'kitchen'), (D, '3.jpeg', 'living-2'), (D, '9.jpeg', 'bedroom'),
     (D, '7.jpeg', 'terrace'), (D, '10.jpeg', 'bedroom-2'), (D, '15.jpeg', 'kids'),
     (D, '13.jpeg', 'bath'), (K, '(8).jpg', 'complex-pool'), (K, '(5).jpg', 'pool'),
     (K, '(14).jpg', 'aqua'), (K, '(13).jpg', 'playground'), (K, '(12).jpg', 'tennis'),

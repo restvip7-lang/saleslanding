@@ -143,6 +143,12 @@
   ],
   "photos": [
     {
+      "src": "photos/complex-night.webp",
+      "alt": "Комплекс Another World F24 с бассейном вечером",
+      "w": 1024,
+      "h": 683
+    },
+    {
       "src": "photos/view.webp",
       "alt": "Панорамный вид на море и город из квартиры в Аланье",
       "w": 1600,
@@ -159,12 +165,6 @@
       "alt": "Современная открытая кухня",
       "w": 1600,
       "h": 1200
-    },
-    {
-      "src": "photos/complex-night.webp",
-      "alt": "Комплекс Another World F24 с бассейном вечером",
-      "w": 1024,
-      "h": 683
     },
     {
       "src": "photos/living-2.webp",
