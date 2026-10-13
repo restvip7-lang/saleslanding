@@ -247,3 +247,5 @@ h2{text-wrap:balance}
 .chip{background:rgba(16,35,29,.55);border:1px solid rgba(255,255,255,.18)}
 .hero::after{background:linear-gradient(180deg,rgba(16,35,29,.5) 0%,rgba(16,35,29,.1) 30%,rgba(16,35,29,.55) 62%,rgba(16,35,29,.92) 100%)}
 @media (max-width:759px){.hero-price span{font-size:13px}.hero .wrap{padding-bottom:96px}}
+.hero::after{background:linear-gradient(90deg,rgba(16,35,29,.78) 0%,rgba(16,35,29,.35) 55%,rgba(16,35,29,.05) 100%),linear-gradient(180deg,rgba(16,35,29,.45) 0%,rgba(16,35,29,.05) 28%,rgba(16,35,29,.5) 62%,rgba(16,35,29,.92) 100%)}
+@media (max-width:759px){.hero::after{background:linear-gradient(180deg,rgba(16,35,29,.5) 0%,rgba(16,35,29,.25) 30%,rgba(16,35,29,.72) 60%,rgba(16,35,29,.94) 100%)}}

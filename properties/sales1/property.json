@@ -143,6 +143,12 @@
   ],
   "photos": [
     {
+      "src": "photos/hero-complex.webp",
+      "alt": "Жилой комплекс Another World с бассейном и садом, Аланья",
+      "w": 1600,
+      "h": 900
+    },
+    {
       "src": "photos/complex-night.webp",
       "alt": "Комплекс Another World F24 с бассейном вечером",
       "w": 1024,
@@ -159,6 +165,12 @@
       "alt": "Просторная гостиная-студия с видом на море",
       "w": 1600,
       "h": 1200
+    },
+    {
+      "src": "photos/gate.webp",
+      "alt": "Въездная арка комплекса Another World",
+      "w": 1536,
+      "h": 1024
     },
     {
       "src": "photos/kitchen.webp",

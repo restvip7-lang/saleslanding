@@ -9,11 +9,13 @@ base = os.path.join('properties', pid)
 src = glob.glob(os.path.join(base, 'source', 'STYE163*'))[0]
 K = os.path.join(src, '01 - *', 'KÜÇÜK RESİM')
 D = os.path.join(src, '02 - DA*', 'KÜÇÜK RESİM')
+H = os.path.join(base, 'source', 'hero')
 
+# complex-pool-angran.webp не используется: на вывеске другое название (ANGRAN WORLD)
 # (папка, файл, имя выходного файла)
 SELECT = [
-    (K, '(3).jpg', 'complex-night'), (D, '8.jpeg', 'view'), (D, '2.jpeg', 'living'),
-    (D, '1.jpeg', 'kitchen'), (D, '3.jpeg', 'living-2'), (D, '9.jpeg', 'bedroom'),
+    (H, 'complex-aerial.webp', 'hero-complex'), (K, '(3).jpg', 'complex-night'), (D, '8.jpeg', 'view'),
+    (D, '2.jpeg', 'living'), (H, 'complex-gate.webp', 'gate'), (D, '1.jpeg', 'kitchen'), (D, '3.jpeg', 'living-2'), (D, '9.jpeg', 'bedroom'),
     (D, '7.jpeg', 'terrace'), (D, '10.jpeg', 'bedroom-2'), (D, '15.jpeg', 'kids'),
     (D, '13.jpeg', 'bath'), (K, '(8).jpg', 'complex-pool'), (K, '(5).jpg', 'pool'),
     (K, '(14).jpg', 'aqua'), (K, '(13).jpg', 'playground'), (K, '(12).jpg', 'tennis'),
