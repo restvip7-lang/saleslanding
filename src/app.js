@@ -183,14 +183,13 @@
   var fmt = function (n) { return new Intl.NumberFormat('ru-RU').format(Math.round(n)); };
 
   // дополнительные элементы для плавного появления, со ступенчатой задержкой
-  var targets = 'section:not(.hero) h2, section:not(.hero) .eyebrow, .lead, .ls-media, .ls-card, .calc, .faq details, .form, .agent, .specs, .plan, .dist div, .fact, .features .feature';
+  var targets = 'section:not(.hero) h2, section:not(.hero) .eyebrow, .lead, .ls-media, .ls-card, .calc, .faq details, .form, .agent, .specs, .plan, .dist div, .fact';
   $$(targets).forEach(function (el) {
     if (!el.classList.contains('rv')) el.classList.add('rv');
     var sibs = el.parentNode ? Array.prototype.indexOf.call(el.parentNode.children, el) : 0;
     el.style.setProperty('--d', Math.min(sibs, 6));
   });
-  $$('.about-text.rv').forEach(function (e) { e.classList.add('from-l'); });
-  $$('.features.rv, .tour-wrap.rv').forEach(function (e) { e.classList.add('from-r'); });
+  $$('.tour-wrap.rv').forEach(function (e) { e.classList.add('from-r'); });
   if (window.IntersectionObserver) {
     var io2 = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io2.unobserve(e.target); } });
@@ -217,25 +216,25 @@
     es.forEach(function (e) {
       if (!e.isIntersecting) return;
       numIO.unobserve(e.target);
-      var raw = e.target.dataset.raw, m = raw.match(/^(\d[\d\s]*)(.*)$/);
+      var raw = e.target.dataset.raw, m = raw.match(/^(\d+(?:\s\d{3})*)(.*)$/);
       countTo(e.target, parseInt(m[1].replace(/\s/g, ''), 10), m[2], 1600);
     });
   }, { threshold: 0.6 });
   if (numIO) $$('.fact b, .dist b').forEach(function (b) {
     var t = b.textContent.trim();
-    if (!/^\d/.test(t) || /[+]|из/.test(t)) return;
+    if (!/^\d/.test(t) || /[+]|из/.test(t) || /^(19|20)\d\d$/.test(t)) return;
     b.dataset.raw = t; numIO.observe(b);
   });
 
   // прогресс, липкая шапка, параллакс
-  var prog = $('#prog'), stick = $('#stick'), par = $('#heroPar'), hero = $('.hero'), heroWrap = $('.hero > .wrap'), ticking = false;
+  var prog = $('#prog'), stick = $('#stick'), par = $('#heroPar'), hero = $('.hero'), heroWrap = $('.hero-copy'), ticking = false;
   function onScroll() {
     var y = window.pageYOffset, h = document.documentElement.scrollHeight - window.innerHeight;
     if (prog) prog.style.transform = 'scaleX(' + (h > 0 ? y / h : 0) + ')';
     var hh = hero ? hero.offsetHeight : 700;
     if (stick) stick.classList.toggle('on', y > hh * 0.85);
     if (!reduce && y < hh * 1.3) {
-      if (par) par.style.transform = 'translate3d(0,' + (y * 0.28).toFixed(1) + 'px,0) scale(' + (1 + y / hh * 0.06).toFixed(4) + ')';
+      if (par) par.style.transform = 'translate3d(0,' + (y * 0.1).toFixed(1) + 'px,0) scale(' + (1.04 + y / hh * 0.08).toFixed(4) + ')';
       if (heroWrap && window.innerWidth > 759) { heroWrap.style.transform = 'translate3d(0,' + (y * -0.08).toFixed(1) + 'px,0)'; heroWrap.style.opacity = Math.max(0, 1 - y / (hh * 0.9)).toFixed(3); }
     }
     ticking = false;

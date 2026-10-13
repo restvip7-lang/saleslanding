@@ -100,7 +100,7 @@ export function render(p, { origin }) {
 <link rel="preload" as="image" href="${esc(hero.src)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Manrope:wght@400;600;700&display=swap&subset=cyrillic">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="assets/styles.css">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 </head>
@@ -119,17 +119,24 @@ export function render(p, { origin }) {
 
 <main id="top">
 <section class="hero">
-  <div class="hero-bg"><div class="hero-par" id="heroPar"><img src="${esc(hero.src)}" alt="${esc(hero.alt)}" width="${hero.w}" height="${hero.h}" fetchpriority="high"></div></div>
+  <div class="hero-ghost" aria-hidden="true">${esc(p.title.split(' ').slice(-1)[0])}</div>
   <div class="hero-orb o1" aria-hidden="true"></div><div class="hero-orb o2" aria-hidden="true"></div>
-  <div class="wrap">
-    <span class="badge">${esc(p.type)} · ${esc(p.city)} · ${esc(p.status)}</span>
-    <h1 aria-label="${esc(p.title)}">${p.title.split(' ').map((w, i) => `<span class="w" aria-hidden="true"><span style="--i:${i}">${esc(w)}</span></span>`).join(' ')}</h1>
-    <p class="sub">${esc(p.tagline)}</p>
-    <div class="hero-meta">${(p.heroFacts || []).map((f) => `<span class="chip">${esc(f)}</span>`).join('')}</div>
-    <div class="hero-price"><b data-count="${p.price}" data-suffix="${p.currency === 'EUR' ? ' €' : p.currency === 'RUB' ? ' ₽' : ' ' + esc(p.currency)}">${money(p.price, p.currency)}</b>${p.rubRate && p.currency !== 'RUB' ? `<span>≈ ${money(Math.round(p.price * p.rubRate / 10000) * 10000)} по текущему курсу, уточняйте у менеджера</span>` : ''}</div>
-    <div class="hero-cta">
-      <a class="btn btn-primary" href="#lead" ${trk('cta_hero_presentation')}>Получить презентацию</a>
-      ${btnWa('btn-ghost-wa', 'click_whatsapp', 'WhatsApp')}
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <span class="badge">${esc(p.type)} · ${esc(p.city)} · ${esc(p.status)}</span>
+      <h1 aria-label="${esc(p.title)}">${p.title.split(' ').map((w, i) => `<span class="w" aria-hidden="true"><span style="--i:${i}">${esc(w)}</span></span>`).join(' ')}</h1>
+      <p class="sub">${esc(p.tagline)}</p>
+      <div class="hero-meta">${(p.heroFacts || []).map((f) => `<span class="chip">${esc(f)}</span>`).join('')}</div>
+      <div class="hero-price"><b data-count="${p.price}" data-suffix="${p.currency === 'EUR' ? ' €' : p.currency === 'RUB' ? ' ₽' : ' ' + esc(p.currency)}">${money(p.price, p.currency)}</b>${p.rubRate && p.currency !== 'RUB' ? `<span>≈ ${money(Math.round(p.price * p.rubRate / 10000) * 10000)} по текущему курсу, уточняйте у менеджера</span>` : ''}</div>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#lead" ${trk('cta_hero_presentation')}>Получить презентацию</a>
+        ${btnWa('btn-ghost-wa', 'click_whatsapp', 'WhatsApp')}
+      </div>
+    </div>
+    <div class="hero-fig">
+      <div class="arch"><div class="hero-par" id="heroPar"><img src="${esc(hero.src)}" alt="${esc(hero.alt)}" width="${hero.w}" height="${hero.h}" fetchpriority="high"></div></div>
+      <svg class="seal" viewBox="0 0 200 200" aria-hidden="true"><circle class="bg" cx="100" cy="100" r="99"/><defs><path id="sealp" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"/></defs><g class="seal-rot"><text textLength="470" lengthAdjust="spacing"><textPath href="#sealp">${esc([p.city.split(',')[0], ...(p.heroFacts || [])].join(' ✦ ').toUpperCase())} ✦ </textPath></text></g><circle cx="100" cy="100" r="34"/><path d="M100 88v24m0 0l-9-9m9 9l9-9"/></svg>
+      <span class="hero-tag"><i></i>${esc(p.city)}</span>
     </div>
   </div>
   <a class="scroll-cue" href="#gallery" aria-label="Листать вниз"><i></i></a>
@@ -182,21 +189,26 @@ ${p.video?.file || p.video?.embed ? `<section class="tour" id="video"><div class
   </div>` : `<div class="video-box"><iframe src="${esc(p.video.embed)}" loading="lazy" allowfullscreen title="Видеообзор"></iframe></div>`}</div>
 </div></section>` : ''}
 
-<section id="about"><div class="wrap about-grid">
-  <div class="about-text rv">
-    <span class="eyebrow">Об объекте</span>
-    <h2>Жизнь, которую вы заслужили</h2>
-    ${(p.description || []).map((x) => `<p>${esc(x)}</p>`).join('')}
-    <a class="btn btn-dark" href="#lead" ${trk('cta_about')}>Записаться на показ</a>
+<section id="about"><div class="wrap">
+  <div class="about-top">
+    <div class="about-fig rv from-l">
+      ${(() => { const ap = p.photos.filter((x) => x.group === 'apartment'); const a1 = ap[1] || p.photos[1], a2 = ap[0] || p.photos[0]; return `<div class="arch sm"><img src="${esc(a1.src)}" alt="${esc(a1.alt)}" width="${a1.w}" height="${a1.h}" loading="lazy"></div><div class="circ"><img src="${esc(a2.thumb || a2.src)}" alt="${esc(a2.alt)}" width="320" height="320" loading="lazy"></div>`; })()}
+    </div>
+    <div class="about-text rv from-r">
+      <span class="eyebrow">Об объекте</span>
+      <h2>Жизнь, которую вы заслужили</h2>
+      ${(p.description || []).map((x) => `<p>${esc(x)}</p>`).join('')}
+      <a class="btn btn-dark" href="#lead" ${trk('cta_about')}>Записаться на показ</a>
+    </div>
   </div>
-  <div class="features rv">
-    ${(p.features || []).map((f) => `<div class="feature spot">${icon(f.icon)}<div><h3>${esc(f.title)}</h3><p>${esc(f.text)}</p></div></div>`).join('')}
+  <div class="features">
+    ${(p.features || []).map((f, i) => `<div class="feature spot rv"><em>${String(i + 1).padStart(2, '0')}</em>${icon(f.icon)}<div><h3>${esc(f.title)}</h3><p>${esc(f.text)}</p></div></div>`).join('')}
   </div>
 </div></section>
 
 
 
-${p.amenities?.length ? `<section class="marq-sec" aria-label="Инфраструктура комплекса"><div class="wrap marq-head"><span class="eyebrow" style="color:#f1d9a1">Инфраструктура комплекса</span><h2>Всё для жизни и отдыха</h2></div>
+${p.amenities?.length ? `<section class="marq-sec" aria-label="Инфраструктура комплекса"><div class="wrap marq-head"><span class="eyebrow lt">Инфраструктура комплекса</span><h2>Всё для жизни и отдыха</h2></div>
   ${[0, 1].map((row) => { const items = p.amenities.filter((_, i) => i % 2 === row); const html = items.map((t) => `<span>${esc(t)}</span>`).join(''); return `<div class="marq ${row ? 'rev' : ''}" aria-hidden="${row ? 'true' : 'false'}"><div class="marq-track">${html}${html}${html}${html}</div></div>`; }).join('')}
 </section>` : ''}
 <section id="specs"><div class="wrap spec-grid">
@@ -207,7 +219,7 @@ ${p.amenities?.length ? `<section class="marq-sec" aria-label="Инфрастр�
 </div></section>
 
 <section class="loc" id="location"><div class="wrap">
-  <span class="eyebrow" style="color:#f1d9a1">Локация</span>
+  <span class="eyebrow lt">Локация</span>
   <h2>${esc(p.city)}</h2>
   <p class="lead">${esc(p.location?.intro || '')}</p>
   <div class="dist">${(p.location?.distances || []).map((x) => `<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div>`).join('')}</div>
@@ -246,7 +258,7 @@ ${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap" style="max-wi
 
 <section class="lead-sec" id="lead"><div class="wrap lead-box">
   <div>
-    <span class="eyebrow" style="color:#f1d9a1">Заявка</span>
+    <span class="eyebrow lt">Заявка</span>
     <h2>${esc(p.leadFormTitle)}</h2>
     <p class="lead">${esc(p.leadFormSubtitle)}</p>
     <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:26px">
