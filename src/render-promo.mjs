@@ -26,7 +26,6 @@ export function promoPages(p, propDir) {
   const price = money(p.price, p.currency || 'EUR');
   const sea = g.sea ? `${(g.sea.meters / 1000).toLocaleString('ru-RU')} км` : '';
   const heroPhoto = p.photos.find((x) => x.group === 'complex') || p.photos[0];
-  const aptPhoto = p.photos.find((x) => x.group === 'apartment') || p.photos[0];
   const icon = (n) => url(`assets/icons/${n}.svg`);
   const brand = esc(p.brand || '');
   const place = esc(p.city || '');
@@ -91,10 +90,10 @@ body{background:radial-gradient(900px 600px at 0 100%,rgba(201,74,30,.3),transpa
 .wrap{position:absolute;inset:0;padding:${padT}px ${padX}px ${padB}px;display:flex;${wide ? 'flex-direction:row;gap:48px;align-items:stretch' : 'flex-direction:column;gap:' + px(story ? 36 : 30) + 'px'}}
 .brand{font-size:${px(30)}px}.brand i{width:${px(44)}px;height:${px(44)}px}
 .left{${wide ? 'flex:0 0 44%;display:flex;flex-direction:column;min-width:0' : ''}}
-.lph{display:none}${wide ? `.lph{display:block;position:relative;flex:1;margin-top:22px;border-radius:26px;background:url("${url(aptPhoto.src)}") center/cover;min-height:0}.lph .price{position:absolute;left:18px;bottom:18px;box-shadow:0 12px 30px -10px rgba(0,0,0,.6)}` : ''}
+.lph{display:none}${wide ? `.lph{display:block;position:relative;flex:1;margin-top:22px;border-radius:26px;background:url("${url(heroPhoto.src)}") center/cover;min-height:0}.lph .price{position:absolute;left:18px;bottom:18px;box-shadow:0 12px 30px -10px rgba(0,0,0,.6)}` : ''}
 .eyebrow{font:600 ${px(24)}px/1.2 "Golos Text";letter-spacing:.2em;text-transform:uppercase;color:#ee8156;margin:${px(26)}px 0 ${px(14)}px}
 h1{font:400 ${wide ? 60 : px(story ? 104 : 92)}px/1.04 Prata,serif;text-wrap:balance}
-${photoH ? `.ph{height:${photoH}px;border-radius:32px;background:url("${url(aptPhoto.src)}") center/cover;flex:none}` : ''}
+${photoH ? `.ph{height:${photoH}px;border-radius:32px;background:url("${url(heroPhoto.src)}") center/cover;flex:none}` : ''}
 .grid{flex:1;display:grid;grid-template-columns:repeat(${cols},1fr);gap:${wide ? 14 : 18}px;align-content:stretch}
 .tile{display:flex;align-items:center;gap:${wide ? 14 : 22}px;padding:${wide ? 12 : 22}px ${wide ? 18 : 26}px;background:#f4efe5;color:#0a2231;border-radius:${wide ? 18 : 28}px;min-width:0}
 .ti{flex:none;display:grid;place-items:center;width:${wide ? 64 : 92}px;height:${wide ? 64 : 92}px;border-radius:50%;background:#0a2231}
