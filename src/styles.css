@@ -1003,3 +1003,47 @@ img[src*="img/"]{pointer-events:none}
   .lm-b .btn{flex:none;padding:0 14px;font-size:13px;min-height:42px}
   .lead-r{margin:0 0 40px;align-self:center}
 }
+/* подгонка масштаба портрета под образец 38: фигура меньше, плечи и блузка видны */
+@media (min-width:1000px){
+  .lead-l{aspect-ratio:auto;min-height:0;height:clamp(520px,44vw,700px)}
+  .portrait-stage{left:15%;width:auto;height:96%;aspect-ratio:1/1;top:auto;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 82%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 14%,#000 82%,transparent 100%)}
+  .lead-l h2{font-size:clamp(28px,3.3vw,44px);max-width:10.5em}
+  .lead-man{right:20%;bottom:5%}
+}
+
+/* ===== Заявка = «картинка» с пропорциями образца 38: всё масштабируется от ширины блока ===== */
+@media (min-width:1000px){
+  .lead-sec{padding:48px 0}
+  .lead-box{--u:min(12.8px,calc((100vw - 40px)/100));font-size:max(12.5px,calc(var(--u)*1.15));position:relative;display:block;width:calc(100% - 40px);max-width:1280px;aspect-ratio:1.78/1;min-height:0;margin:0 auto;padding:0;border:0;border-radius:2.2em;overflow:hidden;box-shadow:0 40px 90px -50px #000;
+    background:radial-gradient(60% 55% at 6% 96%,rgba(201,74,30,.34),transparent 70%),radial-gradient(40% 50% at 100% 0,rgba(56,196,189,.14),transparent 70%),linear-gradient(135deg,#0c2c40,#0a2231 55%,#0b2433)}
+  .lead-l{position:absolute;inset:0;padding:5.2% 0 0 3.4%;aspect-ratio:auto;height:auto;min-height:0;align-self:auto;display:block;pointer-events:none;box-sizing:border-box}
+  .lead-l>*{pointer-events:auto}
+  .lead-l .eyebrow{position:relative;z-index:3;font-size:.8em;margin-bottom:.6em}
+  .lead-l h2{position:relative;z-index:3;font-size:3.5em;line-height:1.05;max-width:8.7em;margin:0 0 .45em}
+  .lead-l .lead{position:relative;z-index:3;font-size:1.08em;line-height:1.5;max-width:15.5em;text-shadow:0 1px 12px rgba(5,25,38,.8)}
+  .portrait-stage{position:absolute;left:11%;bottom:0;top:auto;right:auto;width:auto;height:100%;aspect-ratio:1/1;min-height:0;margin:0;z-index:1;display:block;pointer-events:none}
+  .lead-ph{width:100%;height:100%;object-fit:contain;object-position:center bottom}
+  .lead-man{position:absolute;left:3.4%;right:auto;bottom:6%;width:46%;margin:0;z-index:4;font-size:.92em;padding:.9em 1.1em;gap:.9em;flex-wrap:nowrap;border-radius:1.2em}
+  .lead-man .lm-ic{width:2.6em;height:2.6em}.lead-man .lm-t{min-width:0;flex:1 1 9em}.lead-man .lm-t b{font-size:1.15em;white-space:nowrap}.lead-man .lm-t span{font-size:.9em;line-height:1.35}
+  .lm-b{flex:none;width:auto;gap:.6em;padding:0 0 0 .9em;border-left:1px solid rgba(255,255,255,.16)}
+  .lm-b .btn{flex:none;min-height:3em;padding:0 1em;font-size:.95em;gap:.5em}.lm-b .btn svg{width:1.3em;height:1.3em}
+  .lead-r{position:absolute;right:3.2%;top:50%;transform:translateY(-50%);width:40.5%;margin:0;align-self:auto;z-index:5}
+  .form{padding:2em 2.2em;border-radius:2em}
+  .form-h{font-size:2.55em;white-space:nowrap;margin:0 0 .15em;line-height:1.1}
+  .form-s{font-size:1em;margin-bottom:.9em}
+  .form label,.form .lbl{font-size:.9em;margin-bottom:.35em}
+  .form .row{margin-bottom:.7em}
+  .form input[type=text],.form input[type=tel]{height:3.3em;font-size:1em;border-radius:.9em}
+  .seg label{padding:.9em .4em;font-size:.95em;border-radius:.9em}
+  .form label.consent{font-size:.82em;margin:.4em 0 1em}
+  .form .btn-primary{min-height:3.7em;font-size:1.25em}
+  .form-n{font-size:.88em;margin-top:.9em}
+}
+@media (min-width:1000px){
+  .lead-l h2{font-size:3.15em;max-width:9.6em}
+  .portrait-stage{height:90%;left:8.5%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 84%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 84%,transparent 100%)}
+  .lead-man{width:48%}
+  .lead-r{font-size:1.1em;width:41%}
+  .form{padding:1.9em 2em}
+  .form-h{font-size:2.4em}
+}
