@@ -858,3 +858,22 @@ img[src*="img/"]{pointer-events:none}
 .terms-deco,.trust-deco{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28%,#000 90%,transparent 100%),linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 28%,#000 90%,transparent 100%),linear-gradient(180deg,transparent 0,#000 18%,#000 80%,transparent 100%);mask-composite:intersect}
 .trust-deco{top:-4px;right:0;width:min(300px,34vw)}
 @media (min-width:901px){.cta-band{padding-left:160px;padding-right:44%;min-height:130px}.cta-band .cb-t{white-space:nowrap;font-size:clamp(20px,2vw,28px)}.cb-l{max-width:150px;object-fit:cover;object-position:left}.cb-scene{max-width:40%}}
+
+/* ===== Правки: иконки локации по центру; заявка масштабируется как макет ===== */
+.dist .ico{display:grid;place-items:center;opacity:1;margin:0;letter-spacing:0;text-transform:none;align-self:center;flex:none}
+@media (min-width:1000px){
+  .lead-sec{padding-bottom:0}
+  .lead-box{padding-bottom:0;grid-template-columns:57% 43%;gap:0;align-items:center;min-height:0}
+  .lead-l{position:relative;aspect-ratio:1/1;min-height:0;padding:0}
+  .lead-l h2{font-size:clamp(34px,3.9vw,56px);max-width:8em;position:relative;z-index:2}
+  .lead-l .lead{max-width:15em;font-size:clamp(15px,1.25vw,18px);position:relative;z-index:2;text-shadow:0 1px 14px rgba(5,25,38,.85)}
+  .portrait-stage{position:absolute;left:23%;width:86%;right:auto;top:auto;bottom:0;height:auto;aspect-ratio:1/1;min-height:0;margin:0;z-index:1;display:block}
+  .lead-ph{width:100%;height:100%;max-width:none;object-fit:contain;object-position:center bottom}
+  .lead-man{position:absolute;left:0;right:14%;bottom:11%;margin:0;z-index:3;flex-wrap:nowrap;gap:clamp(10px,1.4vw,18px);padding:clamp(12px,1.4vw,18px) clamp(14px,1.6vw,22px)}
+  .lead-man .lm-t{min-width:0}.lead-man .lm-t span{font-size:clamp(12px,1vw,14px)}.lead-man .lm-t b{font-size:clamp(15px,1.3vw,18px)}
+  .lm-b{flex-wrap:nowrap;flex:none;gap:10px;padding-left:clamp(12px,1.4vw,18px)}
+  .lm-b .btn{min-height:44px;padding:0 clamp(12px,1.4vw,20px);font-size:clamp(13px,1.1vw,15px)}
+  .lead-r{position:relative;z-index:4;margin:60px 0;margin-left:-4%}
+}
+@media (min-width:1000px){.lead-l{align-self:end}.lead-r{align-self:center}}
+@media (min-width:1000px){.lead-man{right:6%}.lead-man .lm-t{flex:1 1 150px;min-width:140px}.lead-man .lm-t b{white-space:nowrap}.lm-b .btn{padding:0 14px;gap:8px}}
