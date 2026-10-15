@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync } fr
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { render, renderPrivacy } from './src/render.mjs';
+import { renderMaterials } from './src/render-materials.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const id = process.env.PROPERTY || 'sales1';
@@ -20,6 +21,11 @@ mkdirSync(join(out, 'assets'), { recursive: true });
 
 writeFileSync(join(out, 'index.html'), render(p, { origin }));
 writeFileSync(join(out, 'privacy.html'), renderPrivacy(p, { origin }));
+const promoDir = join(dir, 'promo');
+if (existsSync(promoDir)) {
+  cpSync(promoDir, join(out, 'promo'), { recursive: true });
+  writeFileSync(join(out, 'materials.html'), renderMaterials(p, { origin, hasZip: existsSync(join(promoDir, `${id}-promo.zip`)) }));
+}
 for (const f of ['styles.css', 'tracking.js', 'app.js']) cpSync(join(root, 'src', f), join(out, 'assets', f));
 if (existsSync(join(dir, 'video'))) cpSync(join(dir, 'video'), join(out, 'video'), { recursive: true });
 if (existsSync(join(dir, 'assets'))) cpSync(join(dir, 'assets'), join(out, 'img'), { recursive: true });
@@ -27,7 +33,7 @@ if (existsSync(join(dir, 'photos'))) cpSync(join(dir, 'photos'), join(out, 'phot
 
 writeFileSync(
   join(out, 'robots.txt'),
-  p.noindex ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nDisallow: /api/\nSitemap: ${origin}/sitemap.xml\n`,
+  p.noindex ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /materials\nDisallow: /promo/\nSitemap: ${origin}/sitemap.xml\n`,
 );
 writeFileSync(
   join(out, 'sitemap.xml'),

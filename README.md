@@ -48,3 +48,16 @@
 7. **Перед боевым запуском** в `properties/sales1/property.json`: `"noindex": false`, настоящий `domain`, ID счётчиков (`analytics`), реквизиты (`company`), курс евро (`rubRate`), точный адрес (`geo.lat/lng`, `geo.exact: true`).
 
 Если Telegram не настроен, форма отвечает ошибкой и показывает кнопки WhatsApp/Telegram, заявки не «пропадают молча».
+
+## Материалы для менеджеров (/materials)
+
+Скрытая страница с готовыми рекламными картинками (Instagram пост 4:5, Stories и статус 9:16, Telegram 16:9, по два варианта: «Фото и цена» и «Инфографика») и ZIP со всеми файлами. На лендинге ссылки нет, страница закрыта от индексации (`noindex`, `robots.txt`, заголовок `X-Robots-Tag`). Скачивания считаются событиями `download_promo_*`.
+
+Как обновить картинки для объекта (нужен Playwright и Chromium, на Vercel не запускается):
+
+```bash
+PROPERTY=sales1 node tools/render-promo.mjs   # properties/sales1/promo/*.png и sales1-promo.zip
+PROPERTY=sales1 node build.mjs                # dist/materials.html
+```
+
+Данные берутся из `property.json` (название, цена, `infographic`, фото). Шаблоны лежат в `src/render-promo.mjs`, шрифты в `src/promo/fonts/`. Менеджерам отправьте ссылку `https://<домен>/materials`. Перед публикацией проверьте картинки глазами: нет чужих логотипов и водяных знаков, цена актуальна.
