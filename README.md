@@ -61,3 +61,7 @@ PROPERTY=sales1 node build.mjs                # dist/materials.html
 ```
 
 Данные берутся из `property.json` (название, цена, `infographic`, фото). Шаблоны лежат в `src/render-promo.mjs`, шрифты в `src/promo/fonts/`. Менеджерам отправьте ссылку `https://<домен>/materials`. Перед публикацией проверьте картинки глазами: нет чужих логотипов и водяных знаков, цена актуальна.
+
+## Какая ветка попадает на боевой адрес
+
+Vercel собирает каждый пуш. На боевой адрес (Production) уходит только ветка, указанная в Settings → Git → Production Branch (сейчас `claude/epic-lamport-rnug2b`). Остальные ветки (например, `codex/*`) получают отдельные Preview-адреса. Не нажимайте Promote / «Production rebuild» у деплоя другой ветки: он заменит боевую версию старой сборкой, и страницы вроде `/materials` пропадут (будет 404).
