@@ -21,6 +21,7 @@ mkdirSync(join(out, 'assets'), { recursive: true });
 writeFileSync(join(out, 'index.html'), render(p, { origin }));
 writeFileSync(join(out, 'privacy.html'), renderPrivacy(p, { origin }));
 for (const f of ['styles.css', 'tracking.js', 'app.js']) cpSync(join(root, 'src', f), join(out, 'assets', f));
+cpSync(join(root, 'src', 'faq'), join(out, 'assets', 'faq'), { recursive: true });
 if (existsSync(join(dir, 'video'))) cpSync(join(dir, 'video'), join(out, 'video'), { recursive: true });
 if (existsSync(join(dir, 'assets'))) cpSync(join(dir, 'assets'), join(out, 'img'), { recursive: true });
 if (existsSync(join(dir, 'photos'))) cpSync(join(dir, 'photos'), join(out, 'photos'), { recursive: true });

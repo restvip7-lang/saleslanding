@@ -116,6 +116,7 @@ export function render(p, { origin }) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Golos+Text:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/faq/faq.css">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
 </head>
 <body>
@@ -305,16 +306,35 @@ ${p.terms?.length ? `<section class="terms-sec" id="terms"><div class="wrap">
   ${p.agent ? `<div class="agent"><img src="${esc(p.agent.photo)}" alt="${esc(p.agent.name)}" width="84" height="84" loading="lazy"><div><b>${esc(p.agent.name)}</b><span>${esc(p.agent.role)}</span><span>${esc(p.agent.experience)}</span></div></div>` : ''}
 </div></section>
 
-${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap faq-grid">
-  <div class="faq-side">
-    <span class="eyebrow">Вопросы</span><h2>Частые вопросы</h2>
-    <p class="lead">Не нашли ответ? Спросите менеджера, ответим в течение 15 минут.</p>
-    <div class="faq-cta">${btnWa('', 'click_whatsapp_faq', 'WhatsApp')}${btnTg('', 'click_telegram_faq', 'Telegram')}</div>
+${p.faq?.length ? `<section class="pfaq" id="faq" aria-labelledby="property-faq-title" data-property-faq>
+ <div class="pfaq__container">
+  <div class="pfaq__intro">
+   <span class="eyebrow pfaq__eyebrow">Вопросы</span>
+   <h2 class="pfaq__heading" id="property-faq-title">Вопросы<br><em>перед покупкой</em></h2>
+   <p class="pfaq__lead">Всё важное о квартире, оплате<br class="pfaq__desktop-break"> и оформлении — в одном месте.</p>
+   <aside class="pfaq__contact" aria-label="Связаться с менеджером">
+    <div class="pfaq__contact-top"><span class="pfaq__contact-kicker">ОБСУДИМ ЛИЧНО</span><span class="pfaq__contact-arrow" aria-hidden="true">↗</span></div>
+    <img class="pfaq__conversation" src="assets/faq/conversation.svg" alt="" width="340" height="200" loading="lazy" decoding="async">
+    <h3 class="pfaq__contact-title">Остались вопросы?</h3>
+    <p class="pfaq__contact-copy">Напишите менеджеру — разберём детали и поможем с просмотром.</p>
+    ${waHref || tgHref ? `<div class="pfaq__contact-links">${btnWa('pfaq__channel pfaq__channel--wa', 'click_whatsapp_faq', 'WhatsApp')}${btnTg('pfaq__channel pfaq__channel--tg', 'click_telegram_faq', 'Telegram')}</div>` : ''}
+    <p class="pfaq__response"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l3 2"/></svg>Ответим в течение 15 минут<br>в рабочее время</p>
+   </aside>
   </div>
-  <div class="faq-list">
-  ${p.faq.map((f) => `<details><summary><span>${esc(f.q)}</span></summary><p>${esc(f.a)}</p></details>`).join('')}
+  <div class="pfaq__answers">
+   <div class="pfaq__list-heading"><span>Полезно знать заранее</span><span class="pfaq__count">Вопросов: ${String(p.faq.length).padStart(2, '0')}</span></div>
+   <div class="pfaq__list">${p.faq.map((f, i) => {
+     const icons = { furniture: 'furniture.svg', finance: 'finance.svg', tour: 'video-tour.svg', documents: 'documents.svg', cost: 'cost.svg' };
+     const topicIcon = icons[f.icon];
+     return `<details class="pfaq__item"${i === 0 ? ' open' : ''}>
+      <summary class="pfaq__question"><span class="pfaq__number" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><span class="pfaq__topic-icon" aria-hidden="true"><img src="assets/faq/${topicIcon || 'conversation.svg'}" alt="" width="48" height="48" loading="lazy" decoding="async"></span><span class="pfaq__question-copy">${f.category ? `<span class="pfaq__category">${esc(f.category)}</span>` : ''}<span class="pfaq__question-title">${esc(f.q)}</span></span><span class="pfaq__toggle" aria-hidden="true"></span></summary>
+      <div class="pfaq__answer"><p>${esc(f.a)}</p></div>
+     </details>`;
+   }).join('')}</div>
+   <p class="pfaq__footnote"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="3" width="12" height="14" rx="2"/><path d="M7 7h6M7 10h6M7 13h3"/></svg>Условия покупки и состав расходов уточним перед сделкой.</p>
   </div>
-</div></section>` : ''}
+ </div>
+</section>` : ''}
 
 <section class="lead-sec" id="lead"><div class="wrap lead-box">
   <div class="lead-l">

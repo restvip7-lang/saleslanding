@@ -5,6 +5,16 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var fmt = function (n) { return new Intl.NumberFormat('ru-RU').format(Math.round(n)); };
 
+  // FAQ: нативные details доступны без JS; с JS открыт один ответ.
+  $$('[data-property-faq]').forEach(function (root) {
+    var items = $$('.pfaq__item', root);
+    items.forEach(function (item) {
+      item.addEventListener('toggle', function () {
+        if (item.open) items.forEach(function (other) { if (other !== item) other.open = false; });
+      });
+    });
+  });
+
   // reveal
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (es) {
