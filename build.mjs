@@ -22,6 +22,7 @@ writeFileSync(join(out, 'index.html'), render(p, { origin }));
 writeFileSync(join(out, 'privacy.html'), renderPrivacy(p, { origin }));
 for (const f of ['styles.css', 'tracking.js', 'app.js']) cpSync(join(root, 'src', f), join(out, 'assets', f));
 if (existsSync(join(dir, 'video'))) cpSync(join(dir, 'video'), join(out, 'video'), { recursive: true });
+if (existsSync(join(dir, 'assets'))) cpSync(join(dir, 'assets'), join(out, 'img'), { recursive: true });
 if (existsSync(join(dir, 'photos'))) cpSync(join(dir, 'photos'), join(out, 'photos'), { recursive: true });
 
 writeFileSync(

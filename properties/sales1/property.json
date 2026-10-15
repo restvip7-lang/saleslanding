@@ -459,7 +459,7 @@
     "name": "Земфира",
     "role": "Консультант по объекту",
     "photo": "photos/manager.webp",
-    "cut": "photos/manager-cut.webp"
+    "cut": "img/manager-transparent.webp"
   },
   "priceChecked": "13.10.2026",
   "priceNote": "Информация получена от продавца. Перед бронированием повторно подтверждаем стоимость, комплектацию и условия сделки.",

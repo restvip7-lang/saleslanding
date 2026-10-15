@@ -1,8 +1,11 @@
 // Генерирует HTML страницы из property.json. Без зависимостей.
-import { ILL, IG } from './illus.mjs';
 
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const imgI = (n, c = '') => `<img class="${c}" src="img/icons/${n}.svg" alt="" loading="lazy" decoding="async">`;
+const compass = (dirs) => { const arm = (k, rot, lx, ly) => `<g class="cp${dirs.includes(k) ? ' on' : ''}"><path d="M60 60L50 40 60 10 70 40z" transform="rotate(${rot} 60 60)"/><text x="${lx}" y="${ly}" text-anchor="middle">${k}</text></g>`;
+  return `<svg viewBox="0 0 150 150" class="ig-cmp2" aria-hidden="true" focusable="false"><g transform="translate(15 15)"><circle cx="60" cy="60" r="58" class="rng"/>${arm('С', 0, 60, -2)}${arm('В', 90, 126, 66)}${arm('Ю', 180, 60, 130)}${arm('З', 270, -6, 66)}<circle cx="60" cy="60" r="6" class="hub"/></g></svg>`; };
 
 const money = (n, cur = 'RUB') =>
   new Intl.NumberFormat('ru-RU').format(n) + ({ RUB: ' ₽', EUR: ' €', USD: ' $' }[cur] || ' ' + cur);
@@ -230,16 +233,16 @@ ${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div
     const floors = Array.from({ length: g.floor.total }, (_, i) => { const n = g.floor.total - i; const y = 6 + i * 14; const on = n === g.floor.n; return `<g class="fl${on ? ' on' : ''}" style="--i:${g.floor.total - n}"><rect x="12" y="${y}" width="64" height="11" rx="2"/></g><text x="92" y="${y + 9}" class="fn${on ? ' on' : ''}">${n}</text>`; }).join('');
     const H = g.floor.total * 14 + 12;
     const km = (g.sea.meters / 1000).toLocaleString('ru-RU');
-        const viewIc = (v) => { const s = v.toLowerCase(); return s.startsWith('мор') ? IG.sea : s.startsWith('город') ? IG.city : s.startsWith('гор') ? IG.mount : IG.city; };
+        const viewIc = (v) => { const t = v.toLowerCase(); return imgI(t.startsWith('мор') ? 'sea' : t.startsWith('город') ? 'city' : t.startsWith('гор') ? 'mountains' : 'city', 'ig-v'); };
     return `<div class="ig">
-    <div class="ig-t ig-area rv"><span class="ig-ic">${IG.expand}</span><div class="ig-body"><div class="ig-big"><b class="ig-num">${g.area.value}</b><em>${esc(g.area.unit)}</em></div><span class="ig-k">${esc(g.area.label)}</span></div></div>
-    <div class="ig-t ig-rooms rv"><span class="ig-ic acc">${IG.bed}</span><div class="ig-body"><div class="ig-big"><b>${esc(g.rooms.label)}</b></div><span class="ig-k">${esc(g.rooms.note)}</span></div></div>
+    <div class="ig-t ig-area rv"><span class="ig-ic">${imgI('area')}</span><div class="ig-body"><div class="ig-big"><b class="ig-num">${g.area.value}</b><em>${esc(g.area.unit)}</em></div><span class="ig-k">${esc(g.area.label)}</span></div></div>
+    <div class="ig-t ig-rooms rv"><span class="ig-ic acc">${imgI('bed')}</span><div class="ig-body"><div class="ig-big"><b>${esc(g.rooms.label)}</b></div><span class="ig-k">${esc(g.rooms.note)}</span></div></div>
     <div class="ig-t ig-floor rv"><svg viewBox="0 0 104 ${H}" class="ig-bld" aria-hidden="true">${floors}<path class="gr" d="M6 ${H - 2}h72"/></svg><div class="ig-body"><div class="ig-big"><b class="ig-num t">${g.floor.n}</b><em>из ${g.floor.total}</em></div><span class="ig-k">${esc(g.floor.label)}</span></div></div>
-    <div class="ig-t ig-sea rv"><div class="ig-big"><b class="ig-num">${km}</b><em>км</em></div><span class="ig-k">${esc(g.sea.label)}</span>${IG.scene}</div>
+    <div class="ig-t ig-sea rv"><div class="ig-big"><b class="ig-num">${km}</b><em>км</em></div><span class="ig-k">${esc(g.sea.label)}</span><img class="ig-scene" src="img/icons/sea-distance.svg" alt="" loading="lazy" decoding="async"></div>
     <div class="ig-t ig-view rv"><span class="ig-k">Вид из окон</span><ul>${g.view.map((v) => `<li>${viewIc(v)}<span>${esc(v)}</span></li>`).join('')}</ul></div>
-    <div class="ig-t ig-compass rv"><span class="ig-k">Окна выходят</span>${IG.compass(g.compass.dirs)}<p>${esc(g.compass.label.replace(/^Окна выходят /, '').replace(/ и /g, ' · ').replace(/,/g, ' ·').replace(/^на /, '').replace(/^./, (c) => c.toUpperCase()))}</p></div>
-    <div class="ig-t ig-year rv"><span class="ig-k">${esc(g.year.label)}</span>${IG.building}<b class="ig-s">${g.year.value}</b></div>
-    <div class="ig-t ig-furn rv"><span class="ig-k">${esc(g.furnished.value)} ${esc(g.furnished.label.toLowerCase())}</span><span class="ig-sofa-w">${IG.sofa}</span><div class="ig-bath">${IG.toilet}<b>${esc(g.bath.value)}</b></div></div>
+    <div class="ig-t ig-compass rv"><span class="ig-k">Окна выходят</span>${compass(g.compass.dirs)}<p>${esc(g.compass.label.replace(/^Окна выходят /, '').replace(/ и /g, ' · ').replace(/,/g, ' ·').replace(/^на /, '').replace(/^./, (c) => c.toUpperCase()))}</p></div>
+    <div class="ig-t ig-year rv"><span class="ig-k">${esc(g.year.label)}</span>${imgI('year-building', 'ig-bd')}<b class="ig-s">${g.year.value}</b></div>
+    <div class="ig-t ig-furn rv"><span class="ig-k">${esc(g.furnished.value)} ${esc(g.furnished.label.toLowerCase())}</span><span class="ig-sofa-w">${imgI('sofa', 'ig-sofa')}</span><div class="ig-bath">${imgI('bathroom', 'ig-i2')}<b>${esc(g.bath.value)}</b></div></div>
   </div>`; })()}
 </div>` : `<div class="wrap spec-grid">
   <div class="rv"><span class="eyebrow">Характеристики</span><h2>Всё об объекте</h2>
@@ -286,15 +289,18 @@ ${p.mortgage ? `<section id="mortgage"><div class="wrap">
 </div></section>` : ''}
 ${p.terms?.length ? `<section class="terms-sec" id="terms"><div class="wrap">
   <span class="eyebrow">Условия покупки</span><h2>Просто и безопасно</h2>
-  <span class="terms-deco" aria-hidden="true">${ILL.hero}</span>
-  <div class="terms">${p.terms.map((x, i) => `<div class="term t${i} rv"><div class="term-tx"><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p>${i === 0 ? `<a class="btn btn-primary" href="#lead" ${trk('cta_terms')}>Узнать условия ${SVG.arr}</a>` : ''}</div><span class="term-il" aria-hidden="true">${[ILL.house, ILL.doc, ILL.key][i] || ''}</span></div>`).join('')}</div>
+  <div class="mosaic">
+    ${(() => { const t = p.terms, art = ['financing-villa-calendar', 'documents-shield', 'aftercare-villa-key']; const card = (x, i) => i === 0
+      ? `<article class="finance rv"><div class="finance-copy"><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p><a class="btn btn-primary" href="#lead" ${trk('cta_terms')}>Узнать условия ${SVG.arr}</a></div><img class="finance-art" src="img/${art[0]}.webp" alt="" width="1100" height="833" loading="lazy" decoding="async"></article>`
+      : `<article class="feature f${i} rv"><div><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></div><img src="img/${art[i]}.webp" alt="" loading="lazy" decoding="async"></article>`;
+      return `${card(t[0], 0)}<div class="side">${t.slice(1, 3).map((x, i) => card(x, i + 1)).join('')}</div>`; })()}
+  </div>
 </div></section>` : ''}
 
 <section class="trust" id="trust"><div class="wrap">
   <span class="eyebrow">Этапы сделки</span><h2>Как мы работаем</h2>
-  <span class="trust-deco" aria-hidden="true">${ILL.sprig}</span>
-  <ol class="steps">${(p.steps || []).map((s, i) => `<li class="step rv"><span class="st-n">0${i + 1}</span><span class="st-il" aria-hidden="true">${[ILL.chat, ILL.show, ILL.check, ILL.keysm][i] || ''}</span><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></li>`).join('')}</ol>
-  <div class="cta-band rv"><span class="cb-l" aria-hidden="true">${ILL.sprig}</span><h3>Обсудим покупку вашей квартиры</h3><a class="btn btn-light" href="#lead" ${trk('cta_trust')}>Получить консультацию ${SVG.arr}</a><span class="cb-r" aria-hidden="true">${ILL.scene}</span></div>
+  <ol class="steps">${(p.steps || []).map((s, i) => `<li class="step rv"><img src="img/icons/step-0${i + 1}-${['message', 'tour', 'check', 'key'][i]}.svg" alt="" width="170" height="125" loading="lazy" decoding="async"><div><span class="step-num">0${i + 1}</span><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></div></li>`).join('')}</ol>
+  <div class="cta-band rv"><img class="cb-l" src="img/icons/olive-branch.svg" alt="" loading="lazy" decoding="async"><p class="cb-t">Обсудим покупку вашей квартиры</p><a class="btn btn-light" href="#lead" ${trk('cta_trust')}>Получить консультацию ${SVG.arr}</a></div>
   ${p.agent ? `<div class="agent"><img src="${esc(p.agent.photo)}" alt="${esc(p.agent.name)}" width="84" height="84" loading="lazy"><div><b>${esc(p.agent.name)}</b><span>${esc(p.agent.role)}</span><span>${esc(p.agent.experience)}</span></div></div>` : ''}
 </div></section>
 
@@ -314,7 +320,7 @@ ${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap faq-grid">
     <span class="eyebrow lt">Заявка</span>
     <h2>${esc(p.leadFormTitle)}</h2>
     <p class="lead">${esc(p.leadFormSubtitle)}</p>
-    ${p.manager?.cut ? `<img class="lead-ph" src="${esc(p.manager.cut)}" alt="${esc(p.manager.name)}, ${esc(p.manager.role)}" width="1000" height="1000" loading="lazy">` : ''}
+    ${p.manager?.cut ? `<div class="portrait-stage"><img class="lead-ph" src="${esc(p.manager.cut)}" alt="${esc(p.manager.name)}, ${esc(p.manager.role)}" width="1000" height="1000" loading="lazy" decoding="async"></div>` : ''}
     <div class="lead-man">
       <svg class="lm-ic" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="13" r="7"/><path d="M6 36c0-8 6-13 14-13s14 5 14 13z"/></svg>
       <div class="lm-t"><b>Ваш менеджер</b><span>Поможет с просмотром и ответит на вопросы.</span></div>

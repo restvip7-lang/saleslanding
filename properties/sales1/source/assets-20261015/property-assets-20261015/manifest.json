@@ -1,0 +1,146 @@
+[
+  {
+    "file": "generation-prompts.txt",
+    "bytes": 589
+  },
+  {
+    "file": "icons/area.svg",
+    "bytes": 277
+  },
+  {
+    "file": "icons/arrow-up-right.svg",
+    "bytes": 197
+  },
+  {
+    "file": "icons/bathroom.svg",
+    "bytes": 328
+  },
+  {
+    "file": "icons/bed.svg",
+    "bytes": 361
+  },
+  {
+    "file": "icons/city.svg",
+    "bytes": 351
+  },
+  {
+    "file": "icons/compass.svg",
+    "bytes": 752
+  },
+  {
+    "file": "icons/floor-5-of-7.svg",
+    "bytes": 1471
+  },
+  {
+    "file": "icons/mountains.svg",
+    "bytes": 279
+  },
+  {
+    "file": "icons/olive-branch.svg",
+    "bytes": 2265
+  },
+  {
+    "file": "icons/pin.svg",
+    "bytes": 275
+  },
+  {
+    "file": "icons/sea-distance.svg",
+    "bytes": 716
+  },
+  {
+    "file": "icons/sea.svg",
+    "bytes": 307
+  },
+  {
+    "file": "icons/sofa.svg",
+    "bytes": 415
+  },
+  {
+    "file": "icons/step-01-message.svg",
+    "bytes": 488
+  },
+  {
+    "file": "icons/step-02-tour.svg",
+    "bytes": 534
+  },
+  {
+    "file": "icons/step-03-check.svg",
+    "bytes": 532
+  },
+  {
+    "file": "icons/step-04-key.svg",
+    "bytes": 559
+  },
+  {
+    "file": "icons/year-building.svg",
+    "bytes": 356
+  },
+  {
+    "file": "illustrations/aftercare-villa-key.png",
+    "bytes": 1956931,
+    "width": 1448,
+    "height": 1086,
+    "png_color_type": 6,
+    "alpha_channel": true
+  },
+  {
+    "file": "illustrations/documents-shield.png",
+    "bytes": 1058373,
+    "width": 1412,
+    "height": 1114,
+    "png_color_type": 6,
+    "alpha_channel": true
+  },
+  {
+    "file": "illustrations/financing-villa-calendar.png",
+    "bytes": 1954210,
+    "width": 1448,
+    "height": 1086,
+    "png_color_type": 6,
+    "alpha_channel": true
+  },
+  {
+    "file": "layout-reference.css",
+    "bytes": 4782
+  },
+  {
+    "file": "people/manager-transparent.png",
+    "bytes": 2571502,
+    "width": 1254,
+    "height": 1254,
+    "png_color_type": 6,
+    "alpha_channel": true
+  },
+  {
+    "file": "preview.html",
+    "bytes": 6390
+  },
+  {
+    "file": "README-RU.md",
+    "bytes": 7628
+  },
+  {
+    "file": "reference/another-world-f24-no-floorplan.png",
+    "bytes": 1424349,
+    "width": 1346,
+    "height": 1168,
+    "png_color_type": 2,
+    "alpha_channel": false
+  },
+  {
+    "file": "reference/enquiry-section-with-manager.png",
+    "bytes": 1936651,
+    "width": 1625,
+    "height": 968,
+    "png_color_type": 2,
+    "alpha_channel": false
+  },
+  {
+    "file": "reference/purchase-conditions-process-redesign.png",
+    "bytes": 1900079,
+    "width": 1412,
+    "height": 1114,
+    "png_color_type": 2,
+    "alpha_channel": false
+  }
+]

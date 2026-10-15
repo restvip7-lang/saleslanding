@@ -1,0 +1,7 @@
+Mode: built-in imagegen; transparent_background=true; reference: purchase-conditions-process-redesign.png
+
+1. Isolated premium Mediterranean villa + payment calendar + olive/cypress illustration for a dark navy panel; no text or card background.
+2. Isolated ivory document with navy strokes, terracotta shield/checkmark and olive sprig; no words or card background.
+3. Isolated terracotta key + ivory Mediterranean villa, cypress and olive sprig; no words or card background.
+
+All PNGs retain generated alpha. No raster background removal or image editing was performed by scripts.
