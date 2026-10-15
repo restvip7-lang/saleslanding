@@ -877,3 +877,34 @@ img[src*="img/"]{pointer-events:none}
 }
 @media (min-width:1000px){.lead-l{align-self:end}.lead-r{align-self:center}}
 @media (min-width:1000px){.lead-man{right:6%}.lead-man .lm-t{flex:1 1 150px;min-width:140px}.lead-man .lm-t b{white-space:nowrap}.lm-b .btn{padding:0 14px;gap:8px}}
+
+/* ===== Характеристики по макету 25: план + светлая плитка «2 км» ===== */
+.ig-planic{width:56px;height:56px;fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.ig-ic{background:var(--paper);border-radius:18px;width:88px;height:96px}
+.ig-ic.acc{background:#f6e6dc}
+@media (min-width:900px){
+  .ig{grid-template-columns:repeat(12,1fr)}
+  .ig-area,.ig-rooms,.ig-floor{grid-column:span 4}
+  .ig .ig-plan{grid-column:span 8}.ig .ig-sea{grid-column:span 4}
+  .ig-view,.ig-compass,.ig-year,.ig-furn{grid-column:span 3}
+}
+.ig .ig-plan{background:linear-gradient(160deg,#0f3b46,#0a2a38);color:#fff;border:0;padding:22px 24px;min-height:300px;flex-direction:column;gap:12px}
+.plan-h{display:flex;flex-direction:column;gap:2px}.plan-h b{font:400 clamp(22px,2.2vw,30px) var(--serif);color:#fff}.plan-h span{font-size:12px;color:rgba(255,255,255,.7)}
+.plan-g{flex:1;display:grid;grid-template-columns:1fr 1fr .8fr;grid-template-rows:1fr 1.15fr;gap:0;grid-template-areas:"b1 b2 ba" "lv lv ha";min-height:200px}
+.pr-room{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:2px solid rgba(255,255,255,.9);margin:-1px 0 0 -1px;font-size:clamp(11px,1.1vw,14px);font-weight:600;color:#fff;text-align:center;padding:6px;border-radius:4px}
+.pr-b1{grid-area:b1}.pr-b2{grid-area:b2}.pr-ba{grid-area:ba;background:rgba(255,255,255,.06)}.pr-lv{grid-area:lv;flex-direction:row;gap:14px}.pr-ha{grid-area:ha;background:rgba(255,255,255,.1)}
+.pr-ic{width:34px;height:34px;object-fit:contain;filter:brightness(0) invert(.92);opacity:.9}.pr-lv .pr-ic{width:44px;height:44px}
+.pr-door{position:absolute;right:-26px;top:50%;transform:translateY(-50%);color:var(--terra-l);font-style:normal;font-size:22px}
+.ig .ig-sea{background:linear-gradient(180deg,#dfe8ea,#cfe0e1);color:var(--ink);border:0;padding:22px 24px 0;min-height:300px;justify-content:flex-start;gap:4px;overflow:hidden}
+.ig .ig-sea .ig-big b,.ig .ig-sea .ig-big em{color:var(--ink)}
+.ig .ig-sea .ig-big b{font-size:clamp(72px,8vw,120px)}.ig .ig-sea .ig-big em{font-size:clamp(24px,2.6vw,36px)}
+.ig-sea .ig-k{color:var(--ink);border-top:1px solid rgba(10,34,49,.4);width:fit-content;order:2}
+.ig-seasc{order:3;margin:auto -24px 0;width:calc(100% + 48px);height:auto;display:block}
+.ig-seasc .mt{fill:#aec3c8}.ig-seasc .hl{fill:#8fb3b6}.ig-seasc .hs{fill:var(--terra)}.ig-seasc .rt{fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:5 6}.ig-seasc .wv path{fill:none;stroke:#1aa3a8;stroke-width:3;stroke-linecap:round}
+.ig-view,.ig-compass,.ig-year,.ig-furn{min-height:0}
+.ig-view ul{grid-template-columns:repeat(3,1fr);margin-top:14px}.ig-view li{font-size:clamp(14px,1.4vw,18px);gap:10px}.ig-v{width:44px;height:44px}
+.ig-year .ig-s{font-size:clamp(40px,4vw,60px)}.ig-bd{max-width:150px;max-height:110px}
+.ig-cmp2{width:120px}.ig-sofa{width:96px}
+@media (max-width:899px){.ig .ig-plan,.ig .ig-sea{grid-column:span 2}.ig-view{grid-column:span 2}.ig-furn{grid-column:span 2}.plan-g{min-height:220px}.pr-door{right:-18px;font-size:18px}}
+.ig-seasc{height:150px;max-height:48%;flex:none}
+@media (max-width:899px){.ig-seasc{height:130px}.ig .ig-sea{min-height:260px}}
