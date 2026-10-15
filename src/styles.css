@@ -982,3 +982,9 @@ img[src*="img/"]{pointer-events:none}
   .lead-man .lm-t{flex:1 1 130px}.lead-man .lm-ic{width:36px;height:36px}
   .lm-b{gap:8px;padding-left:12px}.lm-b .btn{padding:0 12px;font-size:13px;min-height:42px;gap:6px}.lm-b .btn svg{width:18px;height:18px}
 }
+@media (min-width:1000px){
+  .lead-man{right:46%;flex-wrap:wrap;bottom:6%;row-gap:12px}
+  .lead-man .lm-t{flex:1 1 140px}
+  .lm-b{border:0;padding:0;width:100%;flex:1 1 100%}
+  .lm-b .btn{flex:1}
+}
