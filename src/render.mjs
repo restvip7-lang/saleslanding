@@ -7,6 +7,21 @@ const imgI = (n, c = '') => `<img class="${c}" src="img/icons/${n}.svg" alt="" l
 const compass = (dirs) => { const arm = (k, rot, lx, ly) => `<g class="cp${dirs.includes(k) ? ' on' : ''}"><path d="M60 60L50 40 60 10 70 40z" transform="rotate(${rot} 60 60)"/><text x="${lx}" y="${ly}" text-anchor="middle">${k}</text></g>`;
   return `<svg viewBox="0 0 150 150" class="ig-cmp2" aria-hidden="true" focusable="false"><g transform="translate(15 15)"><circle cx="60" cy="60" r="58" class="rng"/>${arm('С', 0, 60, -2)}${arm('В', 90, 126, 66)}${arm('Ю', 180, 60, 130)}${arm('З', 270, -6, 66)}<circle cx="60" cy="60" r="6" class="hub"/></g></svg>`; };
 
+const sceneSvg = (dark) => {
+  const wall = dark ? '#1b4259' : '#f4ece0', shade = dark ? '#133349' : '#e4d8c6', roof = '#c9532a', cy = dark ? '#2e6a55' : '#2f5a45', sea = dark ? '#173f55' : '#cfe0e4', mt = dark ? '#2b5870' : '#b8cbd3', sun = dark ? '#d9a27f' : '#efcfb6';
+  const dk = dark ? '#0a2231' : '#3b5566', ln = dark ? '#3d6f8a' : '#cdbfa8';
+  const arch = (x, y, w, h) => `<path d="M${x} ${y + h}V${y + w / 2}a${w / 2} ${w / 2} 0 0 1 ${w} 0V${y + h}z" fill="${dk}"/>`;
+  const villa = (x, y, w, h, k) => `<g transform="translate(${x} ${y})"><rect width="${w}" height="${h}" fill="${wall}" stroke="${ln}" stroke-width="1"/><rect y="${h - 7}" width="${w}" height="7" fill="${shade}"/><path d="M-3 0h${w + 6}v-5H-3z" fill="${roof}"/>${arch(w * .16, h * .42, 9, h * .58 - 7)}${k ? arch(w * .5, h * .3, 9, h * .7 - 7) : ''}${k ? arch(w * .74, h * .42, 9, h * .58 - 7) : ''}</g>`;
+  const tree = (x, y, sc) => `<path d="M0 0c-8-24-9-50 0-82 9 32 8 58 0 82z" fill="${cy}" transform="translate(${x} ${y}) scale(${sc})"/>`;
+  const bush = (x, y) => `<g fill="${dark ? '#4a8466' : '#587f5f'}"><circle cx="${x}" cy="${y}" r="9"/><circle cx="${x + 10}" cy="${y + 3}" r="7"/><circle cx="${x - 9}" cy="${y + 4}" r="6"/></g>`;
+  return `<svg viewBox="0 0 560 240" preserveAspectRatio="xMaxYMid meet" aria-hidden="true" focusable="false"><circle cx="330" cy="78" r="54" fill="${sun}" opacity=".7"/>
+  <path d="M0 150l60-18 50 12 70-30 60 22 80-16 90 20 150-26v100H0z" fill="${mt}"/><rect y="150" width="560" height="90" fill="${sea}"/>
+  <path d="M210 170h350v70H210z" fill="${shade}" opacity=".5"/>
+  ${villa(330, 96, 70, 74, 1)}${villa(402, 70, 82, 100, 1)}${villa(486, 110, 74, 64, 0)}${villa(270, 128, 56, 46, 0)}
+  <path d="M250 174h310v10H250z" fill="${wall}"/><path d="M290 184h270v10H290z" fill="${shade}"/><path d="M330 194h230v12H330z" fill="${wall}"/>
+  ${tree(300, 170, 1)}${tree(486, 120, 1.25)}${tree(540, 150, 1.1)}${tree(262, 176, .8)}${bush(360, 172)}${bush(452, 176)}${bush(520, 186)}${bush(420, 196)}</svg>`;
+};
+
 const money = (n, cur = 'RUB') =>
   new Intl.NumberFormat('ru-RU').format(n) + ({ RUB: ' ₽', EUR: ' €', USD: ' $' }[cur] || ' ' + cur);
 
@@ -289,6 +304,7 @@ ${p.mortgage ? `<section id="mortgage"><div class="wrap">
 </div></section>` : ''}
 ${p.terms?.length ? `<section class="terms-sec" id="terms"><div class="wrap">
   <span class="eyebrow">Условия покупки</span><h2>Просто и безопасно</h2>
+  <span class="terms-deco" aria-hidden="true">${sceneSvg(false)}</span>
   <div class="mosaic">
     ${(() => { const t = p.terms, art = ['financing-villa-calendar', 'documents-shield', 'aftercare-villa-key']; const card = (x, i) => i === 0
       ? `<article class="finance rv"><div class="finance-copy"><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p><a class="btn btn-primary" href="#lead" ${trk('cta_terms')}>Узнать условия ${SVG.arr}</a></div><img class="finance-art" src="img/${art[0]}.webp" alt="" width="1100" height="833" loading="lazy" decoding="async"></article>`
@@ -299,8 +315,8 @@ ${p.terms?.length ? `<section class="terms-sec" id="terms"><div class="wrap">
 
 <section class="trust" id="trust"><div class="wrap">
   <span class="eyebrow">Этапы сделки</span><h2>Как мы работаем</h2>
-  <ol class="steps">${(p.steps || []).map((s, i) => `<li class="step rv"><img src="img/icons/step-0${i + 1}-${['message', 'tour', 'check', 'key'][i]}.svg" alt="" width="170" height="125" loading="lazy" decoding="async"><div><span class="step-num">0${i + 1}</span><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></div></li>`).join('')}</ol>
-  <div class="cta-band rv"><img class="cb-l" src="img/icons/olive-branch.svg" alt="" loading="lazy" decoding="async"><p class="cb-t">Обсудим покупку вашей квартиры</p><a class="btn btn-light" href="#lead" ${trk('cta_trust')}>Получить консультацию ${SVG.arr}</a></div>
+  <img class="trust-deco" src="img/icons/olive-branch.svg" alt="" loading="lazy" decoding="async"><ol class="steps">${(p.steps || []).map((s, i) => `<li class="step rv"><img src="img/icons/step-0${i + 1}-${['message', 'tour', 'check', 'key'][i]}.svg" alt="" width="170" height="125" loading="lazy" decoding="async"><div><span class="step-num">0${i + 1}</span><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></div></li>`).join('')}</ol>
+  <div class="cta-band rv"><img class="cb-l" src="img/icons/olive-branch.svg" alt="" loading="lazy" decoding="async"><span class="cb-scene" aria-hidden="true">${sceneSvg(true)}</span><p class="cb-t">Обсудим покупку вашей квартиры</p><a class="btn btn-light" href="#lead" ${trk('cta_trust')}>Получить консультацию ${SVG.arr}</a></div>
   ${p.agent ? `<div class="agent"><img src="${esc(p.agent.photo)}" alt="${esc(p.agent.name)}" width="84" height="84" loading="lazy"><div><b>${esc(p.agent.name)}</b><span>${esc(p.agent.role)}</span><span>${esc(p.agent.experience)}</span></div></div>` : ''}
 </div></section>
 
@@ -335,9 +351,9 @@ ${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap faq-grid">
       <div class="row"><label for="fPhone">Телефон</label><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="fErr"></div>
       <div class="row" role="group" aria-labelledby="msgLbl"><span class="lbl" id="msgLbl">Где удобно ответить?</span>
         <div class="seg">
-          <input type="radio" id="m1" name="messenger" value="whatsapp" checked><label for="m1">WhatsApp</label>
-          <input type="radio" id="m2" name="messenger" value="telegram"><label for="m2">Telegram</label>
-          <input type="radio" id="m3" name="messenger" value="call"><label for="m3">Звонок</label>
+          <input type="radio" id="m1" name="messenger" value="whatsapp" checked><label for="m1">${SVG.wa}WhatsApp</label>
+          <input type="radio" id="m2" name="messenger" value="telegram"><label for="m2">${SVG.tg}Telegram</label>
+          <input type="radio" id="m3" name="messenger" value="call"><label for="m3">${SVG.ph}Звонок</label>
         </div></div>
       <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="consent"><input type="checkbox" name="consent" required><span>Согласен на обработку персональных данных согласно <a href="privacy.html" target="_blank" rel="noopener">политике конфиденциальности</a></span></label>
