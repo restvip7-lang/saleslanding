@@ -988,3 +988,18 @@ img[src*="img/"]{pointer-events:none}
   .lm-b{border:0;padding:0;width:100%;flex:1 1 100%}
   .lm-b .btn{flex:1}
 }
+
+/* заявка по образцу 38: без внешней рамки, портрет крупно, карточка менеджера внизу слева в одну строку */
+@media (min-width:1000px){
+  .lead-sec{padding:60px 0 0}
+  .lead-box{border:0;border-radius:0;box-shadow:none;background:none;overflow:visible;grid-template-columns:57% 43%;max-width:1220px}
+  .lead-l{padding:0;position:relative;aspect-ratio:1/1;align-self:end}
+  .lead-l h2{font-size:clamp(30px,3.6vw,46px);max-width:11.5em}
+  .lead-l .lead{max-width:15em;font-size:clamp(14px,1.15vw,16px)}
+  .portrait-stage{left:18%;width:92%;bottom:0;-webkit-mask-image:linear-gradient(90deg,#000 84%,transparent 100%);mask-image:linear-gradient(90deg,#000 84%,transparent 100%)}
+  .lead-man{left:0;right:12%;bottom:6%;flex-wrap:nowrap;row-gap:0;gap:14px;padding:14px 18px}
+  .lead-man .lm-t{flex:1 1 150px;min-width:130px}
+  .lm-b{border-left:1px solid rgba(255,255,255,.16);padding:0 0 0 14px;width:auto;flex:none}
+  .lm-b .btn{flex:none;padding:0 14px;font-size:13px;min-height:42px}
+  .lead-r{margin:0 0 40px;align-self:center}
+}
