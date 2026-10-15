@@ -1065,3 +1065,14 @@ img[src*="img/"]{pointer-events:none}
 @media (max-width:759px){.mapcard .map{aspect-ratio:4/3}}
 @media (max-width:899px){.rd-ring text{font-size:21px}.radar svg{max-height:360px}.mc-h .btn{white-space:nowrap}.mc-t{font-size:16px}}
 .dist b{text-wrap:balance}
+
+/* ===== Правки: иконки чипов по центру; карточки преимуществ компактнее (конфликт класса .feature) ===== */
+.ls-chips .ico{display:grid;place-items:center;flex:none}
+.features .feature{display:flex;grid-template-columns:none;align-items:center;gap:14px;padding:18px 20px;min-height:0;overflow:hidden;background:var(--white);border:1px solid var(--line);border-radius:var(--r);box-shadow:none}
+.features .feature:hover{box-shadow:var(--shadow)}
+.features .feature .ico{flex:none;align-self:center}
+.features .feature>div{min-width:0}
+.features .feature h3{font-family:var(--sans);font-weight:700;font-size:clamp(16px,1.4vw,19px);line-height:1.25;letter-spacing:0;margin:0 0 4px}
+.features .feature p{font-size:14px;line-height:1.45;color:var(--muted)}
+.features .feature em{right:14px;top:6px;font-size:34px}
+.features{gap:12px;margin-top:40px}
