@@ -84,29 +84,30 @@ h1{font:400 ${px(story ? 132 : 112)}px/1.02 Prata,serif;letter-spacing:-.01em;ma
       { ic: 'sofa', v: 'С мебелью', l: 'Готова к проживанию' },
     ];
     const tileHtml = tiles.map((t) => `<div class="tile"><span class="ti"><img src="${icon(t.ic === 'sea-distance-ic' ? 'sea' : t.ic)}" alt=""></span><div><b>${esc(t.v)}${t.u ? `<em>${esc(t.u)}</em>` : ''}</b><span>${esc(t.l)}</span></div></div>`).join('');
-    const cols = wide ? 3 : 2;
+    const cols = 2;
     const photoH = story ? 520 : wide ? 0 : 380;
     const infoCss = `
 body{background:radial-gradient(900px 600px at 0 100%,rgba(201,74,30,.3),transparent 60%),radial-gradient(800px 500px at 100% 0,rgba(56,196,189,.16),transparent 60%),#0a2231}
 .wrap{position:absolute;inset:0;padding:${padT}px ${padX}px ${padB}px;display:flex;${wide ? 'flex-direction:row;gap:48px;align-items:stretch' : 'flex-direction:column;gap:' + px(story ? 36 : 30) + 'px'}}
 .brand{font-size:${px(30)}px}.brand i{width:${px(44)}px;height:${px(44)}px}
-.left{${wide ? 'flex:0 0 38%;display:flex;flex-direction:column;justify-content:space-between' : ''}}
+.left{${wide ? 'flex:0 0 44%;display:flex;flex-direction:column;min-width:0' : ''}}
+.lph{display:none}${wide ? `.lph{display:block;position:relative;flex:1;margin-top:22px;border-radius:26px;background:url("${url(aptPhoto.src)}") center/cover;min-height:0}.lph .price{position:absolute;left:18px;bottom:18px;box-shadow:0 12px 30px -10px rgba(0,0,0,.6)}` : ''}
 .eyebrow{font:600 ${px(24)}px/1.2 "Golos Text";letter-spacing:.2em;text-transform:uppercase;color:#ee8156;margin:${px(26)}px 0 ${px(14)}px}
-h1{font:400 ${px(story ? 104 : 92)}px/1.04 Prata,serif;text-wrap:balance}
+h1{font:400 ${wide ? 60 : px(story ? 104 : 92)}px/1.04 Prata,serif;text-wrap:balance}
 ${photoH ? `.ph{height:${photoH}px;border-radius:32px;background:url("${url(aptPhoto.src)}") center/cover;flex:none}` : ''}
 .grid{flex:1;display:grid;grid-template-columns:repeat(${cols},1fr);gap:${wide ? 14 : 18}px;align-content:stretch}
-.tile{display:flex;${wide ? 'flex-direction:column;align-items:flex-start;justify-content:center;' : 'align-items:center;'}gap:${wide ? 16 : 22}px;padding:${wide ? 18 : 22}px ${wide ? 20 : 26}px;background:#f4efe5;color:#0a2231;border-radius:${wide ? 18 : 28}px;min-width:0}
+.tile{display:flex;align-items:center;gap:${wide ? 14 : 22}px;padding:${wide ? 12 : 22}px ${wide ? 18 : 26}px;background:#f4efe5;color:#0a2231;border-radius:${wide ? 18 : 28}px;min-width:0}
 .ti{flex:none;display:grid;place-items:center;width:${wide ? 64 : 92}px;height:${wide ? 64 : 92}px;border-radius:50%;background:#0a2231}
-.ti img{width:${wide ? 36 : 52}px;height:${wide ? 36 : 52}px;filter:brightness(0) invert(.93)}
-.tile b{display:block;font:400 ${wide ? 33 : story ? 56 : 54}px/1.05 Prata,serif;white-space:${wide ? 'normal' : 'nowrap'}}
+.ti img{width:${wide ? 42 : 52}px;height:${wide ? 42 : 52}px;filter:brightness(0) invert(.93)}
+.tile b{display:block;font:400 ${wide ? 35 : story ? 56 : 54}px/1.05 Prata,serif;white-space:nowrap}
 .tile b em{font:400 .5em Prata;margin-left:.2em;font-style:normal}
-.tile span:not(.ti){display:block;font:600 ${wide ? 15 : 22}px/1.25 "Golos Text";color:#5a6872;margin-top:${wide ? 4 : 8}px;letter-spacing:.02em}
+.tile span:not(.ti){display:block;font:600 ${wide ? 16 : 22}px/1.25 "Golos Text";color:#5a6872;margin-top:${wide ? 6 : 8}px;letter-spacing:.02em}
 .foot{display:flex;align-items:center;justify-content:space-between;gap:24px}
-.price{display:inline-flex;align-items:baseline;gap:${px(18)}px;padding:${px(20)}px ${px(40)}px;background:#c94a1e;border-radius:999px;font:400 ${px(story ? 80 : 72)}px/1 Prata,serif;${wide ? 'align-self:flex-start' : ''}}
+.price{display:inline-flex;align-items:baseline;gap:${px(18)}px;padding:${wide ? 14 : px(20)}px ${wide ? 30 : px(40)}px;background:#c94a1e;border-radius:999px;font:400 ${wide ? 52 : px(story ? 80 : 72)}px/1 Prata,serif}
 .price small{font:600 ${px(24)}px/1 "Golos Text";letter-spacing:.14em;text-transform:uppercase;opacity:.9}
 .tag{font:500 ${wide ? 14 : 24}px/1.3 "Golos Text";color:rgba(242,237,227,.75);text-align:right}`;
     const infoBody = wide
-      ? `<div class="wrap"><div class="left"><div><div class="brand"><i></i>${brand}</div><div class="eyebrow">${esc(p.type)} · ${place}</div><h1>${esc(p.title)}</h1></div><div class="price"><small>Цена</small>${esc(price)}</div></div><div class="grid">${tileHtml}</div></div>`
+      ? `<div class="wrap"><div class="left"><div><div class="brand"><i></i>${brand}</div><div class="eyebrow">${esc(p.type)} · ${place}</div><h1>${esc(p.title)}</h1></div><div class="lph"><div class="price"><small>Цена</small>${esc(price)}</div></div></div><div class="grid">${tileHtml}</div></div>`
       : `<div class="wrap"><div class="top"><div class="brand"><i></i>${brand}</div><div class="eyebrow">${esc(p.type)} · ${place}</div><h1>${esc(p.title)}</h1></div>${photoH ? '<div class="ph"></div>' : ''}<div class="grid">${tileHtml}</div><div class="foot"><div class="price"><small>Цена</small>${esc(price)}</div><div class="tag">${esc(p.listingNote || 'Вторичный рынок')}</div></div></div>`;
 
     out.push({ ...f, variant: 'photo', variantLabel: VARIANTS[0].label, file: `${f.id}-photo.png`, html: base(w, h, photoBody, photoCss) });
