@@ -927,3 +927,27 @@ img[src*="img/"]{pointer-events:none}
 }
 .ig-year .ig-s{font-size:clamp(50px,6vw,72px)}.ig-bd{max-width:240px;max-height:150px}.ig-cmp2{width:150px}.ig-sofa{width:130px}
 @media (max-width:899px){.ig-view{grid-column:span 2;min-height:0}.ig .ig-sea{min-height:300px}.ig-v{width:56px;height:56px}}
+
+/* ===== Крупнее иконки и шрифты в характеристиках ===== */
+.ig .ig-k{font-size:13px;letter-spacing:.12em}
+.ig-body .ig-k{font-size:13px}
+.ig-floor .ig-bld{width:150px;background:none;padding:0;flex:none;height:auto;max-height:210px}
+.ig-bld .bo{fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.ig-bld .fl rect{fill:#ddd5c6}.ig-bld .fl.on rect{fill:var(--terra)}
+.ig-bld .fn{font-family:var(--serif);font-size:13px;fill:var(--ink)}.ig-bld .fn.on{fill:var(--terra);font-weight:700;font-size:15px}
+.ig-bld .gr{stroke:var(--ink);stroke-width:2.4}
+.ig-floor{gap:22px}
+.ig-ic,.ig-ic img,.ig-planic{}
+.ig-ic{width:104px;height:112px}.ig-ic img,.ig-ic svg{width:72px;height:72px}
+.ig-view li{font-family:var(--sans);font-weight:500;font-size:clamp(20px,2.2vw,28px);gap:18px}
+.ig-v{width:clamp(84px,9vw,120px);height:clamp(84px,9vw,120px)}
+.ig-cmp2{width:min(220px,80%)}.ig-cmp2 text{font-size:17px}
+.ig-compass p{font-size:clamp(16px,1.5vw,20px);font-weight:500}
+.ig-bd{max-width:min(300px,90%);max-height:none;width:100%}
+.ig-sofa{width:min(190px,70%)}
+.ig-i2{width:56px;height:60px}.ig-bath b{font-size:clamp(26px,2.6vw,34px)}
+.ig-year .ig-s{font-size:clamp(56px,6.4vw,84px)}
+@media (max-width:899px){.ig-floor .ig-bld{width:120px}.ig-v{width:68px;height:68px}.ig-ic,.ig-ic img,.ig-ic svg{}.ig-ic{width:84px;height:92px}.ig-ic img,.ig-ic svg{width:56px;height:56px}}
+.ig .ig-sea .ig-big{margin-bottom:2px}
+.ig-sea .ig-k{margin-top:6px}
+.ig-bld .fl rect:first-child{fill:#ddd5c6}.ig-bld .fl.on rect:first-child{fill:var(--terra)}
