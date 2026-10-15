@@ -1047,3 +1047,20 @@ img[src*="img/"]{pointer-events:none}
   .form{padding:1.9em 2em}
   .form-h{font-size:2.4em}
 }
+
+/* ===== Локация по образцу 40 ===== */
+.rd-halo{fill:none!important;stroke:rgba(238,129,86,.55);stroke-width:2}
+.rd-c{stroke:rgba(255,255,255,.4)}
+.rd-ring:nth-of-type(1) .rd-c{stroke:rgba(56,196,189,.55)}
+.rd-ring text{font-size:15px;fill:#fff;font-weight:600}
+.rd-sea path{stroke:var(--aqua)}
+@media (min-width:900px){
+  .loc-grid{align-items:stretch;grid-template-columns:1.12fr 1fr;gap:34px 56px}
+  .radar{align-self:stretch;margin:0;display:flex;flex-direction:column;justify-content:center;max-width:none;padding:14px 18px 10px;border-radius:26px;background:radial-gradient(70% 70% at 50% 50%,rgba(56,196,189,.12),rgba(255,255,255,.02));min-height:0}
+  .radar svg{flex:1;min-height:0;width:100%;height:100%;max-height:none}
+  .rd-cap{text-align:right;font-size:12px;margin-top:2px}
+  .loc h2{font-size:clamp(44px,5.2vw,78px)}
+}
+.mapcard .map{aspect-ratio:3.3/1;border-radius:16px}
+@media (max-width:759px){.mapcard .map{aspect-ratio:4/3}}
+@media (max-width:899px){.rd-ring text{font-size:21px}.radar svg{max-height:360px}.mc-h .btn{white-space:nowrap}.mc-t{font-size:16px}}
