@@ -1,4 +1,5 @@
 // Генерирует HTML страницы из property.json. Без зависимостей.
+import { ILL, IG } from './illus.mjs';
 
 const esc = (s = '') =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -25,6 +26,8 @@ const ICONS = {
 const icon = (n) => `<span class="ico"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n] || ICONS.home}</svg></span>`;
 
 const SVG = {
+  arr: '<svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9"/></svg>',
+  pin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 22s-7-6.2-7-12a7 7 0 0114 0c0 5.800-7 12-7 12zm0-9a3 3 0 100-6 3 3 0 000 6z"/></svg>',
   wa: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l1.6-4.9A8.5 8.5 0 1112 20.5a8.4 8.4 0 01-4.1-1.1z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.5-2-1-1 .8c-1-.4-2-1.4-2.4-2.4l.8-1-1-2z"/></svg>',
   tg: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.9 4.3L18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.7-7.9c.4-.3-.1-.5-.6-.2L6.6 13.2 2 11.8c-1-.3-1-1 .2-1.5L20.3 3.3c.8-.3 1.6.2 1.6 1z"/></svg>',
   ph: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>',
@@ -222,37 +225,22 @@ ${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div
   ${[0, 1].map((row) => { const items = p.amenities.filter((_, i) => i % 2 === row); const html = items.map((t) => `<span>${esc(t)}</span>`).join(''); return `<div class="marq ${row ? 'rev' : ''}" aria-hidden="true"><div class="marq-track">${html}${html}${html}${html}</div></div>`; }).join('')}
 </section>` : ''}
 <section id="specs">${p.infographic ? `<div class="wrap">
-  <span class="eyebrow">Характеристики</span><h2>Квартира в цифрах</h2>
+  <div class="sp-head"><div><span class="eyebrow">Характеристики</span><h2>Квартира в цифрах</h2></div><p class="ig-tags">${(p.infographic.tags || []).map((t, i) => `<span class="${i ? 'f' : ''}">${esc(t)}</span>`).join('')}</p></div>
   ${(() => { const g = p.infographic;
-    const floors = Array.from({ length: g.floor.total }, (_, i) => { const n = g.floor.total - i; const y = 8 + i * 16; const on = n === g.floor.n; return `<g class="fl${on ? ' on' : ''}" style="--i:${g.floor.total - n}"><rect x="20" y="${y}" width="76" height="13" rx="3"/>${[0, 1, 2, 3].map((w) => `<rect class="win" x="${28 + w * 17}" y="${y + 3.5}" width="8" height="6" rx="1.5"/>`).join('')}</g>`; }).join('');
-    const H = g.floor.total * 16 + 14;
-    const pt = { 'С': [60, 8], 'В': [112, 60], 'Ю': [60, 112], 'З': [8, 60] };
-    const comp = Object.entries(pt).map(([k, [x, y]]) => { const on = g.compass.dirs.includes(k); const rot = { 'С': 0, 'В': 90, 'Ю': 180, 'З': 270 }[k]; return `<g class="cp${on ? ' on' : ''}"><path d="M60 60 L52 40 L60 14 L68 40 Z" transform="rotate(${rot} 60 60)"/><text x="${x}" y="${y + 4}" text-anchor="middle">${k}</text></g>`; }).join('');
-    const rooms = [...Array(g.rooms.bedrooms).fill('спальня'), ...Array(g.rooms.living).fill('гостиная')].map((t, i, arr) => `<div class="rm${t === 'гостиная' ? ' big' : ''}" style="--i:${i}"><i></i><span>${t}</span></div>`).join('');
+    const floors = Array.from({ length: g.floor.total }, (_, i) => { const n = g.floor.total - i; const y = 6 + i * 14; const on = n === g.floor.n; return `<g class="fl${on ? ' on' : ''}" style="--i:${g.floor.total - n}"><rect x="12" y="${y}" width="64" height="11" rx="2"/></g><text x="92" y="${y + 9}" class="fn${on ? ' on' : ''}">${n}</text>`; }).join('');
+    const H = g.floor.total * 14 + 12;
     const km = (g.sea.meters / 1000).toLocaleString('ru-RU');
+        const viewIc = (v) => { const s = v.toLowerCase(); return s.startsWith('мор') ? IG.sea : s.startsWith('город') ? IG.city : s.startsWith('гор') ? IG.mount : IG.city; };
     return `<div class="ig">
-    <div class="ig-t ig-area rv"><div class="ig-area-l"><span class="ig-k">${esc(g.area.label)}</span><div class="ig-big"><b class="ig-num">${g.area.value}</b><em>${esc(g.area.unit)}</em></div><p class="ig-cap">Условная схема планировки</p></div>
-      ${g.planImage ? `<figure class="ig-planfig"><img src="${esc(g.planImage)}" alt="Планировка квартиры ${esc(g.rooms.label)}" loading="lazy"></figure>` : (() => { let i = 0; const IC = { bed: ICONS.bed, sofa: ICONS.sofa, tub: '<path d="M4 12h16v3a4 4 0 01-4 4H8a4 4 0 01-4-4zM6 12V6a2 2 0 014 0M6 19l-1 2M18 19l1 2"/>', pot: '<path d="M4 11h16v7a2 2 0 01-2 2H6a2 2 0 01-2-2zM2 11h20M9 7c0-2 2-2 2-4M14 7c0-2 2-2 2-4"/>' };
-        const room = (x, y, w, h, cls, name, ic) => { const k = i++; const cx = x + w / 2, cy = y + h / 2; return `<g class="pr ${cls}" style="--i:${k}"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9"/>${ic ? (h < 50 ? `<g class="pi" transform="translate(${cx - 8} ${cy - 18}) scale(.66)">${IC[ic]}</g>` : `<g class="pi" transform="translate(${cx - 10} ${cy - 22}) scale(.84)">${IC[ic]}</g>`) : ''}<text x="${cx}" y="${cy + (ic ? (h < 50 ? 14 : 16) : 3)}" text-anchor="middle">${name}</text></g>`; };
-        return `<svg viewBox="0 0 252 152" class="ig-plan" role="img" aria-label="Схема планировки: две спальни, гостиная, кухня, санузел, прихожая">
-        ${room(6, 6, 74, 64, 'bd', 'Спальня', 'bed')}${room(84, 6, 74, 64, 'bd', 'Спальня', 'bed')}${room(162, 6, 72, 38, 'ba', 'Санузел', 'tub')}${room(162, 48, 72, 22, 'ha', 'Прихожая')}
-        ${room(6, 74, 144, 72, 'lv', 'Гостиная', 'sofa')}${room(154, 74, 80, 72, 'kt', 'Кухня', 'pot')}
-        <g class="pr door" style="--i:${i++}"><path d="M246 59H236M240 54L235 59L240 64"/></g>
-      </svg>`; })()}</div>
-    <div class="ig-t ig-floor rv"><span class="ig-k">${esc(g.floor.label)}</span><div class="ig-big"><b class="ig-num">${g.floor.n}</b><em>из ${g.floor.total}</em></div>
-      <svg viewBox="0 0 116 ${H}" class="ig-bld" aria-hidden="true">${floors}<rect x="10" y="${H - 6}" width="96" height="3" rx="1.5" class="gr"/></svg></div>
-    <div class="ig-t ig-compass rv"><span class="ig-k">Стороны света</span>
-      <svg viewBox="0 0 120 120" class="ig-cmp" aria-hidden="true"><circle cx="60" cy="60" r="54"/>${comp}<circle cx="60" cy="60" r="5" class="hub"/></svg>
-      <p>${esc(g.compass.label)}</p></div>
-    <div class="ig-t ig-sea rv"><span class="ig-k">${esc(g.sea.label)}</span><div class="ig-big"><b class="ig-num">${km}</b><em>км</em></div>
-      <svg viewBox="0 0 520 90" class="ig-route" aria-hidden="true"><path class="rt" d="M40 60 H400"/><g class="home"><path d="M24 62V40l16-14 16 14v22z"/></g><g class="wv"><path d="M420 54q10-12 20 0t20 0 20 0 20 0"/><path d="M420 70q10-12 20 0t20 0 20 0 20 0"/></g><text x="215" y="46" text-anchor="middle">${g.sea.meters.toLocaleString('ru-RU')} м</text></svg></div>
-    <div class="ig-t ig-rooms rv"><span class="ig-k">Планировка</span><div class="ig-big"><b>${esc(g.rooms.label)}</b></div><div class="rms">${rooms}</div><p>${esc(g.rooms.note)}</p></div>
-    <div class="ig-t ig-sm ig-view rv"><span class="ig-k">Вид из окон</span><ul>${g.view.map((v) => `<li>${esc(v)}</li>`).join('')}</ul></div>
-    <div class="ig-t ig-sm rv"><span class="ig-k">${esc(g.year.label)}</span><b class="ig-s">${g.year.value}</b></div>
-    <div class="ig-t ig-sm rv"><span class="ig-k">${esc(g.furnished.label)}</span><b class="ig-s">${esc(g.furnished.value)}</b></div>
-    <div class="ig-t ig-sm rv"><span class="ig-k">${esc(g.bath.label)}</span><b class="ig-s">${esc(g.bath.value)}</b></div>
-  </div>
-  <p class="ig-tags">${(g.tags || []).map((t) => `<span>${esc(t)}</span>`).join('')}</p>`; })()}
+    <div class="ig-t ig-area rv"><span class="ig-ic">${IG.expand}</span><div class="ig-body"><div class="ig-big"><b class="ig-num">${g.area.value}</b><em>${esc(g.area.unit)}</em></div><span class="ig-k">${esc(g.area.label)}</span></div></div>
+    <div class="ig-t ig-rooms rv"><span class="ig-ic acc">${IG.bed}</span><div class="ig-body"><div class="ig-big"><b>${esc(g.rooms.label)}</b></div><span class="ig-k">${esc(g.rooms.note)}</span></div></div>
+    <div class="ig-t ig-floor rv"><svg viewBox="0 0 104 ${H}" class="ig-bld" aria-hidden="true">${floors}<path class="gr" d="M6 ${H - 2}h72"/></svg><div class="ig-body"><div class="ig-big"><b class="ig-num t">${g.floor.n}</b><em>из ${g.floor.total}</em></div><span class="ig-k">${esc(g.floor.label)}</span></div></div>
+    <div class="ig-t ig-sea rv"><div class="ig-big"><b class="ig-num">${km}</b><em>км</em></div><span class="ig-k">${esc(g.sea.label)}</span>${IG.scene}</div>
+    <div class="ig-t ig-view rv"><span class="ig-k">Вид из окон</span><ul>${g.view.map((v) => `<li>${viewIc(v)}<span>${esc(v)}</span></li>`).join('')}</ul></div>
+    <div class="ig-t ig-compass rv"><span class="ig-k">Окна выходят</span>${IG.compass(g.compass.dirs)}<p>${esc(g.compass.label.replace(/^Окна выходят /, '').replace(/ и /g, ' · ').replace(/,/g, ' ·').replace(/^на /, '').replace(/^./, (c) => c.toUpperCase()))}</p></div>
+    <div class="ig-t ig-year rv"><span class="ig-k">${esc(g.year.label)}</span>${IG.building}<b class="ig-s">${g.year.value}</b></div>
+    <div class="ig-t ig-furn rv"><span class="ig-k">${esc(g.furnished.value)} ${esc(g.furnished.label.toLowerCase())}</span><span class="ig-sofa-w">${IG.sofa}</span><div class="ig-bath">${IG.toilet}<b>${esc(g.bath.value)}</b></div></div>
+  </div>`; })()}
 </div>` : `<div class="wrap spec-grid">
   <div class="rv"><span class="eyebrow">Характеристики</span><h2>Всё об объекте</h2>
     <dl class="specs">${(p.specs || []).map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl></div>
@@ -266,6 +254,7 @@ ${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div
       <span class="eyebrow lt">Локация</span>
       <h2>${esc(p.city)}</h2>
       <p class="lead">${esc(p.location?.intro || '')}</p>
+      <div class="dist">${(p.location?.distances || []).map((x) => `<div class="spot rv">${icon(x.icon || 'pin')}<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div></div>`).join('')}</div>
     </div>
     ${p.location?.radar?.length ? (() => { const rings = p.location.radar; const n = rings.length; const R = (k) => (n === 3 ? [64, 112, 168][k] : 60 + k * (110 / Math.max(1, n - 1)));
       const waves = (cx, cy) => `<path d="M${cx - 16} ${cy}q4-6 8 0t8 0 8 0 8 0"/><path d="M${cx - 16} ${cy + 7}q4-6 8 0t8 0 8 0 8 0"/>`;
@@ -273,11 +262,13 @@ ${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div
         const mark = g.kind === 'sea' ? `<g class="rd-sea" transform="translate(0 0)">${waves(x, y)}</g>` : `<circle class="rd-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5"/>`;
         const tx = g.kind === 'sea' ? x : (x > 200 ? x + 12 : x - 12), an = g.kind === 'sea' ? 'middle' : (x > 200 ? 'start' : 'end');
         return `<g class="rd-ring" style="--k:${k}"><circle class="rd-c" cx="200" cy="200" r="${r}"/>${mark}<text x="${tx.toFixed(1)}" y="${(y + (g.kind === 'sea' ? 24 : 4)).toFixed(1)}" text-anchor="${an}">${esc(g.label)}</text></g>`; }).join('');
-      return `<div class="radar rv"><svg viewBox="0 0 400 400" role="img" aria-label="Схема: рядом остановки, центр города, море в ${esc(p.location.distances?.[0]?.value || '2 км')}"><path class="rd-ax" d="M200 8V392M8 200H392"/>${items}<g class="rd-pin"><circle class="rd-pulse" cx="200" cy="200" r="24"/><circle cx="200" cy="200" r="22"/><path d="M190 202v-9l10-8 10 8v9z"/></g></svg><p class="rd-cap">Схема, масштаб условный</p></div>`; })() : ''}
-    <div class="dist">${(p.location?.distances || []).map((x) => `<div class="spot rv">${icon(x.icon || 'pin')}<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div></div>`).join('')}</div>
+      return `<div class="radar rv"><svg viewBox="0 0 400 400" role="img" aria-label="Схема: рядом остановки, главная улица, море в ${esc(p.location.distances?.[0]?.value || '2 км')}"><path class="rd-ax" d="M200 8V392M8 200H392"/>${items}<g class="rd-pin"><circle class="rd-pulse" cx="200" cy="200" r="24"/><circle cx="200" cy="200" r="22"/><path d="M190 202v-9l10-8 10 8v9z"/></g></svg><p class="rd-cap">Схема расположения · не в масштабе</p></div>`; })() : ''}
   </div>
-  <div class="map" id="map">${p.geo ? `<button class="btn btn-primary" type="button" id="mapBtn" ${trk('map_open')}>Показать на карте</button>` : ''}</div>
-  ${p.geo && !p.geo.exact ? '<p class="map-note">Показан район. Точный адрес сообщим при записи на показ.</p>' : ''}
+  <div class="mapcard rv">
+    <div class="mc-h"><span class="mc-t">${SVG.pin}${esc(p.mapTitle || 'Район ' + (p.location?.district || ''))}</span>${p.geo ? `<a class="btn btn-primary" id="mapOpen" target="_blank" rel="noopener" href="https://yandex.ru/maps/?ll=${p.geo.lng}%2C${p.geo.lat}&z=14" ${trk('map_open_ext')}>Открыть карту ${SVG.arr}</a>` : ''}</div>
+    <div class="map" id="map">${p.geo ? `<button class="btn btn-primary" type="button" id="mapBtn" ${trk('map_open')}>Показать на карте</button>` : ''}</div>
+    <div class="mc-f"><span>${SVG.pin}${p.geo && !p.geo.exact ? 'Показан район. Точный адрес сообщим при записи на показ.' : 'Расположение на карте'}</span><a href="#lead" ${trk('cta_map')}>Записаться на показ ${SVG.arr}</a></div>
+  </div>
   ${p.geo?.exact ? `<div class="map-actions"><a class="btn btn-ghost" target="_blank" rel="noopener" href="https://yandex.ru/maps/?rtext=~${p.geo.lat},${p.geo.lng}&rtt=auto" ${trk('route_click')}>Построить маршрут</a></div>` : ''}
 </div></section>
 
@@ -293,15 +284,17 @@ ${p.mortgage ? `<section id="mortgage"><div class="wrap">
     <div class="calc-res"><small>Платёж в месяц</small><b id="cRes">—</b><p id="cNote"></p><a class="btn btn-primary" href="#lead" ${trk('cta_calc')}>Получить расчёт у менеджера</a></div>
   </div>
 </div></section>` : ''}
-${p.terms?.length ? `<section id="terms"><div class="wrap">
+${p.terms?.length ? `<section class="terms-sec" id="terms"><div class="wrap">
   <span class="eyebrow">Условия покупки</span><h2>Просто и безопасно</h2>
-  <div class="terms">${p.terms.map((x) => `<div class="term rv"><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p></div>`).join('')}</div>
-  <div style="margin-top:28px"><a class="btn btn-dark" href="#lead" ${trk('cta_terms')}>Узнать условия</a></div>
+  <span class="terms-deco" aria-hidden="true">${ILL.hero}</span>
+  <div class="terms">${p.terms.map((x, i) => `<div class="term t${i} rv"><div class="term-tx"><h3>${esc(x.title)}</h3><p>${esc(x.text)}</p>${i === 0 ? `<a class="btn btn-primary" href="#lead" ${trk('cta_terms')}>Узнать условия ${SVG.arr}</a>` : ''}</div><span class="term-il" aria-hidden="true">${[ILL.house, ILL.doc, ILL.key][i] || ''}</span></div>`).join('')}</div>
 </div></section>` : ''}
 
 <section class="trust" id="trust"><div class="wrap">
-  <span class="eyebrow">Безопасная сделка</span><h2>Как мы работаем</h2>
-  <div class="steps">${(p.steps || []).map((s) => `<div class="step rv"><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></div>`).join('')}</div>
+  <span class="eyebrow">Этапы сделки</span><h2>Как мы работаем</h2>
+  <span class="trust-deco" aria-hidden="true">${ILL.sprig}</span>
+  <ol class="steps">${(p.steps || []).map((s, i) => `<li class="step rv"><span class="st-n">0${i + 1}</span><span class="st-il" aria-hidden="true">${[ILL.chat, ILL.show, ILL.check, ILL.keysm][i] || ''}</span><h3>${esc(s.title)}</h3><p>${esc(s.text)}</p></li>`).join('')}</ol>
+  <div class="cta-band rv"><span class="cb-l" aria-hidden="true">${ILL.sprig}</span><h3>Обсудим покупку вашей квартиры</h3><a class="btn btn-light" href="#lead" ${trk('cta_trust')}>Получить консультацию ${SVG.arr}</a><span class="cb-r" aria-hidden="true">${ILL.scene}</span></div>
   ${p.agent ? `<div class="agent"><img src="${esc(p.agent.photo)}" alt="${esc(p.agent.name)}" width="84" height="84" loading="lazy"><div><b>${esc(p.agent.name)}</b><span>${esc(p.agent.role)}</span><span>${esc(p.agent.experience)}</span></div></div>` : ''}
 </div></section>
 
@@ -317,16 +310,21 @@ ${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap faq-grid">
 </div></section>` : ''}
 
 <section class="lead-sec" id="lead"><div class="wrap lead-box">
-  <div>
+  <div class="lead-l">
     <span class="eyebrow lt">Заявка</span>
     <h2>${esc(p.leadFormTitle)}</h2>
     <p class="lead">${esc(p.leadFormSubtitle)}</p>
-    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:26px">
-      ${btnWa('', 'click_whatsapp_lead', 'WhatsApp')}${btnTg('', 'click_telegram_lead', 'Telegram')}
+    ${p.manager?.cut ? `<img class="lead-ph" src="${esc(p.manager.cut)}" alt="${esc(p.manager.name)}, ${esc(p.manager.role)}" width="1000" height="1000" loading="lazy">` : ''}
+    <div class="lead-man">
+      <svg class="lm-ic" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="13" r="7"/><path d="M6 36c0-8 6-13 14-13s14 5 14 13z"/></svg>
+      <div class="lm-t"><b>Ваш менеджер</b><span>Поможет с просмотром и ответит на вопросы.</span></div>
+      <div class="lm-b">${btnWa('btn-o-wa', 'click_whatsapp_lead', 'WhatsApp')}${btnTg('btn-o-tg', 'click_telegram_lead', 'Telegram')}</div>
     </div>
   </div>
-  <div>
+  <div class="lead-r">
     <form class="form" id="leadForm" novalidate>
+      <h3 class="form-h">${esc(p.formTitle || 'Записаться на показ')}</h3>
+      <p class="form-s">${esc(p.formSubtitle || 'Оставьте контакты — согласуем удобное время.')}</p>
       <div class="row"><label for="fName">Ваше имя</label><input id="fName" name="name" type="text" autocomplete="name" required aria-describedby="fErr"></div>
       <div class="row"><label for="fPhone">Телефон</label><input id="fPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required aria-describedby="fErr"></div>
       <div class="row" role="group" aria-labelledby="msgLbl"><span class="lbl" id="msgLbl">Где удобно ответить?</span>
@@ -337,7 +335,8 @@ ${p.faq?.length ? `<section class="faq" id="faq"><div class="wrap faq-grid">
         </div></div>
       <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       <label class="consent"><input type="checkbox" name="consent" required><span>Согласен на обработку персональных данных согласно <a href="privacy.html" target="_blank" rel="noopener">политике конфиденциальности</a></span></label>
-      <button class="btn btn-primary" type="submit">Записаться на показ</button>
+      <button class="btn btn-primary" type="submit">Записаться на показ ${SVG.arr}</button>
+      <p class="form-n"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8"/><path d="M10 5v5l3 2"/></svg>Ответим в рабочее время.</p>
       <div class="err" id="fErr" role="alert"></div>
     </form>
     <div class="form thanks" id="thanks">
