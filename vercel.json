@@ -21,7 +21,20 @@
       ]
     },
     {
-      "source": "/(materials|promo/(.*))",
+      "source": "/materials",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
+    },
+    {
+      "source": "/promo/(.*)",
       "headers": [
         {
           "key": "X-Robots-Tag",
