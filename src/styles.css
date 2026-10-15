@@ -908,3 +908,22 @@ img[src*="img/"]{pointer-events:none}
 @media (max-width:899px){.ig .ig-plan,.ig .ig-sea{grid-column:span 2}.ig-view{grid-column:span 2}.ig-furn{grid-column:span 2}.plan-g{min-height:220px}.pr-door{right:-18px;font-size:18px}}
 .ig-seasc{height:150px;max-height:48%;flex:none}
 @media (max-width:899px){.ig-seasc{height:130px}.ig .ig-sea{min-height:260px}}
+
+/* ===== Характеристики: исходный макет 28 (без плана) ===== */
+.ig .ig-plan{display:none}
+.ig-floor.ig-t .ig-k,.ig-area .ig-k,.ig-rooms .ig-k{color:var(--ink)}
+.ig-floor .ig-body .ig-k{display:block}
+.ig .ig-sea{background:linear-gradient(160deg,#103b54,#0a2231);color:#fff;padding:26px 30px;min-height:330px;justify-content:flex-start;gap:6px;position:relative;overflow:hidden}
+.ig .ig-sea .ig-big b,.ig .ig-sea .ig-big em{color:#fff;position:relative;z-index:1}
+.ig .ig-sea .ig-big b{font-size:clamp(100px,12vw,170px)}.ig .ig-sea .ig-big em{font-size:clamp(34px,4.4vw,60px)}
+.ig-sea .ig-k{color:#fff;border-top:1px solid rgba(255,255,255,.55);width:fit-content;padding-top:10px;position:relative;z-index:1;order:2}
+.ig-seasc{position:absolute;inset:0;width:100%;height:100%;max-height:none;margin:0;z-index:0;order:0}
+.ig-seasc .moon{fill:#f7e8d1}.ig-seasc .bird{fill:none;stroke:#fff;stroke-width:2}.ig-seasc .m2{fill:#3f6f85;opacity:.55}.ig-seasc .m1{fill:#2f6279}.ig-seasc .sea{fill:#17687b}.ig-seasc .hill{fill:#1b8a93}.ig-seasc .house{fill:var(--terra)}.ig-seasc .door{fill:#f7e8d1}.ig-seasc .route{fill:none;stroke:#fff;stroke-width:3;stroke-dasharray:8 10}.ig-seasc .wv path{fill:none;stroke:#cfeeee;stroke-width:4;stroke-linecap:round}
+.ig-view ul{margin-top:18px;align-items:center}.ig-view li{font-size:clamp(20px,2.4vw,30px);gap:16px}.ig-v{width:72px;height:72px}
+.ig-view{min-height:330px}
+@media (min-width:900px){
+  .ig .ig-sea{grid-column:span 7}.ig-view{grid-column:span 5}
+  .ig-compass,.ig-year,.ig-furn{grid-column:span 4}
+}
+.ig-year .ig-s{font-size:clamp(50px,6vw,72px)}.ig-bd{max-width:240px;max-height:150px}.ig-cmp2{width:150px}.ig-sofa{width:130px}
+@media (max-width:899px){.ig-view{grid-column:span 2;min-height:0}.ig .ig-sea{min-height:300px}.ig-v{width:56px;height:56px}}
