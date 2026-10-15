@@ -961,3 +961,24 @@ img[src*="img/"]{pointer-events:none}
 .ig-furn .ig-sofa-w{margin:0;padding:0}.ig-sofa{width:min(120px,55%);display:block;margin:4px auto 0}
 .ig-bath{margin-top:6px;padding-top:10px;gap:14px;justify-content:center}.ig-bath b{font-size:clamp(22px,2.2vw,28px)}.ig-i2{width:44px;height:48px}
 @media (max-width:899px){.ig .ig-compass,.ig .ig-year{padding:16px}.ig-year .ig-bd{max-height:80px}}
+
+/* заявка как образец: скруглённая карточка-секция, портрет по плечи, форма в одну строку заголовка */
+@media (min-width:1000px){
+  .lead-sec{padding:56px 0}
+  .lead-box{border:1px solid rgba(255,255,255,.14);border-radius:30px;overflow:hidden;background:linear-gradient(120deg,rgba(255,255,255,.04),rgba(255,255,255,0) 45%),radial-gradient(700px 420px at 8% 92%,rgba(201,74,30,.3),transparent 70%);padding:0;box-shadow:0 40px 90px -50px #000;grid-template-columns:58% 42%;max-width:1220px}
+  .lead-l{padding:40px 0 0 36px;box-sizing:border-box}
+  .lead-l h2{font-size:clamp(30px,3.4vw,48px);max-width:8.5em}
+  .lead-l .lead{font-size:clamp(14px,1.15vw,17px);max-width:14em}
+  .portrait-stage{left:34%;width:70%;bottom:0}
+  .lead-man{left:36px;right:24%;bottom:7%}
+  .lead-r{margin:36px 36px 36px 0;align-self:center}
+  .form{padding:clamp(22px,2.4vw,34px)}
+  .form-h{font-size:clamp(24px,2.5vw,36px);white-space:nowrap;margin-bottom:4px}
+  .form-s{font-size:clamp(13px,1.1vw,16px);margin-bottom:16px}
+}
+@media (min-width:1000px){
+  .portrait-stage{-webkit-mask-image:linear-gradient(90deg,#000 82%,transparent 100%);mask-image:linear-gradient(90deg,#000 82%,transparent 100%)}
+  .lead-man{right:8%;gap:12px;padding:14px 16px}
+  .lead-man .lm-t{flex:1 1 130px}.lead-man .lm-ic{width:36px;height:36px}
+  .lm-b{gap:8px;padding-left:12px}.lm-b .btn{padding:0 12px;font-size:13px;min-height:42px;gap:6px}.lm-b .btn svg{width:18px;height:18px}
+}
