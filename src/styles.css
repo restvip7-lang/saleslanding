@@ -951,3 +951,13 @@ img[src*="img/"]{pointer-events:none}
 .ig .ig-sea .ig-big{margin-bottom:2px}
 .ig-sea .ig-k{margin-top:6px}
 .ig-bld .fl rect:first-child{fill:#ddd5c6}.ig-bld .fl.on rect:first-child{fill:var(--terra)}
+
+/* нижний ряд: пропорции исходного макета (компактные плитки) */
+.ig .ig-compass,.ig .ig-year,.ig .ig-furn{padding:18px 22px;min-height:0;gap:6px}
+.ig-cmp2{width:min(130px,60%);margin:0 auto}.ig-cmp2 text{font-size:15px}
+.ig-compass p{font-size:clamp(14px,1.3vw,17px);margin-top:0;text-align:center;align-self:center}
+.ig-year .ig-bd{max-width:220px;max-height:96px;width:auto;height:auto;margin:6px auto 0}
+.ig-year .ig-s{font-size:clamp(44px,4.6vw,62px);margin-top:0;line-height:1}
+.ig-furn .ig-sofa-w{margin:0;padding:0}.ig-sofa{width:min(120px,55%);display:block;margin:4px auto 0}
+.ig-bath{margin-top:6px;padding-top:10px;gap:14px;justify-content:center}.ig-bath b{font-size:clamp(22px,2.2vw,28px)}.ig-i2{width:44px;height:48px}
+@media (max-width:899px){.ig .ig-compass,.ig .ig-year{padding:16px}.ig-year .ig-bd{max-height:80px}}
