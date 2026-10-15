@@ -257,7 +257,7 @@ ${p.amenities?.length ? `<section class="marq-sec" aria-labelledby="amen-h"><div
       <span class="eyebrow lt">Локация</span>
       <h2>${esc(p.city)}</h2>
       <p class="lead">${esc(p.location?.intro || '')}</p>
-      <div class="dist">${(p.location?.distances || []).map((x) => `<div class="spot rv">${icon(x.icon || 'pin')}<div><b>${esc(x.value)}</b><span>${esc(x.label)}</span></div></div>`).join('')}</div>
+      <div class="dist">${(p.location?.distances || []).map((x) => `<div class="spot rv">${icon(x.icon || 'pin')}<div><b>${esc(x.value)}</b>${x.label ? `<span>${esc(x.label)}</span>` : ''}</div></div>`).join('')}</div>
     </div>
     ${p.location?.radar?.length ? (() => { const rings = p.location.radar; const n = rings.length; const R = (k) => (n === 3 ? [64, 112, 168][k] : 60 + k * (110 / Math.max(1, n - 1)));
       const waves = (cx, cy) => `<path d="M${cx - 16} ${cy}q4-6 8 0t8 0 8 0 8 0"/><path d="M${cx - 16} ${cy + 7}q4-6 8 0t8 0 8 0 8 0"/>`;

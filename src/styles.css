@@ -1064,3 +1064,4 @@ img[src*="img/"]{pointer-events:none}
 .mapcard .map{aspect-ratio:3.3/1;border-radius:16px}
 @media (max-width:759px){.mapcard .map{aspect-ratio:4/3}}
 @media (max-width:899px){.rd-ring text{font-size:21px}.radar svg{max-height:360px}.mc-h .btn{white-space:nowrap}.mc-t{font-size:16px}}
+.dist b{text-wrap:balance}
